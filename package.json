@@ -1,0 +1,14 @@
+{
+    "name": "cs-546-project",
+    "version": "1.0.0",
+    "description": "project module",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "Andrew Baker, Elijah Joseph, Riley Stewart, Aleksey Vinogradov",
+    "license": "ISC",
+    "dependencies": {
+    }
+}
