@@ -2,6 +2,8 @@ import {items} from '../config/mongoCollections.js';
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 
+//TEST
+
 export const addItem = async (userId, name, description) => {
     if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
     const itemCollection = await items();
