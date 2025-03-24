@@ -14,3 +14,4 @@ return _col;
 };
 
 export const users = getCollectionFn('users');
+export const items = getCollectionFn('items');
