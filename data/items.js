@@ -64,5 +64,5 @@ export const updateItem = async (userId, name, description) => {
         throw 'Could not update item successfully';
     } 
 
-    updatedInfo._id = updatedInfo._id.toString();
+    updateInfo._id = updateInfo._id.toString();
 };
