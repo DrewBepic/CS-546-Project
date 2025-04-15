@@ -1,24 +1,22 @@
-import express from 'express';
-const app = express();
-import configRoutesFunction from './routes/index.js';
-import path from "path";
-import { fileURLToPath } from "url";
+// import express from 'express';
+// const app = express();
+// import configRoutes from './routes/index.js';
+// import exphbs from 'express-handlebars';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.json());
-configRoutesFunction(app);
+// app.use('/public', express.static('public'));
+// app.use(express.json());
+// app.use(express.urlencoded({extended: true}));
 
-app.use(express.static(path.join(__dirname, "views")));
+// app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+// app.set('view engine', 'handlebars');
 
-app.get("/", (req, res) => {
-    res.redirect("/home");
-  });
+// configRoutes(app);
 
-  app.get("/home", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "home.html"));
-});
-app.listen(3000, () => {
-  console.log("We've now got a server!");
-  console.log('Your routes will be running on http://localhost:3000');
-});
+// app.listen(3000, () => {
+//   console.log("We've now got a server!");
+//   console.log('Your routes will be running on http://localhost:3000');
+// });
+
+import userCommands from './data/users.js'
+
+await userCommands.registerUser('Andrew Baker', 'abaker2@stevens.edu', 'Stevens', 'Hello')

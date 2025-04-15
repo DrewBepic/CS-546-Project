@@ -1,10 +1,9 @@
-import {items} from '../config/mongoCollections.js';
-import {users} from '../config/mongoCollections.js';
+import {items, users, requests} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 
 //TEST
 
-export const addItem = async (userId, name, description) => {
+const addItem = async (userId, name, description) => {
     if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
     const itemCollection = await items();
     if (!name || !description) throw 'Error: Name and Description must be filled out';
@@ -26,7 +25,7 @@ export const addItem = async (userId, name, description) => {
     const newId = insertInfo.insertedId.toString();
     };
 
-export const removeItem = async (id) => {
+const removeItem = async (id) => {
         if (!id) throw 'An Id must be provided';
         if (typeof id !== 'string') throw 'Provided Id must be a string';
         if (id.trim().length === 0)
@@ -40,7 +39,7 @@ export const removeItem = async (id) => {
         }
     };
 
-export const updateItem = async (userId, name, description) => {
+const updateItem = async (userId, name, description) => {
     if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
     const itemCollection = await items();
     if (!name || !description) throw 'Error: Name and Description must be filled out';
@@ -66,3 +65,5 @@ export const updateItem = async (userId, name, description) => {
 
     updateInfo._id = updateInfo._id.toString();
 };
+
+export default {updateItem, addItem, removeItem};

@@ -1,12 +1,9 @@
-import express from "express";
-
-const configRoutesFunction = (app) => {
-    const router = express.Router();
-    router.get("/example", (req, res) => {
-        res.json({ message: "This is an example route" });
-    });
-
-    app.use("/", router);
+import userRoutes from './users.js';
+const constructorMethod = (app) => {
+  app.use('/', userRoutes);
+  app.use('*', (req, res) => {
+    return res.status(404).json({error: 'Not found'});
+  });
 };
 
-export default configRoutesFunction;
+export default constructorMethod;
