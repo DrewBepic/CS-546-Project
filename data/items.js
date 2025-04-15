@@ -13,16 +13,14 @@ const addItem = async (userId, name, description) => {
     description = description.trim();
 
     let newItem = {
-        _id: new ObjectId(userId),
         name: name,
         description: description,
-        status: ""
+        userID: userId
     };
 
     const insertInfo = await itemCollection.insertOne(newItem);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw 'Could not add item';
-    const newId = insertInfo.insertedId.toString();
     };
 
 const removeItem = async (id) => {
@@ -66,4 +64,9 @@ const updateItem = async (userId, name, description) => {
     updateInfo._id = updateInfo._id.toString();
 };
 
-export default {updateItem, addItem, removeItem};
+const getAllItems = async (userId, name, description) => {
+    const itemCollection = await items();
+    return itemCollection
+}
+
+export default {updateItem, addItem, removeItem, getAllItems};
