@@ -31,10 +31,14 @@ router.route('/item').get(async (req, res) => {
   });
 
 router.route('/item/:itemid').get(async (req, res) => {
-  const item = await itemCommands.getItemByID(req.params.itemid)
-  const userName = await userCommands.getUserByID(item.ownerId.toString())
-  item.owner = userName.name
-  return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item });
+  try {
+    const item = await itemCommands.getItemByID(req.params.itemid)
+    const userName = await userCommands.getUserByID(item.ownerId.toString())
+    item.owner = userName.name
+    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item });
+  } catch (e) {
+    return res.render('item', { hasErrors: true, title: "CampusExchange", error: e });
+  }
 })
 
 router.route('/login').get(async (req, res) => {
@@ -74,4 +78,17 @@ router.route('/register').get(async (req, res) => {
     }
   });
 
+router.route('/comment/:itemId').post(async (req, res) => {
+  try {
+    const comment = req.body.comment
+    const itemID = req.params.itemId;
+    const commentAdd = await itemCommands.addComment(itemID,comment)
+    if(!commentAdd){
+      throw "Could not add comment"
+    }
+    return res.redirect('/item/' + itemID.toString());
+  } catch (e) {
+    return res.redirect('/item/' + req.params.itemId.toString());
+  }
+});
 export default router;

@@ -7,6 +7,13 @@
     {{itemInfo.description}}<br>
     {{itemInfo.history}}<br>
     {{itemInfo.requests}}<br>
+
+    <form action="/comment/{{itemInfo._id}}" method="POST">
+      <label for="comment">Add comment:</label><br>
+      <input type="text" id="comment" name="comment" placeholder="...">
+      <input type="submit" value="Comment">
+    </form>
+
     {{itemInfo.comments}}<br>
   </main>
 </body>

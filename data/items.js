@@ -88,4 +88,21 @@ const getItemByID = async (id) => {
     return item
 }
 
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID };
+const addComment = async (id, comment) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    const itemCollection = await items();
+    const item = await itemCollection.findOne({ _id: new ObjectId(id) });
+    if (!item) {
+        throw "No item with specified id";
+    }
+    const updateResult = await itemCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $push: { comments: comment.trim() } }
+    );
+    if (updateResult.modifiedCount === 0) {
+        throw "Failed to add comment";
+    }
+    return updateResult;
+}
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment };
