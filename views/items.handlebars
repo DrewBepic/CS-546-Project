@@ -1,20 +1,19 @@
 <body>
-    <h1>Items</h1>
+  <h1>Items</h1>
 
-</body>
-
-<main>
-    {{if items.length}}
-    <ol>
+  <main>
+    {{#if items}}
+      <ol>
         {{#each items}}
-        <li>
+          <li>
             <a href="/item/{{this.id}}">
-                <h2>{{this.name}}</h2>
+              <h2>{{this.name}}</h2>
             </a>
-        </li>
+          </li>
         {{/each}}
-    </ol>
+      </ol>
     {{else}}
-    <p class="not-found">We're sorry, but no items were found.</p>
+      <p class="not-found">We're sorry, but no items were found.</p>
     {{/if}}
-</main>
+  </main>
+</body>

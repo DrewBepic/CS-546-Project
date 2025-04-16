@@ -8,24 +8,25 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/items').get(async (req, res) => {
-  const items = await items()
+  const items = await itemCommands.getAllItems()
   return res.render('items', {title: "CampusExchange", items: items});
 });
 
 router.route('/item').get(async (req, res) => {
-  return res.render('addItem', {title: "CampusExchange"});
+  return res.render('addItem', {hasErrors: false, title: "CampusExchange"});
 })
 
 .post(async (req, res) => {
-  let id = "67fea618712c0f89deb97359"
-  console.log(id)
   let body = req.body
-  // try{
-    await itemCommands.addItem(id, body.name, body.description)
+  try{
+    if(!req.session.user){
+      throw "Login before adding an item"
+    }
+    await itemCommands.addItem(req.session.user._id, body.name, body.description)
     return res.redirect('/item');
-  // }catch(e){
-  //   return res.status(400).render('error', {title: 'Error', error: e.toString()});
-  // }
+  }catch(e){
+    return res.status(400).render('addItem', { hasErrors: true, title: 'CampusExchange', error: e.toString()});
+  }
 });
 
 router.route('/login').get(async (req, res) => {
@@ -38,7 +39,6 @@ router.route('/login').get(async (req, res) => {
         console.log(JSON.stringify(user))
         if (user) {
             req.session.user = user
-            console.log(req.session.user)
             return res.redirect('/item');
         } else {
             throw 'User not logged in'
@@ -47,6 +47,6 @@ router.route('/login').get(async (req, res) => {
         console.log(e);
         return res.status(500).render('login', { hasErrors: true, error: e, title: 'Login' });
     }
-})
+});
 
 export default router;

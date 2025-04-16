@@ -69,9 +69,11 @@ const updateItem = async (userId, name, description) => {
     updateInfo._id = updateInfo._id.toString();
 };
 
-const getAllItems = async (userId, name, description) => {
+const getAllItems = async () => {
     const itemCollection = await items();
-    return itemCollection
+    const allItems = await itemCollection.find({}).toArray();
+    console.log(allItems)
+    return allItems
 }
 
 export default {updateItem, addItem, removeItem, getAllItems};
