@@ -72,8 +72,19 @@ const updateItem = async (userId, name, description) => {
 const getAllItems = async () => {
     const itemCollection = await items();
     const allItems = await itemCollection.find({}).toArray();
-    console.log(allItems)
     return allItems
 }
 
-export default {updateItem, addItem, removeItem, getAllItems};
+const getItemByID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    const itemCollection = await items();
+    const item = await itemCollection.findOne({_id: new ObjectId(id)})
+    if(!item){
+        throw "No item with specified id"
+    }
+    item._id = item._id.toString()
+    return item
+}
+
+export default {updateItem, addItem, removeItem, getAllItems, getItemByID};

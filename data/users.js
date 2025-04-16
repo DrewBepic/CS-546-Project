@@ -102,10 +102,10 @@ const getUserByID = async (id) => {
     return user;
 }
 
-export const getUserSession = async (id) => {
+const getUserSession = async (id) => {
     let user = await getUserByID(id)
     user.loggedIn = true
     return user;
 };
 
-export default { registerUser, userLogin }
+export default { registerUser, userLogin, getUserByID, getUserSession }

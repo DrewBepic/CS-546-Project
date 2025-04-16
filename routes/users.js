@@ -29,6 +29,14 @@ router.route('/item').get(async (req, res) => {
   }
 });
 
+router.route('/item/:itemid').get(async (req, res) => {
+  const item = await itemCommands.getItemByID(req.params.itemid)
+  const userName = await userCommands.getUserByID(item.ownerId.toString())
+  console.log(userName)
+  item.owner = userName.name
+  return res.render('item', {hasErrors: false, title: "CampusExchange", itemInfo: item});
+})
+
 router.route('/login').get(async (req, res) => {
   return res.render('login', {title: "CampusExchange"});
 })
@@ -36,7 +44,6 @@ router.route('/login').get(async (req, res) => {
   const loginData = req.body;
     try {
         const user = await userCommands.userLogin(loginData.email, loginData.password);
-        console.log(JSON.stringify(user))
         if (user) {
             req.session.user = user
             return res.redirect('/item');
