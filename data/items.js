@@ -11,11 +11,16 @@ const addItem = async (userId, name, description) => {
     if (name.trim().length === 0 || description.trim().length === 0) throw 'Error: Name and Description cannot be empty strings';
     name = name.trim();
     description = description.trim();
-
+    let history= [];
+    let requests= [];
+    let comments= [];
     let newItem = {
         name: name,
+        ownerId: userId, //matching to database so making it ownerId
         description: description,
-        userID: userId
+        history: history,
+        requests: requests,
+        comments: comments
     };
 
     const insertInfo = await itemCollection.insertOne(newItem);
