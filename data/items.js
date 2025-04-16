@@ -1,5 +1,5 @@
-import {items, users, requests} from '../config/mongoCollections.js';
-import {ObjectId} from 'mongodb';
+import { items, users, requests } from '../config/mongoCollections.js';
+import { ObjectId } from 'mongodb';
 
 //TEST
 
@@ -11,9 +11,9 @@ const addItem = async (userId, name, description) => {
     if (name.trim().length === 0 || description.trim().length === 0) throw 'Error: Name and Description cannot be empty strings';
     name = name.trim();
     description = description.trim();
-    let history= [];
-    let requests= [];
-    let comments= [];
+    let history = [];
+    let requests = [];
+    let comments = [];
     let newItem = {
         name: name,
         ownerId: userId, //matching to database so making it ownerId
@@ -26,21 +26,22 @@ const addItem = async (userId, name, description) => {
     const insertInfo = await itemCollection.insertOne(newItem);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw 'Could not add item';
-    };
+    return newItem
+};
 
 const removeItem = async (id) => {
-        if (!id) throw 'An Id must be provided';
-        if (typeof id !== 'string') throw 'Provided Id must be a string';
-        if (id.trim().length === 0)
-            throw 'Provided Id cannot be an empty string or just spaces';
-        id = id.trim();
-        if (!ObjectId.isValid(id)) throw 'invalid object ID';
-        const itemCollection = await items();
-        const deletedItem = await itemCollection.findOneAndDelete({_id: new ObjectId(id)});
-        if (!deletedItem){
-            throw `Could not delete item with provided Id`;
-        }
-    };
+    if (!id) throw 'An Id must be provided';
+    if (typeof id !== 'string') throw 'Provided Id must be a string';
+    if (id.trim().length === 0)
+        throw 'Provided Id cannot be an empty string or just spaces';
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'invalid object ID';
+    const itemCollection = await items();
+    const deletedItem = await itemCollection.findOneAndDelete({ _id: new ObjectId(id) });
+    if (!deletedItem) {
+        throw `Could not delete item with provided Id`;
+    }
+};
 
 const updateItem = async (userId, name, description) => {
     if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
@@ -58,13 +59,13 @@ const updateItem = async (userId, name, description) => {
     };
 
     const updateInfo = await itemCollection.findOneAndUpdate(
-        {_id: new ObjectId(userId)},
-        {$set: updateItem},
-        {returnDocument: 'after'});
+        { _id: new ObjectId(userId) },
+        { $set: updateItem },
+        { returnDocument: 'after' });
 
     if (!updateInfo) {
         throw 'Could not update item successfully';
-    } 
+    }
 
     updateInfo._id = updateInfo._id.toString();
 };
@@ -79,12 +80,12 @@ const getItemByID = async (id) => {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
     const itemCollection = await items();
-    const item = await itemCollection.findOne({_id: new ObjectId(id)})
-    if(!item){
+    const item = await itemCollection.findOne({ _id: new ObjectId(id) })
+    if (!item) {
         throw "No item with specified id"
     }
     item._id = item._id.toString()
     return item
 }
 
-export default {updateItem, addItem, removeItem, getAllItems, getItemByID};
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID };

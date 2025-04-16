@@ -13,28 +13,29 @@ async function getSchools(){
 const registerUser = async (
     name,
     email,
-    school,
-    password
+    password,
+    passConfirm
 ) => {
-    if (!name || !email || !school || !password)
+    if (!name || !email || !password || !passConfirm)
         throw 'Error: All fields need to have valid values';
 
-    if (typeof name !== 'string' && typeof email !== 'string' && typeof school !== 'string' && typeof password !== 'string') {
+    if (typeof name !== 'string' && typeof email !== 'string' && typeof password !== 'string' && typeof passConfirm !== 'string') {
         throw 'Error: One of the properties is of incorrect type and must be a string';
     }
     name = name.trim()
     email = email.trim().toLowerCase()
-    school = school.trim()
-    password = password.trim()
-    if (name.length === 0 || email.length === 0 || school.length === 0 || password.length === 0){
+    if (name.length === 0 || email.length === 0 || password.length === 0 || passConfirm.length === 0){
         throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
     }
+    if(passConfirm !== password){
+        throw "Error: Passwords do not math"
+    }
     if(!validator.isEmail(email)){
-        throw 'Error Invalid Email'
+        throw 'Error: Invalid Email'
     }
     const userSchoolEmail = email.slice(email.indexOf('@')+1)
     let verified =false
-
+    let school
     const schoolsJSON = await getSchools();
     for(let i = 0; i < schoolsJSON.length; i++){
         let domains = schoolsJSON[i]['domains']
@@ -45,6 +46,7 @@ const registerUser = async (
             }
         }
         if(verified){
+            school = schoolsJSON[i]["name"]
             break
         }
     }
