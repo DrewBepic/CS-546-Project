@@ -2,6 +2,13 @@ import express from 'express';
 const app = express();
 import configRoutes from './routes/index.js';
 import exphbs from 'express-handlebars';
+import session from 'express-session';
+app.use(session({
+  name: 'AuthenticationState',
+  secret: 'some secret string!',
+  resave: false,
+  saveUninitialized: false
+}))
 
 app.use('/public', express.static('public'));
 app.use(express.json());
@@ -21,6 +28,6 @@ app.listen(3000, () => {
 // import userCommands from './data/users.js'
 // import itemCommands from './data/items.js'
 
-// await itemCommands.addItem("67fea618712c0f89deb97359",'Andrew Baker', 'abaker2@ste')
+// await userCommands.userLogin('abaker2@stevens.edu', 'Hello')
 
 // closeConnection()

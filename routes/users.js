@@ -28,4 +28,25 @@ router.route('/item').get(async (req, res) => {
   // }
 });
 
+router.route('/login').get(async (req, res) => {
+  return res.render('login', {title: "CampusExchange"});
+})
+.post(async (req, res) => {
+  const loginData = req.body;
+    try {
+        const user = await userCommands.userLogin(loginData.email, loginData.password);
+        console.log(JSON.stringify(user))
+        if (user) {
+            req.session.user = user
+            console.log(req.session.user)
+            return res.redirect('/item');
+        } else {
+            throw 'User not logged in'
+        }
+    } catch (e) {
+        console.log(e);
+        return res.status(500).render('login', { hasErrors: true, error: e, title: 'Login' });
+    }
+})
+
 export default router;

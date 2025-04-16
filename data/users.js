@@ -57,7 +57,7 @@ const registerUser = async (
     const saltRounds = 3;
     const hashedPass = await bcrypt.hash(password, saltRounds);
     const newUser = {
-        Name: name,
+        name: name,
         email: email,
         school: school,
         password: hashedPass,
@@ -74,7 +74,38 @@ const registerUser = async (
 };
 
 const userLogin = async (email, password) => {
-    //TODO
+    const userCollection = await users();
+    const user = await userCollection.findOne({email: email.toLowerCase()})
+    if(!user){
+        throw "Invalid Username or Password"
+    }
+    const passwordCrypt = await bcrypt.compare(password, user.password);
+    if(!passwordCrypt){
+        throw "Invalid Username or Password"
+    }else {
+        let output = await getUserSession(user._id.toString())
+        return output;
+    }
+};
+
+const getUserByID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+
+    if(!user){
+        throw "No user with that ID"
+    }
+    delete user.password;
+    user._id = user._id.toString()
+    return user;
+}
+
+export const getUserSession = async (id) => {
+    let user = await getUserByID(id)
+    user.loggedIn = true
+    return user;
 };
 
 export default { registerUser, userLogin }
