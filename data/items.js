@@ -26,7 +26,22 @@ const addItem = async (userId, name, description) => {
     const insertInfo = await itemCollection.insertOne(newItem);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw 'Could not add item';
-    return newItem
+
+    const userCollection = await users();
+    const addUserItem = await userCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { ownedItems:{
+            _id: insertInfo.insertedId,
+            name: name,
+            description: description
+            }      
+        } 
+        }
+    );
+
+    if (!addUserItem) {
+        throw 'Could not add User item successfully';
+    }
 };
 
 const removeItem = async (id) => {
@@ -37,14 +52,24 @@ const removeItem = async (id) => {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
     const itemCollection = await items();
+    const itemToDelete = await itemCollection.findOne({ _id: new ObjectId(id) });
+    if (!itemToDelete) throw 'Item not found';
     const deletedItem = await itemCollection.findOneAndDelete({ _id: new ObjectId(id) });
-    if (!deletedItem) {
-        throw `Could not delete item with provided Id`;
+    if (!deletedItem) throw `Could not delete item with provided Id`;
+    const userCollection = await users();
+    const removeItem = await userCollection.updateOne(
+        { _id: new ObjectId(itemToDelete.ownerId) },
+        { $pull: { ownedItems: { _id: new ObjectId(id)  } } },
+        { returnDocument: 'after' }
+    ); 
+
+    if (!removeItem) {
+        throw 'Could not remove item successfully';
     }
 };
 
-const updateItem = async (userId, name, description) => {
-    if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
+const updateItem = async (itemId, name, description) => {
+    if (!ObjectId.isValid(itemId)) throw 'Invalid ObjectId';
     const itemCollection = await items();
     if (!name || !description) throw 'Error: Name and Description must be filled out';
     if (typeof name !== 'string' || typeof description !== 'string') throw 'Error: Name and Description must be strings';
@@ -55,16 +80,27 @@ const updateItem = async (userId, name, description) => {
     let updateItem = {
         name: name,
         description: description,
-        //status: ""
     };
 
     const updateInfo = await itemCollection.findOneAndUpdate(
-        { _id: new ObjectId(userId) },
+        { _id: new ObjectId(itemId) },
         { $set: updateItem },
         { returnDocument: 'after' });
 
     if (!updateInfo) {
         throw 'Could not update item successfully';
+    }
+
+    const userCollection = await users();
+    const ownerId = updateInfo.value.ownerId;
+
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(ownerId) },
+        { $set: {ownedItems: updateItem} },
+        { returnDocument: 'after' });
+
+    if (!updateUserInfo) {
+        throw 'Could not update User item successfully';
     }
 
     updateInfo._id = updateInfo._id.toString();

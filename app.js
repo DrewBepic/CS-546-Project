@@ -1,3 +1,5 @@
+/*
+
 import express from 'express';
 const app = express();
 import configRoutes from './routes/index.js';
@@ -22,12 +24,14 @@ configRoutes(app);
 app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log('Your routes will be running on http://localhost:3000');
-});
+}); */
 
-// import { closeConnection } from './config/mongoConnection.js'
-// import userCommands from './data/users.js'
-// import itemCommands from './data/items.js'
+import { closeConnection } from './config/mongoConnection.js'
+import userCommands from './data/users.js'
+import itemCommands from './data/items.js'
+//let adew = await userCommands.registerUser('andrew baker', 'abaker2@stevens.edu', 'abc', 'abc');
+//await itemCommands.addItem('680084f7a1c1f0d8117af059', 'finalcat','desc');
+await itemCommands.updateItem('68008f99f7a5b3f90feda30d', 'updated2', 'updated');
+//await itemCommands.removeItem('68008c1e696041adabdb308b');
 
-// await userCommands.userLogin('abaker2@stevens.edu', 'Hello')
-
-// closeConnection()
+closeConnection()
