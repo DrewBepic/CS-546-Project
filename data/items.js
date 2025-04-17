@@ -42,6 +42,9 @@ const addItem = async (userId, name, description) => {
     if (!addUserItem) {
         throw 'Could not add User item successfully';
     }
+
+    newItem._id = insertInfo.insertedId;
+    return newItem;
 };
 
 const removeItem = async (id) => {
@@ -141,4 +144,70 @@ const addComment = async (id, comment) => {
     }
     return updateResult;
 }
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment };
+
+const addToWishlist = async (userId, itemId) => {
+    if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
+    if (!ObjectId.isValid(itemId)) throw 'Invalid ObjectId';
+    const itemCollection = await items();
+    const userCollection = await users();
+
+    let item = await itemCollection.findOne({ _id: new ObjectId(itemId) });
+    if (!item) throw 'Item not found';
+
+    let user = await userCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) throw 'User not found';
+
+    for (let i = 0; i < user.wishlist.length; i++) {
+        if (user.wishlist[i]._id.toString() === itemId) {
+            throw 'Item already in wishlist';
+        }
+    }
+
+    const updateWishlist = await userCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        {$push: {
+            wishlist: {
+                _id: item._id,
+                name: item.name
+                }
+            }
+        }
+    );
+
+    if (updateWishlist.modifiedCount === 0) {
+        throw 'Failed to add item to wishlist';
+    }
+
+    return {
+        _id: item._id.toString(),
+        name: item.name
+    };
+}
+
+const removeFromWishlist = async (userId, itemId) => {
+    if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
+    if (!ObjectId.isValid(itemId)) throw 'Invalid ObjectId';
+    const userCollection = await users();
+    const itemCollection = await items();
+
+    let item = await itemCollection.findOne({ _id: new ObjectId(itemId) });
+    if (!item) throw 'Item not found';
+
+    let user = await userCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) throw 'User not found';
+
+    const updateWishlist = await userCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        {$pull: {wishlist: { _id: new ObjectId(itemId) }}},
+        { returnDocument: 'after' }
+    );
+
+    if (updateWishlist.modifiedCount === 0) {
+        throw 'Could not remove item from wishlist';
+    }
+
+    return { removed: true, itemId: itemId };
+};
+
+
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, addToWishlist, removeFromWishlist };
