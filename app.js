@@ -30,7 +30,6 @@ import { closeConnection } from './config/mongoConnection.js'
 import userCommands from './data/users.js'
 import itemCommands from './data/items.js'
 import requestCommands from './data/requests.js'
-// let adew = await userCommands.registerUser('andrew baker', 'abaker2@stevens.edu', 'abc', 'abc');
 // let elijah = await userCommands.registerUser('Elijah Joseph','ejoseph1@stevens.edu','abc','abc');
 // await itemCommands.addItem('6805ba13a1e02ee09cdd7790', 'finalcat','desc');
 // await itemCommands.updateItem('68008f99f7a5b3f90feda30d', 'updated2', 'updated');
