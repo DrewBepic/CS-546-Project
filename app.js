@@ -29,9 +29,18 @@ app.listen(3000, () => {
 import { closeConnection } from './config/mongoConnection.js'
 import userCommands from './data/users.js'
 import itemCommands from './data/items.js'
-//let adew = await userCommands.registerUser('andrew baker', 'abaker2@stevens.edu', 'abc', 'abc');
-//await itemCommands.addItem('680084f7a1c1f0d8117af059', 'finalcat','desc');
-await itemCommands.updateItem('68008f99f7a5b3f90feda30d', 'updated2', 'updated');
-//await itemCommands.removeItem('68008c1e696041adabdb308b');
+import requestCommands from './data/requests.js'
+// let adew = await userCommands.registerUser('andrew baker', 'abaker2@stevens.edu', 'abc', 'abc');
+// let elijah = await userCommands.registerUser('Elijah Joseph','ejoseph1@stevens.edu','abc','abc');
+// await itemCommands.addItem('6805ba13a1e02ee09cdd7790', 'finalcat','desc');
+// await itemCommands.updateItem('68008f99f7a5b3f90feda30d', 'updated2', 'updated');
+// await itemCommands.removeItem('68008c1e696041adabdb308b');
+// try{
+//     // let requestId = await requestCommands.createRequest('6805ba13a1e02ee09cdd7790','6805ba14a1e02ee09cdd7791','6805ba63446bd355012e0730','I just want it for a bit!!');
+//     await requestCommands.completeRequest("6805c362a20776fb8ed1d282");
+// }
+// catch (e) {
+//   console.log(e);
+// }
 
 closeConnection()
