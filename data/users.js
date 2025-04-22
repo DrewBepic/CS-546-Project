@@ -28,7 +28,7 @@ const registerUser = async (
         throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
     }
     if(passConfirm !== password){
-        throw "Error: Passwords do not math"
+        throw "Error: Passwords do not match"
     }
     if(!validator.isEmail(email)){
         throw 'Error: Invalid Email'
@@ -110,4 +110,78 @@ const getUserSession = async (id) => {
     return user;
 };
 
-export default { registerUser, userLogin, getUserByID, getUserSession }
+const updateUserInfo = async (id, name, email,school) => {
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    if (!name || !email || !school)
+        throw 'Error: All fields need to have valid values';
+
+    if (typeof name !== 'string' && typeof email !== 'string' && typeof school !== 'string') {
+        throw 'Error: One of the properties is of incorrect type and must be a string';
+    }
+    name = name.trim()
+    email = email.trim().toLowerCase()
+    school= school.trim()
+    if (name.length === 0 || email.length === 0 || school.length === 0 ){
+        throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
+    }
+    const userCollection = await users();
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {name: name, email: email, school:school} },
+        { returnDocument: 'after' });
+
+    if (!updateUserInfo) {
+        throw 'Could not update User successfully';
+    }
+};
+
+const updatePassword = async (id, oldPassword, newPassword) =>{
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    if (!oldPassword || !newPassword){
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof oldPassword !== 'string' && typeof newPassword !== 'string') {
+        throw 'Error: One of the properties is of incorrect type and must be a string';
+    }
+    oldPassword= oldPassword.trim();
+    newPassword= newPassword.trim();
+    if (oldPassword.length === 0 || newPassword.length === 0){
+        throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
+    }
+    const userCollection = await users();
+    const user= await userCollection.findOne({ _id: new ObjectId(id) });
+    const equalPass = await bcrypt.compare(oldPassword, user.password);
+    if(!equalPass){
+        throw 'Error: Old password has to match the current password.'
+    }
+    const saltRounds = 3;
+    const hashedNewPass = await bcrypt.hash(newPassword, saltRounds);
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {password : hashedNewPass} },
+        { returnDocument: 'after' });
+     if (!updateUserInfo) {
+        throw 'Could not update User successfully';
+        }
+}
+
+const getKarmaByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    return user.karma;
+}
+
+
+const getAllUsers = async () => {
+    //just for testing
+    const UserCollection = await users();
+    const allUsers = await UserCollection.find({}).toArray();
+    return allUsers;
+}
+
+
+
+
+export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID }

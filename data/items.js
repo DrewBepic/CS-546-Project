@@ -76,24 +76,19 @@ const updateItem = async (itemId, name, description) => {
     if (name.trim().length === 0 || description.trim().length === 0) throw 'Error: Name and Description cannot be empty strings';
     name = name.trim();
     description = description.trim();
-
     let updateItem = {
         name: name,
         description: description,
     };
-
     const updateInfo = await itemCollection.findOneAndUpdate(
         { _id: new ObjectId(itemId) },
         { $set: updateItem },
         { returnDocument: 'after' });
-
     if (!updateInfo) {
         throw 'Could not update item successfully';
     }
-
     const userCollection = await users();
-    const ownerId = updateInfo.value.ownerId;
-
+    const ownerId = updateInfo.ownerId;
     const updateUserInfo = await userCollection.findOneAndUpdate(
         { _id: new ObjectId(ownerId) },
         { $set: {ownedItems: updateItem} },
@@ -109,7 +104,7 @@ const updateItem = async (itemId, name, description) => {
 const getAllItems = async () => {
     const itemCollection = await items();
     const allItems = await itemCollection.find({}).toArray();
-    return allItems
+    return allItems;
 }
 
 const getItemByID = async (id) => {
