@@ -141,10 +141,23 @@ const acceptRequest = async (requestID) =>
         if(request.Status!="Pending"){
             throw "Error: status must be Pending before accepting a request"
         }
+        const itemsCollection = await items();
+        const item=await itemsCollection.findOne({_id: new ObjectId(request.ItemID)})
+        if((!item.CurrentRequest)==false){
+            throw "Error: item is already actively being borrowed"
+        }
+
         const requestsCollection = await requests();
 
         const updateInfo = await requestsCollection.updateOne({_id:new ObjectId(requestID)},{$set:{Status:"Accepted"}})
         if (!updateInfo.acknowledged) { throw 'Error: Could not update request'; }
+
+        const usersCollection = await users();
+        const userUpdateInfo = await usersCollection.updateOne({_id:new ObjectId(request.BorrowerID)},{$push:{borrowedItems:request.ItemID}});
+        if (!userUpdateInfo.acknowledged) { throw 'Error: Could not update user'; }
+
+        const itemInfo=await itemsCollection.updateOne({_id: new ObjectId(request.ItemID)},{$set:{CurrentRequest:requestID}});
+        if (!itemInfo.acknowledged) { throw 'Error: Could not update item'; }
     };
 
 const completeRequest = async (requestID) => 
@@ -177,6 +190,48 @@ const completeRequest = async (requestID) =>
 
         const updateInfo = await requestsCollection.updateOne({_id:new ObjectId(requestID)},{$set:{Status:"Completed"}})
         if (!updateInfo.acknowledged) { throw 'Error: Could not update request'; }
+
+        const itemsCollection = await items();
+        const itemInfo=await itemsCollection.updateOne({_id: new ObjectId(request.ItemID)},{$set:{CurrentRequest:null}});
+        if (!itemInfo.acknowledged) { throw 'Error: Could not update item'; }
     };
 
-export default {createRequest,getRequestByID,acceptRequest,completeRequest};
+    const rejectRequest = async (requestID) =>
+    {
+        if(!requestID){
+            throw 'Error: All fields need to have valid values';
+        }
+        if(typeof requestID!="string"){
+            throw 'Error: request ID must be a string'
+        }
+        requestID=requestID.trim();
+
+        if(!ObjectId.isValid(requestID)){
+            throw 'Error: requestID must be a valid ObjectId'
+        }
+
+        try{
+            await getRequestByID(requestID);
+        }
+        catch (e){
+            throw 'Error: requestID not found in database'
+        }
+
+        let request=await getRequestByID(requestID);
+        if(request.Status!="Pending"){
+            throw "Error: status must be Pending before rejecting a request"
+        }
+
+        const requestsCollection = await requests();
+
+        const updateInfo = await requestsCollection.updateOne({_id:new ObjectId(requestID)},{$set:{Status:"Rejected"}})
+        if (!updateInfo.acknowledged) { throw 'Error: Could not update request'; }
+
+        const usersCollection= await users();
+        const userUpdateInfo = await usersCollection.updateOne({_id:new ObjectId(request.BorrowerID)},{$pull:{borrowedItems:request.ItemID}});
+        if (!userUpdateInfo.acknowledged) { throw 'Error: Could not update user'; }
+    }
+
+
+
+export default {createRequest,getRequestByID,acceptRequest,completeRequest, rejectRequest};
