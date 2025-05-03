@@ -160,7 +160,7 @@ const updatePassword = async (id, oldPassword, newPassword) =>{
         { _id: new ObjectId(id) },
         { $set: {password : hashedNewPass} },
         { returnDocument: 'after' });
-     if (!updateUserInfo) {
+    if (!updateUserInfo) {
         throw 'Could not update User successfully';
         }
 }
@@ -181,7 +181,39 @@ const getAllUsers = async () => {
     return allUsers;
 }
 
+const getBorrowedItemsByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    return user.borrowedItems;
+}
+
+const getLoanedItemsByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const requestCollection = await requests();
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    const ownedItems = user.ownedItems;
+    const ownedItemIds = ownedItems.map(item => item._id);
+    const loanedItemsRequests = await requestCollection.find({
+        LenderID: new ObjectId(id),
+        Status: "Accepted",
+        ItemID: { $in: ownedItemIds }
+    }).toArray();
+
+    const loanedItems = [];
+
+    for (const request of loanedItemsRequests) {
+        const matchingItem = ownedItems.find(item =>item._id.toString() === request.ItemID.toString());
+        if (matchingItem) {loanedItems.push(matchingItem);}
+    }
+
+    return loanedItems;
+}
 
 
 
-export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID }
+
+export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID, getLoanedItemsByUserID, getBorrowedItemsByUserID };

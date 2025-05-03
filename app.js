@@ -43,4 +43,13 @@ import requestCommands from './data/requests.js'
 //   console.log(e);
 // }
 
+console.log(await  userCommands.registerUser('Andrew Baker', 'abaker2@stevens.edu', 'Stevens', 'Hello'));
+
+await itemCommands.addItem("67fea618712c0f89deb97359",'Andrew Baker', 'abaker2@ste')
+
 closeConnection()
+
+
+
+
+
