@@ -66,6 +66,7 @@ const registerUser = async (
         verified: verified,
         ownedItems: [],
         borrowedItems: [],
+        loanedItems: [],
         wishlist: [],
         karma: 0,
 
@@ -186,31 +187,37 @@ const getBorrowedItemsByUserID = async (id) => {
     if (!ObjectId.isValid(id)) throw 'Invalid object ID';
     const userCollection = await users();
     const user = await userCollection.findOne({_id: new ObjectId(id)})
-    return user.borrowedItems;
+    const borrowedItemsNames = [];
+    for ( const item of user.borrowedItems){
+        const itemCollection = await items();
+        const itemInfo = await itemCollection.findOne({_id: new ObjectId(item)})
+        if(itemInfo){
+            borrowedItemsNames.push(itemInfo.name);
+        }
+    }
+    if(borrowedItemsNames.length === 0){
+        return "No borrowed items found";
+    }
+    return borrowedItemsNames;
 }
 
 const getLoanedItemsByUserID = async (id) => {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'Invalid object ID';
-    const requestCollection = await requests();
     const userCollection = await users();
     const user = await userCollection.findOne({_id: new ObjectId(id)})
-    const ownedItems = user.ownedItems;
-    const ownedItemIds = ownedItems.map(item => item._id);
-    const loanedItemsRequests = await requestCollection.find({
-        LenderID: new ObjectId(id),
-        Status: "Accepted",
-        ItemID: { $in: ownedItemIds }
-    }).toArray();
-
-    const loanedItems = [];
-
-    for (const request of loanedItemsRequests) {
-        const matchingItem = ownedItems.find(item =>item._id.toString() === request.ItemID.toString());
-        if (matchingItem) {loanedItems.push(matchingItem);}
+    const loanedItemsNames = [];
+    for ( const item of user.loanedItems){
+        const itemCollection = await items();
+        const itemInfo = await itemCollection.findOne({_id: new ObjectId(item)})
+        if(itemInfo){
+            loanedItemsNames.push(itemInfo.name);
+        }
     }
-
-    return loanedItems;
+    if(loanedItemsNames.length === 0){
+        return "No loaned items found";
+    }
+    return loanedItemsNames;
 }
 
 

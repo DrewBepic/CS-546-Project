@@ -43,9 +43,18 @@ import requestCommands from './data/requests.js'
 //   console.log(e);
 // }
 
-console.log(await  userCommands.registerUser('Andrew Baker', 'abaker2@stevens.edu', 'Stevens', 'Hello'));
 
-await itemCommands.addItem("67fea618712c0f89deb97359",'Andrew Baker', 'abaker2@ste')
+//DO NOT DELETE THESE TESTS 
+//console.log(await userCommands.registerUser('Andrew Baker', 'abaker2@stevens.edu', 'Stevens', 'Stevens'));
+//console.log(await userCommands.registerUser('Aleksey Vinogradov', 'avinogra@stevens.edu', 'Stevens', 'Stevens'));
+//console.log(await itemCommands.addItem("68169626e75ec86059c3dd02",'test', 'test desc'));
+// LenderID, borrowerID, itemID, borrowerDescription,
+//console.log(await requestCommands.createRequest('68169626e75ec86059c3dd02','68169626e75ec86059c3dd03','681696434fcef8a1b6f9965d', 'test desc 2'));
+//console.log(await requestCommands.acceptRequest("6816ae8effad4957f8522145"));
+//console.log(await userCommands.getBorrowedItemsByUserID("68169626e75ec86059c3dd02"));
+//console.log(await userCommands.getLoanedItemsByUserID("68169626e75ec86059c3dd03"));
+//console.log(await requestCommands.completeRequest("6816ae8effad4957f8522145"));
+//console.log(await itemCommands.getItemHistory('681696434fcef8a1b6f9965d'));
 
 closeConnection()
 

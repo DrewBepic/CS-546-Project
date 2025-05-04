@@ -136,4 +136,26 @@ const addComment = async (id, comment) => {
     }
     return updateResult;
 }
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment };
+
+const getItemHistory = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    const itemCollection = await items();
+    const item = await itemCollection.findOne({ _id: new ObjectId(id) });
+    let itemHistory = [];
+    for (const req of item.history){
+        const requestCollection = await requests();
+        const reqInfo = await requestCollection.findOne({_id: new ObjectId(req)})
+        if(reqInfo){
+            const userCollection = await users();
+            const borrower = await userCollection.findOne({ _id: new ObjectId(reqInfo.BorrowerID)});
+            if (borrower) {
+                itemHistory.push(borrower.name);
+            }
+        }
+    }
+    
+    return itemHistory;
+}
+
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, getItemHistory };

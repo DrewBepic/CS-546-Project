@@ -155,6 +155,8 @@ const acceptRequest = async (requestID) =>
         const usersCollection = await users();
         const userUpdateInfo = await usersCollection.updateOne({_id:new ObjectId(request.BorrowerID)},{$push:{borrowedItems:request.ItemID}});
         if (!userUpdateInfo.acknowledged) { throw 'Error: Could not update user'; }
+        const userUpdateInfo2 = await usersCollection.updateOne({_id:new ObjectId(request.LenderID)},{$push:{loanedItems:request.ItemID}});
+        if (!userUpdateInfo2.acknowledged) { throw 'Error: Could not update user'; }
 
         const itemInfo=await itemsCollection.updateOne({_id: new ObjectId(request.ItemID)},{$set:{CurrentRequest:requestID}});
         if (!itemInfo.acknowledged) { throw 'Error: Could not update item'; }
@@ -194,6 +196,17 @@ const completeRequest = async (requestID) =>
         const itemsCollection = await items();
         const itemInfo=await itemsCollection.updateOne({_id: new ObjectId(request.ItemID)},{$set:{CurrentRequest:null}});
         if (!itemInfo.acknowledged) { throw 'Error: Could not update item'; }
+
+        const historyUpdateInfo = await itemsCollection.updateOne({_id:new ObjectId(request.ItemID)},{$push:{history:requestID}});
+        if (!historyUpdateInfo.acknowledged) { throw 'Error: Could not update history'; }
+
+        const usersCollection= await users();
+
+        const removeFromLoaner = await usersCollection.updateOne({_id:new ObjectId(request.LenderID)},{$pull:{loanedItems:request.ItemID}});
+        if (!removeFromLoaner.acknowledged) { throw 'Error: Could not update user'; }
+
+        const removeFromBorrower = await usersCollection.updateOne({_id:new ObjectId(request.BorrowerID)},{$pull:{borrowedItems:request.ItemID}});
+        if (!removeFromBorrower.acknowledged) { throw 'Error: Could not update user'; }
     };
 
     const rejectRequest = async (requestID) =>
@@ -229,7 +242,9 @@ const completeRequest = async (requestID) =>
 
         const usersCollection= await users();
         const userUpdateInfo = await usersCollection.updateOne({_id:new ObjectId(request.BorrowerID)},{$pull:{borrowedItems:request.ItemID}});
+        const userUpdateInfo2 = await usersCollection.updateOne({_id:new ObjectId(request.BorrowerID)},{$pull:{loanedItems:request.ItemID}});
         if (!userUpdateInfo.acknowledged) { throw 'Error: Could not update user'; }
+        if (!userUpdateInfo2.acknowledged) { throw 'Error: Could not update user'; }
     }
 
 
