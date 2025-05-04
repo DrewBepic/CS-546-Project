@@ -30,6 +30,39 @@ const registerUser = async (
     if(passConfirm !== password){
         throw "Error: Passwords do not match"
     }
+    let str= password.trim();
+    let lower= str.toLocaleLowerCase();
+    let upper = str.toLocaleUpperCase();
+    let lowercase= 0;
+    let uppercase= 0;
+    let numbers= 0;
+    let spaces= 0;
+    let otherCharacters= 0;
+    let i = 0; 
+      while (i < str.length) {
+        if (str[i]===" "){
+          spaces++;
+        }
+        else if (str[i] >= '0' && str[i] <= '9') {
+          numbers++;
+        }
+       else if(str[i]=== upper[i] && str[i]!==lower[i]){ 
+          uppercase++;
+        } 
+        else if(str[i]=== lower[i] && str[i]!== upper[i]) { 
+          lowercase++;
+        }
+        else{
+          otherCharacters++;
+        }
+        i++;
+      }
+      if(spaces>0|| str.length<8){ 
+        throw 'Password does not meet the requirements. Please enter a valid password.'
+      }
+      if(uppercase<1 || numbers< 1 || otherCharacters<1){
+        throw 'Password needs to contain at least one uppercase character, one number, and one special character.'
+      } 
     if(!validator.isEmail(email)){
         throw 'Error: Invalid Email'
     }
@@ -155,6 +188,39 @@ const updatePassword = async (id, oldPassword, newPassword) =>{
     if(!equalPass){
         throw 'Error: Old password has to match the current password.'
     }
+    let str= newPassword.trim();
+    let lower= str.toLocaleLowerCase();
+    let upper = str.toLocaleUpperCase();
+    let lowercase= 0;
+    let uppercase= 0;
+    let numbers= 0;
+    let spaces= 0;
+    let otherCharacters= 0;
+    let i = 0; 
+      while (i < str.length) {
+        if (str[i]===" "){
+          spaces++;
+        }
+        else if (str[i] >= '0' && str[i] <= '9') {
+          numbers++;
+        }
+       else if(str[i]=== upper[i] && str[i]!==lower[i]){ 
+          uppercase++;
+        } 
+        else if(str[i]=== lower[i] && str[i]!== upper[i]) { 
+          lowercase++;
+        }
+        else{
+          otherCharacters++;
+        }
+        i++;
+      }
+      if(spaces>0|| str.length<8){ 
+        throw 'Password does not meet the requirements. Please enter a valid password.'
+      }
+      if(uppercase<1 || numbers< 1 || otherCharacters<1){
+        throw 'Password needs to contain at least one uppercase character, one number, and one special character.'
+      }  
     const saltRounds = 3;
     const hashedNewPass = await bcrypt.hash(newPassword, saltRounds);
     const updateUserInfo = await userCollection.findOneAndUpdate(
@@ -220,7 +286,22 @@ const getLoanedItemsByUserID = async (id) => {
     return loanedItemsNames;
 }
 
+const updateKarma = async (id, transactionScore) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    if(isNaN(transactionScore)){
+        throw 'Error:Transaction Score must be a number';
+    }
+    if(transactionScore<1 || transactionScore>10){
+        throw 'Error:Transaction Score must be between 1 and 10.'
+    }
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {karma: user.karma+(transactionScore-5)}},
+        { returnDocument: 'after' });
+    
+}
 
-
-
-export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID, getLoanedItemsByUserID, getBorrowedItemsByUserID };
+export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID, getLoanedItemsByUserID, getBorrowedItemsByUserID, updateKarma};
