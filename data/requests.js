@@ -83,7 +83,7 @@ const createRequest = async (
         ItemID: ItemID,
         Status: "Pending",
         BorrowerDescription: BorrowerDescription,
-        TransactionScores: [] //Changed to list to match db proposal
+        TransactionScores: null
     }
 
     const insertInfo = await requestsCollection.insertOne(newRequest);
@@ -127,47 +127,6 @@ const acceptRequest = async (requestID) => {
     if (!ObjectId.isValid(requestID)) {
         throw 'Error: requestID must be a valid ObjectId'
     }
-    const  updateRequestKarma = async (requestID, givenRating) =>
-        {
-            if(!requestID){
-                throw 'Error: All fields need to have valid values';
-            }
-            if(typeof requestID!="string"){
-                throw 'Error: request ID must be a string'
-            }
-            requestID=requestID.trim();
-    
-            if(!ObjectId.isValid(requestID)){
-                throw 'Error: requestID must be a valid ObjectId'
-            }
-    
-            try{
-                await getRequestByID(requestID);
-            }
-            catch (e){
-                throw 'Error: requestID not found in database'
-            }
-            if(isNaN(givenRating)){
-                throw 'Error: givenRating must be a number'
-            }
-            if(givenRating<1 || givenRating>10){
-                throw 'Error: givenRating must be a number 1-10'
-            }
-            const requestsCollection = await requests();
-            let request=await getRequestByID(requestID);
-            const updateRating = await requestsCollection.updateOne({_id:new ObjectId(requestID)},{$push:{TransactionScores:{UserID:request.BorrowerID, GivenRating: givenRating}}});
-            if (!updateRating.acknowledged) { throw 'Error: Could not update transaction score'; }
-
-
-        }
-    
-        const getAllRequests = async () => {
-            //just for testing
-            const RequestCollection = await requests();
-            const allRequests = await RequestCollection.find({}).toArray();
-            return allRequests;
-        }
-   
 
     try {
         await getRequestByID(requestID);
@@ -334,4 +293,4 @@ const getRequestBorrowerId = async (requestID) => {
 }
 
 
-export default { createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest,updateRequestKarma, getAllRequests, getRequestLenderId, getRequestBorrowerId };
+export default { createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId };
