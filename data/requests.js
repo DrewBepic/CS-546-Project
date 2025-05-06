@@ -292,5 +292,46 @@ const getRequestBorrowerId = async (requestID) => {
 
 }
 
+const  updateRequestKarma = async (requestID, givenRating) =>
+    {
+        if(!requestID){
+            throw 'Error: All fields need to have valid values';
+        }
+        if(typeof requestID!="string"){
+            throw 'Error: request ID must be a string'
+        }
+        requestID=requestID.trim();
 
-export default { createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId };
+        if(!ObjectId.isValid(requestID)){
+            throw 'Error: requestID must be a valid ObjectId'
+        }
+
+        try{
+            await getRequestByID(requestID);
+        }
+        catch (e){
+            throw 'Error: requestID not found in database'
+        }
+        if(isNaN(givenRating)){
+            throw 'Error: givenRating must be a number'
+        }
+        if(givenRating<1 || givenRating>10){
+            throw 'Error: givenRating must be a number 1-10'
+        }
+        const requestsCollection = await requests();
+        let request=await getRequestByID(requestID);
+        const updateRating = await requestsCollection.updateOne({_id:new ObjectId(requestID)},{$push:{TransactionScores:{UserID:request.BorrowerID, GivenRating: givenRating}}});
+        if (!updateRating.acknowledged) { throw 'Error: Could not update transaction score'; }
+
+
+    }
+
+    const getAllRequests = async () => {
+        //just for testing
+        const RequestCollection = await requests();
+        const allRequests = await RequestCollection.find({}).toArray();
+        return allRequests;
+    }
+
+
+export default { createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests };
