@@ -34,7 +34,7 @@ import requestCommands from './data/requests.js'
 //await itemCommands.addItem('6805ba13a1e02ee09cdd7790', 'finalcat','desc');
 //await userCommands.updateUserInfo('6807c00082b5bf1f57e3187a', 'Riley Stewart', 'rstewar3@stevens.edu', 'Updated Stevens');
 //console.log(await userCommands.updateKarma('6807d46d4c7662af05efb51e', 10));
-console.log(await userCommands.getAllUsers());
+//console.log(await userCommands.getAllUsers());
 // try{
 //     let requestId = await requestCommands.createRequest('6805ba13a1e02ee09cdd7790','6805ba14a1e02ee09cdd7791','6805ba63446bd355012e0730','I just want it for a bit!!');
 //     console.log(requestId);
