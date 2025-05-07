@@ -14,20 +14,32 @@ const addItem = async (userId, name, description) => {
     let history = [];
     let requests = [];
     let comments = [];
+    const userCollection = await users();
+    let lender=null;
+
+    try{
+        lender=await userCollection.findOne({_id:new ObjectId(userId)})
+    }
+    catch (e){
+        throw "Could not find user!";
+    }
+
     let newItem = {
         name: name,
         ownerId: userId, //matching to database so making it ownerId
         description: description,
         history: history,
         requests: requests,
-        comments: comments
+        comments: comments,
+        school: lender.school
     };
 
+    
     const insertInfo = await itemCollection.insertOne(newItem);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw 'Could not add item';
 
-    const userCollection = await users();
+    
     const addUserItem = await userCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $push: { ownedItems:{
@@ -42,6 +54,8 @@ const addItem = async (userId, name, description) => {
     if (!addUserItem) {
         throw 'Could not add User item successfully';
     }
+
+    return insertInfo.insertedId
 };
 
 const removeItem = async (id) => {
@@ -158,4 +172,32 @@ const getItemHistory = async (id) => {
     return itemHistory;
 }
 
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, getItemHistory };
+const getItemsBySchool = async (userId,school) => {
+    if(typeof school!="string"){
+        throw "Error: school is not a string";
+    }
+    school=school.trim();
+    const itemCollection = await items();
+    const userCollection = await users();
+    const allItems = await itemCollection.find({school:school}).toArray();
+    let schoolItems=[];
+    for(let item in allItems){
+        allItems[item]._id=allItems[item]._id.toString();
+        if(allItems[item].ownerId==userId){
+            continue;
+        }
+        if(!(!allItems[item].currentRequest)){
+            continue;
+        }
+        let user=await userCollection.findOne({_id:new ObjectId(allItems[item].ownerId)});
+        allItems[item].ownerName=user.name;
+        if(allItems[item].description.length>100){
+            allItems[item].description=allItems[item].description.substring(0,100)+"...";
+        }
+        schoolItems.push(allItems[item])
+    }
+    
+    return schoolItems;
+}
+
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, getItemHistory,getItemsBySchool };

@@ -7,6 +7,12 @@ router.route('/').get(async (req, res) => {
   return res.render('home', { title: "CampusExchange" });
 });
 
+router.route('/home').get(async (req, res) => {
+  let items=await itemCommands.getItemsBySchool(req.session.user._id,req.session.user.school);
+  console.log(items.length,items,items[0]);
+  return res.render('availableItems',{title:"School Items",items: items,user:req.session.user})
+});
+
 router.route('/items').get(async (req, res) => {
   const items = await itemCommands.getAllItems()
   return res.render('items', { title: "CampusExchange", items: items });
@@ -50,7 +56,7 @@ router.route('/login').get(async (req, res) => {
       const user = await userCommands.userLogin(loginData.email, loginData.password);
       if (user) {
         req.session.user = user
-        return res.redirect('/item');
+        return res.redirect('/home');
       } else {
         throw 'User not logged in'
       }
@@ -69,7 +75,7 @@ router.route('/register').get(async (req, res) => {
       let user = await userCommands.userLogin(registerData.email, registerData.password);
       if (user) {
         req.session.user = user
-        return res.redirect('/item');
+        return res.redirect('/home');
       } else {
         throw 'User not logged in'
       }

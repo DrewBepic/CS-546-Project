@@ -92,7 +92,7 @@ p#home_p, p#catchphrase {
 }
 
 
-a#registerlink:hover, a#loginlink:hover {
+a#registerlink:hover, a#loginlink:hover, a#userPageButton:hover, a#itemPageButton:hover, a#addItemPageButton:hover {
     transform: translateY(-5px); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -100,7 +100,7 @@ a#registerlink:hover, a#loginlink:hover {
 }
 
 
-a#registerlink, a#loginlink {
+a#registerlink, a#loginlink{
     display: inline-block;
     margin: 1rem;
     font-weight: bold;
@@ -113,7 +113,33 @@ a#registerlink, a#loginlink {
     padding: 0.75rem 2rem;
 }
 
+a#userPageButton, a#itemPageButton, a#addItemPageButton{
+    display: inline-block;
+    margin: 0.1rem;
+    font-weight: bold;
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 3px solid black;
+    border-radius: 37px;
+    padding: -0.25rem 2rem;
+}
 
+.item {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin:1rem;
+  }
+
+  .item h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  .item p {
+    margin: 0.25rem 0;
+  }
 /* 
 --stevens-red: #A32638;
     --stevens-gray: #7F7F7F;

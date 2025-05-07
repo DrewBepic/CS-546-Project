@@ -1,0 +1,27 @@
+<body>
+
+  <div class="header">
+    <h1>All Items Available at {{user.school}}:</h1>
+    <div class="buttons">
+        <a id = 'userPageButton' href = '/user/{{user._id}}'>User Page</a>
+        <a id = 'addItemPageButton' href = '/item'>Add Item</a>
+    </div>
+  </div>
+
+  <div class="search_bar">
+    <input type="text" placeholder="Search items" name="item_search" />
+  </div>
+
+  <div class="item_list">
+    {{#each items}}
+      <div class="item">
+        <h3>{{this.name}}</h3>
+        <p>Owner: {{this.ownerName}}</p>
+        <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+        <p>Description: {{this.description}}</p>
+        <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+      </div>
+    {{/each}}
+  </div>
+
+</body>
