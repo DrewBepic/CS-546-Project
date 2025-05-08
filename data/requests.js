@@ -263,7 +263,6 @@ const getRequestLenderId = async (requestID) => {
         throw 'Error: requestID not found in database'
     }
     let request = await getRequestByID(requestID);
-    console.log(request)
     return request.LenderID.toString()
 
 }
@@ -287,7 +286,6 @@ const getRequestBorrowerId = async (requestID) => {
         throw 'Error: requestID not found in database'
     }
     let request = await getRequestByID(requestID);
-    console.log(request)
     return request.BorrowerID.toString()
 
 }
