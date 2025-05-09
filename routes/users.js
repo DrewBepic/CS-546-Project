@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import userCommands from '../data/users.js'
 import itemCommands from '../data/items.js'
+import requestCommands from '../data/requests.js'
 
 router.route('/').get(async (req, res) => {
   return res.render('home', { title: "CampusExchange" });
@@ -106,4 +107,40 @@ router.route('/items/search/:query').get(async (req,res) => {
     return res.redirect('/items');
   }
 })
+
+router.route('/request/item/:itemId').get(async (req,res) => {
+  try{
+    let item=await itemCommands.getItemByID(req.params.itemId);
+    let itemOwner=await userCommands.getUserByID(item.ownerId)
+    item.owner=itemOwner.name
+    return res.render('requestItem',{user:req.session.user,itemInfo:item})
+  }
+  catch (e){
+    console.log(e);
+    return res.redirect("/items");
+  }
+})
+.post(async (req, res) => {
+  try{
+    let item=await itemCommands.getItemByID(req.params.itemId);
+    let requestId=await requestCommands.createRequest(item.ownerId,req.session.user._id,req.params.itemId,req.body.description);
+    res.redirect('/request/'+requestId);
+  }
+  catch (e){
+    console.log(e);
+    return res.redirect("/items");
+  }
+});
+
+router.route('/request/:requestId').get(async (req,res) => {
+  try{
+    let request=await requestCommands.getRequestByID(req.params.requestId);
+    res.render('request',{user:req.session.user,request})
+  }
+  catch (e){
+    console.log(e);
+    return res.redirect("/items");
+  }
+})
+
 export default router;

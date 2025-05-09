@@ -60,6 +60,10 @@ header{
     padding: 1rem;
 }
 
+p{
+    font-family: 'Raleway', sans-serif;
+}
+
 h1#mainTitle {
     font-size: 3.5rem;
     font-weight: 800;
@@ -146,9 +150,10 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
 }
 
 .pageButton:hover{
-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-background-color: white;
-color: #A32638;
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    color: #A32638;
 }
 .item {
     background: white;
