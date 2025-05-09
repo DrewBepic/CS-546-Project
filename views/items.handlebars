@@ -1,16 +1,22 @@
 <body>
 
   <div class="header">
-    <h1>All Items Available at {{user.school}}:</h1>
+    <h1 class="pageTitle">All Items Available at {{user.school}}:</h1>
     <div class="buttons">
         <a id = 'userPageButton' href = '/user/{{user._id}}'>User Page</a>
         <a id = 'addItemPageButton' href = '/item'>Add Item</a>
     </div>
   </div>
 
-  <div class="search_bar">
-    <input type="text" placeholder="Search items" name="item_search" />
+  <form action="/items/search" method="POST">
+    <label for="item_search">Search for Items: </label>
+    <input type="text" placeholder="Search items" name="item_search" id="item_search" />
   </div>
+
+  {{#if search_error}}
+    <p class="error">{{search_error}}</p>
+    <a class="pageButton" href = '/items'>Back to All Items</a>
+  {{/if}}
 
   <div class="item_list">
     {{#each items}}

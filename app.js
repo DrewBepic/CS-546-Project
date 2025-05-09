@@ -19,6 +19,43 @@ app.use(express.urlencoded({extended: true}));
 app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+app.use("/login",(req, res, next) => {
+  if(req.session.user){
+    res.redirect("/items");
+  }
+  return next();
+})
+
+app.use("/register",(req, res, next) => {
+  if(req.session.user){
+    res.redirect("/items");
+  }
+  return next();
+})
+
+app.use((req, res, next) => {
+  if(req.path.includes('/public')){
+    return next();
+  }
+  if(req.path=="/" || req.path=="/login" || req.path=="/register"){
+    return next();
+  }
+  if(!req.session.user){
+    res.redirect("/login");
+  }
+  return next();
+})
+
+app.use("/items/search",(req, res, next) => {
+  if(req.method!='POST'){
+    return next();
+  }
+  if(!req.body.item_search){
+    return res.redirect("/items");
+  }
+  return res.redirect("/items/search/"+req.body.item_search);
+})
+
 configRoutes(app);
 
 app.listen(3000, () => {

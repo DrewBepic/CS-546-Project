@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="/public/css/main.css">
 </head>
 
+{{#if user}}
 <header>
-    <a href="/login">Login</a>
-    <a href="/items">Items</a>
-    <a href="/item">Add Items</a>
-    <a href="/register">Register</a>
+    <a class="header_text_main" href="/">⇄CampusExchange</a>
+    <a class="header_text" href="/items">Find Items</a>
+    <a class="header_text" href="/item">Add Item</a>
+    <a class="header_text" href="/user/{{user._id}}">User Page</a>
+    <a class="header_text" href="/logout">Log Out</a>
 </header>
+{{/if}}
 
 {{{body}}}
 

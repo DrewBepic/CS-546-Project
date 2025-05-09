@@ -47,11 +47,17 @@ main {
     padding: 1rem;
 }
 
-header, footer {
+footer {
     background-color: #A32638;
     color: white;              
     padding: 1rem;
     text-align: center;
+}
+
+header{
+    background-color: #A32638;
+    color: white;              
+    padding: 1rem;
 }
 
 h1#mainTitle {
@@ -126,6 +132,24 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     padding: -0.25rem 2rem;
 }
 
+.pageButton{
+    display: inline-block;
+    margin: 0.1rem;
+    font-weight: bold;
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 3px solid black;
+    border-radius: 37px;
+    padding: -0.25rem 2rem;
+}
+
+.pageButton:hover{
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+background-color: white;
+color: #A32638;
+}
 .item {
     background: white;
     border-radius: 8px;
@@ -140,6 +164,59 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
   .item p {
     margin: 0.25rem 0;
   }
+
+  .pageTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    margin-bottom: 1rem;
+    color: #1f1e1e;
+    font-family:'Raleway', sans-serif;
+    padding:2rem
+}
+
+.formInput {
+    text-align: center;
+}
+
+.center{
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+.error{
+    background-color: #ff000043;
+}
+
+.header_text{
+    color: white;              
+    padding: 1rem;
+    font-family:'Raleway', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.header_text:hover{
+    color:#97999b;
+    font-weight: bolder;
+}
+
+.header_text_main{
+    color: white;              
+    padding: 1rem;
+    font-family:'Raleway', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: large
+}
+
+.logged-out-header{
+    background-color: #A32638;
+    color: white;              
+    padding: 1rem;
+    text-align: center;
+}
 /* 
 --stevens-red: #A32638;
     --stevens-gray: #7F7F7F;

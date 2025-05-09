@@ -200,4 +200,18 @@ const getItemsBySchool = async (userId,school) => {
     return schoolItems;
 }
 
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, getItemHistory,getItemsBySchool };
+const searchItems = async (userId, school, query) => {
+    let allItems=await getItemsBySchool(userId,school);
+    let filteredItems=[];
+    for(let item in allItems){
+        if(allItems[item].name.toLowerCase().includes(query.trim().toLowerCase())){
+            filteredItems.push(allItems[item]);
+        }
+        else if(allItems[item].description.toLowerCase().includes(query.trim().toLowerCase())){
+            filteredItems.push(allItems[item]);
+        }
+    }
+    return filteredItems;
+}
+
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, getItemHistory,getItemsBySchool,searchItems };
