@@ -14,20 +14,32 @@ const addItem = async (userId, name, description) => {
     let history = [];
     let requests = [];
     let comments = [];
+    const userCollection = await users();
+    let lender=null;
+
+    try{
+        lender=await userCollection.findOne({_id:new ObjectId(userId)})
+    }
+    catch (e){
+        throw "Could not find user!";
+    }
+
     let newItem = {
         name: name,
         ownerId: userId, //matching to database so making it ownerId
         description: description,
         history: history,
         requests: requests,
-        comments: comments
+        comments: comments,
+        school: lender.school
     };
 
+    
     const insertInfo = await itemCollection.insertOne(newItem);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw 'Could not add item';
 
-    const userCollection = await users();
+    
     const addUserItem = await userCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $push: { ownedItems:{
@@ -43,8 +55,7 @@ const addItem = async (userId, name, description) => {
         throw 'Could not add User item successfully';
     }
 
-    newItem._id = insertInfo.insertedId;
-    return newItem;
+    return insertInfo.insertedId
 };
 
 const removeItem = async (id) => {
@@ -79,24 +90,19 @@ const updateItem = async (itemId, name, description) => {
     if (name.trim().length === 0 || description.trim().length === 0) throw 'Error: Name and Description cannot be empty strings';
     name = name.trim();
     description = description.trim();
-
     let updateItem = {
         name: name,
         description: description,
     };
-
     const updateInfo = await itemCollection.findOneAndUpdate(
         { _id: new ObjectId(itemId) },
         { $set: updateItem },
         { returnDocument: 'after' });
-
     if (!updateInfo) {
         throw 'Could not update item successfully';
     }
-
     const userCollection = await users();
-    const ownerId = updateInfo.value.ownerId;
-
+    const ownerId = updateInfo.ownerId;
     const updateUserInfo = await userCollection.findOneAndUpdate(
         { _id: new ObjectId(ownerId) },
         { $set: {ownedItems: updateItem} },
@@ -112,7 +118,7 @@ const updateItem = async (itemId, name, description) => {
 const getAllItems = async () => {
     const itemCollection = await items();
     const allItems = await itemCollection.find({}).toArray();
-    return allItems
+    return allItems;
 }
 
 const getItemByID = async (id) => {
@@ -209,5 +215,68 @@ const removeFromWishlist = async (userId, itemId) => {
     return { removed: true, itemId: itemId };
 };
 
+const getItemHistory = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    const itemCollection = await items();
+    const item = await itemCollection.findOne({ _id: new ObjectId(id) });
+    let itemHistory = [];
+    for (const req of item.history){
+        const requestCollection = await requests();
+        const reqInfo = await requestCollection.findOne({_id: new ObjectId(req)})
+        if(reqInfo){
+            const userCollection = await users();
+            const borrower = await userCollection.findOne({ _id: new ObjectId(reqInfo.BorrowerID)});
+            if (borrower) {
+                itemHistory.push(borrower.name);
+            }
+        }
+    }
+    
+    return itemHistory;
+}
 
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, addToWishlist, removeFromWishlist };
+const getItemsBySchool = async (userId,school) => {
+    if(typeof school!="string"){
+        throw "Error: school is not a string";
+    }
+    school=school.trim();
+    const itemCollection = await items();
+    const userCollection = await users();
+    const allItems = await itemCollection.find({school:school}).toArray();
+    let schoolItems=[];
+    for(let item in allItems){
+        allItems[item]._id=allItems[item]._id.toString();
+        if(allItems[item].ownerId==userId){
+            continue;
+        }
+        if(!(!allItems[item].currentRequest)){
+            continue;
+        }
+        let user=await userCollection.findOne({_id:new ObjectId(allItems[item].ownerId)});
+        allItems[item].ownerName=user.name;
+        if(allItems[item].description.length>100){
+            allItems[item].description=allItems[item].description.substring(0,100)+"...";
+        }
+        schoolItems.push(allItems[item])
+    }
+    
+    return schoolItems;
+}
+
+const searchItems = async (userId, school, query) => {
+    let allItems=await getItemsBySchool(userId,school);
+    let filteredItems=[];
+    for(let item in allItems){
+        if(allItems[item].name.toLowerCase().includes(query.trim().toLowerCase())){
+            filteredItems.push(allItems[item]);
+        }
+        else if(allItems[item].description.toLowerCase().includes(query.trim().toLowerCase())){
+            filteredItems.push(allItems[item]);
+        }
+    }
+    return filteredItems;
+}
+
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, addToWishlist, removeFromWishlist, getItemHistory,getItemsBySchool,searchItems };
+

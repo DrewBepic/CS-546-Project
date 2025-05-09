@@ -28,8 +28,41 @@ const registerUser = async (
         throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
     }
     if(passConfirm !== password){
-        throw "Error: Passwords do not math"
+        throw "Error: Passwords do not match"
     }
+    let str= password.trim();
+    let lower= str.toLocaleLowerCase();
+    let upper = str.toLocaleUpperCase();
+    let lowercase= 0;
+    let uppercase= 0;
+    let numbers= 0;
+    let spaces= 0;
+    let otherCharacters= 0;
+    let i = 0; 
+      while (i < str.length) {
+        if (str[i]===" "){
+          spaces++;
+        }
+        else if (str[i] >= '0' && str[i] <= '9') {
+          numbers++;
+        }
+       else if(str[i]=== upper[i] && str[i]!==lower[i]){ 
+          uppercase++;
+        } 
+        else if(str[i]=== lower[i] && str[i]!== upper[i]) { 
+          lowercase++;
+        }
+        else{
+          otherCharacters++;
+        }
+        i++;
+      }
+      if(spaces>0|| str.length<8){ 
+        throw 'Password does not meet the requirements. Please enter a valid password.'
+      }
+      if(uppercase<1 || numbers< 1 || otherCharacters<1){
+        throw 'Password needs to contain at least one uppercase character, one number, and one special character.'
+      } 
     if(!validator.isEmail(email)){
         throw 'Error: Invalid Email'
     }
@@ -66,6 +99,7 @@ const registerUser = async (
         verified: verified,
         ownedItems: [],
         borrowedItems: [],
+        loanedItems: [],
         wishlist: [],
         karma: 0,
 
@@ -110,4 +144,164 @@ const getUserSession = async (id) => {
     return user;
 };
 
-export default { registerUser, userLogin, getUserByID, getUserSession }
+const updateUserInfo = async (id, name, email,school) => {
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    if (!name || !email || !school)
+        throw 'Error: All fields need to have valid values';
+
+    if (typeof name !== 'string' && typeof email !== 'string' && typeof school !== 'string') {
+        throw 'Error: One of the properties is of incorrect type and must be a string';
+    }
+    name = name.trim()
+    email = email.trim().toLowerCase()
+    school= school.trim()
+    if (name.length === 0 || email.length === 0 || school.length === 0 ){
+        throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
+    }
+    const userCollection = await users();
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {name: name, email: email, school:school} },
+        { returnDocument: 'after' });
+
+    if (!updateUserInfo) {
+        throw 'Could not update User successfully';
+    }
+};
+
+const updatePassword = async (id, oldPassword, newPassword) =>{
+    if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
+    if (!oldPassword || !newPassword){
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof oldPassword !== 'string' && typeof newPassword !== 'string') {
+        throw 'Error: One of the properties is of incorrect type and must be a string';
+    }
+    oldPassword= oldPassword.trim();
+    newPassword= newPassword.trim();
+    if (oldPassword.length === 0 || newPassword.length === 0){
+        throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
+    }
+    const userCollection = await users();
+    const user= await userCollection.findOne({ _id: new ObjectId(id) });
+    const equalPass = await bcrypt.compare(oldPassword, user.password);
+    if(!equalPass){
+        throw 'Error: Old password has to match the current password.'
+    }
+    let str= newPassword.trim();
+    let lower= str.toLocaleLowerCase();
+    let upper = str.toLocaleUpperCase();
+    let lowercase= 0;
+    let uppercase= 0;
+    let numbers= 0;
+    let spaces= 0;
+    let otherCharacters= 0;
+    let i = 0; 
+      while (i < str.length) {
+        if (str[i]===" "){
+          spaces++;
+        }
+        else if (str[i] >= '0' && str[i] <= '9') {
+          numbers++;
+        }
+       else if(str[i]=== upper[i] && str[i]!==lower[i]){ 
+          uppercase++;
+        } 
+        else if(str[i]=== lower[i] && str[i]!== upper[i]) { 
+          lowercase++;
+        }
+        else{
+          otherCharacters++;
+        }
+        i++;
+      }
+      if(spaces>0|| str.length<8){ 
+        throw 'Password does not meet the requirements. Please enter a valid password.'
+      }
+      if(uppercase<1 || numbers< 1 || otherCharacters<1){
+        throw 'Password needs to contain at least one uppercase character, one number, and one special character.'
+      }  
+    const saltRounds = 3;
+    const hashedNewPass = await bcrypt.hash(newPassword, saltRounds);
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {password : hashedNewPass} },
+        { returnDocument: 'after' });
+    if (!updateUserInfo) {
+        throw 'Could not update User successfully';
+        }
+}
+
+const getKarmaByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    return user.karma;
+}
+
+
+const getAllUsers = async () => {
+    //just for testing
+    const UserCollection = await users();
+    const allUsers = await UserCollection.find({}).toArray();
+    return allUsers;
+}
+
+const getBorrowedItemsByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    const borrowedItemsNames = [];
+    for ( const item of user.borrowedItems){
+        const itemCollection = await items();
+        const itemInfo = await itemCollection.findOne({_id: new ObjectId(item)})
+        if(itemInfo){
+            borrowedItemsNames.push(itemInfo.name);
+        }
+    }
+    if(borrowedItemsNames.length === 0){
+        return "No borrowed items found";
+    }
+    return borrowedItemsNames;
+}
+
+const getLoanedItemsByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    const loanedItemsNames = [];
+    for ( const item of user.loanedItems){
+        const itemCollection = await items();
+        const itemInfo = await itemCollection.findOne({_id: new ObjectId(item)})
+        if(itemInfo){
+            loanedItemsNames.push(itemInfo.name);
+        }
+    }
+    if(loanedItemsNames.length === 0){
+        return "No loaned items found";
+    }
+    return loanedItemsNames;
+}
+
+const updateKarma = async (id, transactionScore) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    if(isNaN(transactionScore)){
+        throw 'Error:Transaction Score must be a number';
+    }
+    if(transactionScore<1 || transactionScore>10){
+        throw 'Error:Transaction Score must be between 1 and 10.'
+    }
+    const updateUserInfo = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {karma: user.karma+(transactionScore-5)}},
+        { returnDocument: 'after' });
+    
+}
+
+export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID, getLoanedItemsByUserID, getBorrowedItemsByUserID, updateKarma};

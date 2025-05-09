@@ -8,12 +8,13 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/items').get(async (req, res) => {
-  const items = await itemCommands.getAllItems()
-  return res.render('items', { title: "CampusExchange", items: items });
+  let items=await itemCommands.getItemsBySchool(req.session.user._id,req.session.user.school);
+  return res.render('items',{title:"School Items",items: items,user:req.session.user})
 });
 
+
 router.route('/item').get(async (req, res) => {
-  return res.render('addItem', { hasErrors: false, title: "CampusExchange" });
+  return res.render('addItem', { hasErrors: false, title: "CampusExchange",user:req.session.user });
 })
 
   .post(async (req, res) => {
@@ -37,7 +38,7 @@ router.route('/item/:itemid').get(async (req, res) => {
     item.owner = userName.name
     return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item });
   } catch (e) {
-    return res.render('item', { hasErrors: true, title: "CampusExchange", error: e });
+    return res.render('item', { hasErrors: true, title: "CampusExchange", error: e,user:req.session.user });
   }
 })
 
@@ -49,8 +50,8 @@ router.route('/login').get(async (req, res) => {
     try {
       const user = await userCommands.userLogin(loginData.email, loginData.password);
       if (user) {
-        req.session.user = user
-        return res.redirect('/item');
+        req.session.user = user;
+        return res.redirect('/items');
       } else {
         throw 'User not logged in'
       }
@@ -69,7 +70,7 @@ router.route('/register').get(async (req, res) => {
       let user = await userCommands.userLogin(registerData.email, registerData.password);
       if (user) {
         req.session.user = user
-        return res.redirect('/item');
+        return res.redirect('/items');
       } else {
         throw 'User not logged in'
       }
@@ -91,4 +92,18 @@ router.route('/comment/:itemId').post(async (req, res) => {
     return res.redirect('/item/' + req.params.itemId.toString());
   }
 });
+
+router.route('/items/search/:query').get(async (req,res) => {
+  try{
+    let filteredItems=await itemCommands.searchItems(req.session.user._id,req.session.user.school,req.params.query);
+    if(filteredItems.length==0){
+      return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user,search_error:"No items found!"})
+    }
+    return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user})
+  }
+  catch (e){
+    console.log(e)
+    return res.redirect('/items');
+  }
+})
 export default router;
