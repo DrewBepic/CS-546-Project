@@ -38,6 +38,7 @@ router.route('/request/item/:itemId').get(async (req,res) => {
       let isBorrower=false;
       let isAccepted=false;
       let isPending=false;
+      let isRejected=false;
       if(req.session.user._id==lender._id){
         isLender=true;
       }
@@ -50,12 +51,57 @@ router.route('/request/item/:itemId').get(async (req,res) => {
       if(request.Status=="Pending"){
         isPending=true;
       }
-      return res.render('request',{user:req.session.user,request:request,item:item,lender:lender,borrower:borrower,isLender,isBorrower,isAccepted,isPending})
+      if(request.Status=="Rejected"){
+        isRejected=true;
+      }
+      return res.render('request',{user:req.session.user,request:request,item:item,lender:lender,borrower:borrower,isLender,isBorrower,isAccepted,isPending,isRejected})
     }
     catch (e){
       console.log(e);
       return res.redirect("/items");
     }
   })
-  
+
+  router.route('/request/:requestId/accept').post(async (req,res) => {
+    try{
+        let request=await requestCommands.getRequestByID(req.params.requestId);
+        if(request.LenderID!=req.session.user._id){
+            throw "Error: you are not allowed to accept this request!"
+        }
+        await requestCommands.acceptRequest(req.params.requestId);
+        return res.redirect('/request/'+req.params.requestId)
+    }
+    catch (e){
+        return res.render('error',{user:req.session.user,error:e})
+    }
+  })
+
+  router.route('/request/:requestId/reject').post(async (req,res) => {
+    try{
+        let request=await requestCommands.getRequestByID(req.params.requestId);
+        if(request.LenderID!=req.session.user._id){
+            throw "Error: you are not allowed to reject this request!"
+        }
+        await requestCommands.rejectRequest(req.params.requestId);
+        return res.redirect('/request/'+req.params.requestId)
+    }
+    catch (e){
+        return res.render('error',{user:req.session.user,error:e})
+    }
+  })
+
+  router.route('/request/:requestId/complete').post(async (req,res) => {
+    try{
+        let request=await requestCommands.getRequestByID(req.params.requestId);
+        if(request.LenderID!=req.session.user._id){
+            throw "Error: you are not allowed to complete this request!"
+        }
+        await requestCommands.completeRequest(req.params.requestId);
+        return res.render('submitKarma',{user:req.session.user})
+    }
+    catch (e){
+        return res.render('error',{user:req.session.user,error:e})
+    }
+  })
+
 export default router;
