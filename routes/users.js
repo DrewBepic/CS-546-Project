@@ -18,7 +18,7 @@ router.route('/items').get(async (req, res) => {
 
 
 router.route('/item').get(async (req, res) => {
-  return res.render('addItem', { hasErrors: false, title: "CampusExchange",user:req.session.user });
+  return res.render('addItem', { hasErrors: false, title: "CampusExchange", user:req.session.user });
 })
 
   .post(async (req, res) => {

@@ -1,21 +1,17 @@
 
-    <h1>Add Item</h1>
+  <h1 id = 'addItem'>Add Item</h1>
 
-  <p id="added" class="added" hidden></p>
+  <p id = 'error' class = 'error' hidden> Placeholder Error</p>
 
-  {{#if hasErrors}}
-    <p id="error" class="error">{{error}}</p>
-  {{/if}}
+  <form id = 'addItemForm' action="/item" method="POST">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"> 
 
-  <form action="/item" method="POST">
-    <label>
-      Add Item: <br>
-      Name:
-      <input type="text" id="name" name="name"> <br>
-      Description:
+      <label for="description">Description:</label>
       <input type="text" id="description" name="description">
-    </label>
-    <input type="submit" value="Add">
+    </div>
+    <input id = 'addItemButton' type="submit" value="Add">
   </form>
 
   <script src="/public/js/form_process.js"></script>
