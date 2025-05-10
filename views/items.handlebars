@@ -9,21 +9,26 @@
     <input type="text" placeholder="Search items" name="item_search" id="item_search" />
   </div>
 
-  {{#if search_error}}
-    <p class="error">{{search_error}}</p>
-    <a class="pageButton" href = '/items'>Back to All Items</a>
-  {{/if}}
 
-  <div class="item_list">
-    {{#each items}}
-      <div class="item">
-        <h3>{{this.name}}</h3>
-        <p>Owner: {{this.ownerName}}</p>
-        <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
-        <p>Description: {{this.description}}</p>
-        <a class = 'pageButton' href = '/request/item/{{this._id}}'>Request</a>
-        <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
-      </div>
-    {{/each}}
-  </div>
+  {{#if items}}
+    <div class="item_list">
+      {{#each items}}
+        <div class="item">
+          <h3>{{this.name}}</h3>
+          <p>Owner: {{this.ownerName}}</p>
+          <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+          <p>Description: {{this.description}}</p>
+          <a class = 'pageButton' href = '/request/item/{{this._id}}'>Request</a>
+          <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    {{#if search_error}}
+      <p class="error">{{search_error}}</p>
+      <a class="pageButton" href = '/items'>Back to All Items</a>
+    {{else}}
+     <p>No items found at your school :(</p>
+    {{/if}}
+  {{/if}}
 

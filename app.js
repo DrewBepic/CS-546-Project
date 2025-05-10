@@ -20,14 +20,14 @@ app.set('view engine', 'handlebars');
 
 app.use("/login",(req, res, next) => {
   if(req.session.user){
-    res.redirect("/items");
+    return res.redirect("/items");
   }
   return next();
 })
 
 app.use("/register",(req, res, next) => {
   if(req.session.user){
-    res.redirect("/items");
+    return res.redirect("/items");
   }
   return next();
 })
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
     return next();
   }
   if(!req.session.user){
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   return next();
 })

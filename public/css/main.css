@@ -222,6 +222,10 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     padding: 1rem;
     text-align: center;
 }
+
+.flex{
+    display:flex
+}
 /* 
 --stevens-red: #A32638;
     --stevens-gray: #7F7F7F;

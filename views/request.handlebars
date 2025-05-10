@@ -1,1 +1,36 @@
-<h>{{request.BorrowerDescription}}</h>
+<h1>Request for {{item.name}}</h1>
+{{#if isBorrower}}
+    {{#if isAccepted}}
+        <h2>Your request has been accepted!</h2>
+        <p>Lender Email: {{lender.email}}</p>
+    {{/if}}
+{{/if}}
+<p>Status: {{request.Status}}</p>
+<p>Lender: {{lender.name}}</p>
+<p>Borrower: {{borrower.name}}</p>
+<p>Requested On: {{request.Date}}</p>
+<p>Borrower Description: {{request.BorrowerDescription}}</p>
+<div>
+    {{#if isLender}}
+        {{#if isPending}}
+            <div class="flex">
+            <form action="/request/{{request._id}}/accept" method="POST">
+                <button type="submit" class="pageButton">Accept ✓</button>
+            </form>
+            <form action="/request/{{request._id}}/reject" method="POST">
+                <button type="submit" class="pageButton">Reject ✖</button>
+            </form>
+            </div>
+            <br>
+        {{/if}}
+        {{#if isAccepted}}
+            <div class="flex">
+            <form action="/request/{{request._id}}/complete" method="POST">
+                <button type="submit" class="pageButton">Mark as Completed</button>
+            </form>
+            </div>
+            <br>
+        {{/if}}
+    {{/if}}
+    <a href="/item/{{item._id}}" class="pageButton">Go to Item Page</a>
+</div>

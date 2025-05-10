@@ -79,7 +79,7 @@ const createRequest = async (
     const newRequest = {
         LenderID: LenderID,
         BorrowerID: BorrowerID,
-        Date: new Date().toLocaleString,
+        Date: new Date().toLocaleString(),
         ItemID: ItemID,
         Status: "Pending",
         BorrowerDescription: BorrowerDescription,
