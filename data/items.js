@@ -80,6 +80,7 @@ const removeItem = async (id) => {
     if (!removeItem) {
         throw 'Could not remove item successfully';
     }
+    return true;
 };
 
 const updateItem = async (itemId, name, description) => {

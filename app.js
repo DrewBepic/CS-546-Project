@@ -64,9 +64,9 @@ app.listen(3000, () => {
   console.log('Your routes will be running on http://localhost:3000');
 }); 
 
-import userCommands from './data/users.js'
-import itemCommands from './data/items.js'
-import requestCommands from './data/requests.js'
+// import userCommands from './data/users.js'
+// import itemCommands from './data/items.js'
+// import requestCommands from './data/requests.js'
 //  let biana = await userCommands.registerUser('Biana Prazdnik','bprazdnik@stevens.edu','Password$321','Password$321'); //new pass is Phone$321
 //await itemCommands.addItem('6805ba13a1e02ee09cdd7790', 'finalcat','desc');
 //await userCommands.updateUserInfo('6807c00082b5bf1f57e3187a', 'Riley Stewart', 'rstewar3@stevens.edu', 'Updated Stevens');

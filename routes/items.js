@@ -76,6 +76,19 @@ router.route('/item/:itemid').get(async (req, res) => {
    return res.redirect('/item/' + req.params.itemId.toString());
 }
  });
+
+ router.route('/item/:itemid/remove').post(async (req, res) => {
+   const itemId = req.params.itemid;
+   try {
+     const removed = await itemCommands.removeItem(itemId);
+     if (!removed) throw 'Item could not be deleted';
+     return res.redirect('/items');
+   } catch (e) {
+     return res.status(404).json({ error: e });
+   }
+ });
+
+
     
 
 // router.route('/comment/:itemId').post(async (req, res) => {

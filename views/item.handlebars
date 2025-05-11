@@ -18,6 +18,9 @@
   <input type="text" id="description" name="description" value="{{itemInfo.description}}">
   <input type="submit" value="Submit" >
 </form> 
+<form action="/item/{{itemInfo._id}}/remove" method="POST">
+                    <button type="submit" class="removeItem">Delete Item</button>
+                </form>
 {{/if}}          
 
 <form action="/item/{{itemInfo._id}}" method="POST">
