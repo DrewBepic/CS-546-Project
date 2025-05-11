@@ -9,7 +9,7 @@ router.route('/request/item/:itemId').get(async (req, res) => {
     let item = await itemCommands.getItemByID(req.params.itemId);
     let itemOwner = await userCommands.getUserByID(item.ownerId)
     item.owner = itemOwner.name
-    return res.render('requestItem', { user: req.session.user, itemInfo: item })
+    return res.render('requestItem', { user: req.session.user, itemInfo: item, title: "Request Item" })
   }
   catch (e) {
     console.log(e);
@@ -25,7 +25,7 @@ router.route('/request/item/:itemId').get(async (req, res) => {
     }
     catch (e) {
         if(!requestId){
-            return res.render('error',{error:e,user:req.session.user})
+            return res.render('error',{error:e,user:req.session.user,title:"Error"})
         }
         return res.redirect('/request/' + requestId,{error:e,user:req.session.user});
     }
@@ -57,7 +57,7 @@ router.route('/request/:requestId').get(async (req, res) => {
     if (request.Status == "Rejected") {
       isRejected = true;
     }
-    return res.render('request', { user: req.session.user, request: request, item: item, lender: lender, borrower: borrower, isLender, isBorrower, isAccepted, isPending, isRejected })
+    return res.render('request', { user: req.session.user, request: request, item: item, lender: lender, borrower: borrower, isLender, isBorrower, isAccepted, isPending, isRejected,title:"Request" })
   }
   catch (e) {
     console.log(e);
@@ -75,7 +75,7 @@ router.route('/request/:requestId/accept').post(async (req, res) => {
     return res.redirect('/request/' + req.params.requestId)
   }
   catch (e) {
-    return res.render('error', { user: req.session.user, error: e })
+    return res.render('error', { user: req.session.user, error: e,title:"Error" })
   }
 })
 
@@ -89,7 +89,7 @@ router.route('/request/:requestId/reject').post(async (req, res) => {
     return res.redirect('/request/' + req.params.requestId)
   }
   catch (e) {
-    return res.render('error', { user: req.session.user, error: e })
+    return res.render('error', { user: req.session.user, error: e, title: "Error"})
   }
 })
 
@@ -103,14 +103,14 @@ router.route('/request/:requestId/complete').post(async (req, res) => {
     return res.redirect('/ratingRequests')
   }
   catch (e) {
-    return res.render('error', { user: req.session.user, error: e })
+    return res.render('error', { user: req.session.user, error: e, title:"Error"})
   }
 })
 
 router.route('/leaderboard').get(async (req, res) => {
   try {
     const topUsers = await requestCommands.getLeaderboard();
-    return res.render('leaderboard', { user: req.session.user, topUsers: topUsers })
+    return res.render('leaderboard', { user: req.session.user, topUsers: topUsers, title: "Leaderboard" })
   } catch (e) {
     return res.redirect("/ratingRequests");
   }
@@ -127,7 +127,7 @@ router.route('/ratingRequests').get(async (req, res) => {
       let lender = await userCommands.getUserByID(unfinished[i].LenderID)
       unfinished[i]["lender"] = lender.name
     }
-    return res.render('karmaRequests', { user: req.session.user, unfinished: unfinished })
+    return res.render('karmaRequests', { user: req.session.user, unfinished: unfinished, title: "Give Karma"})
   } catch (e) {
     return res.redirect("/items");
   }

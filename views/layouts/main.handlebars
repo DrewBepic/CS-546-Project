@@ -7,25 +7,24 @@
     <link rel="stylesheet" href="/public/css/main.css">
 </head>
 
-{{#if user}}
-<header>
-    <a class="header_text_main">⇄CampusExchange</a>
-    <a class="header_text" href="/items">Find Items</a>
-    <a class="header_text" href="/item">Add Item</a>
-    <a class="header_text" href="/user/{{user._id}}">User Page</a>
-    <a class="header_text" href="/user/{{user._id}}/wishlist">User Wishlist</a>
-    <a class="header_text" href="/leaderboard">Leaderboard</a>
-    <a class="header_text" href="/logout">Log Out</a>
-</header>
-{{/if}}
-
 <body>
+    {{#if user}}
+        <header>
+            <a class="header_text_main">⇄CampusExchange</a>
+            <a class="header_text" href="/items">Find Items</a>
+            <a class="header_text" href="/item">Add Item</a>
+            <a class="header_text" href="/user/{{user._id}}">User Page</a>
+            <a class="header_text" href="/user/{{user._id}}/wishlist">User Wishlist</a>
+            <a class="header_text" href="/leaderboard">Leaderboard</a>
+            <a class="header_text" href="/logout">Log Out</a>
+        </header>
+    {{/if}}
     <main>
         {{{body}}}
     </main>
+    <footer>
+        <p>Product of Stevens Institute of Technology</p>
+    </footer>
 </body>
-<footer>
-    <p>Product of Stevens Institute of Technology</p>
-</footer>
 
 </html>
