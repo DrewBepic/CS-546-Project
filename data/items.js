@@ -237,9 +237,13 @@ const getItemHistory = async (id) => {
 }
 
 const getItemsBySchool = async (userId,school) => {
+    if(!userId || !school) throw "Error: userId and school must be provided";
+    if(typeof userId!="string") throw "Error: userId is not a string";
     if(typeof school!="string"){
         throw "Error: school is not a string";
     }
+    userId=userId.trim();
+    if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId for userId';
     school=school.trim();
     const itemCollection = await items();
     const userCollection = await users();
