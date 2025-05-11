@@ -278,5 +278,32 @@ const searchItems = async (userId, school, query) => {
     return filteredItems;
 }
 
-export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, addToWishlist, removeFromWishlist, getItemHistory,getItemsBySchool,searchItems };
+const getWishListByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const itemCollection = await items();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    const wishlistItems  = [];
+    for (const item of user.wishlist){
+        const itemInfo = await itemCollection.findOne({ _id: new ObjectId(item._id) });
+        if (itemInfo) {
+            const owner = await userCollection.findOne({ _id: new ObjectId(itemInfo.ownerId) });
+            if (owner){
+                itemInfo.ownerName = owner.name;
+            }
+            else{
+                itemInfo.ownerName = 'N/A';
+            }
+            wishlistItems.push(itemInfo);
+        }
+    }
+    if(wishlistItems.length === 0){
+        return [];
+    }
+    return wishlistItems;
+}
+
+
+export default { updateItem, addItem, removeItem, getAllItems, getItemByID, addComment, addToWishlist, removeFromWishlist, getItemHistory,getItemsBySchool, getWishListByUserID, searchItems };
 

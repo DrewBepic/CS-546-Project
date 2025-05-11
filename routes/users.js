@@ -103,8 +103,27 @@ router.route('/register').get(async (req, res) => {
   });
 
 
+router.route('/user/:userid/wishlist').get(async (req, res) => {
+  let wishlist = await itemCommands.getWishListByUserID(req.session.user._id);
+  if(wishlist.length==0){
+    wishlist=null;
+  }
 
+  return res.render('wishlist',{title:"User Wishlist", wishlist: wishlist, user:req.session.user})
+});
 
+router.route('/user/:userid/wishlist/:itemId/remove').post(async (req, res) => {
+  const userId = req.params.userid;
+  const itemId = req.params.itemId;
+  
+  try {
+    const removed = await itemCommands.removeFromWishlist(userId, itemId);
+    if (!removed) throw 'Item not found or not in wishlist';
+    return res.redirect('/user/' + userId + '/wishlist');
+  } catch (e) {
+    return res.status(404).json({ error: e });
+  }
+});
 
 router.route('/logout').get(async (req,res) => {
   if(!req.session.user){

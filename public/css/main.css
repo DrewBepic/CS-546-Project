@@ -323,7 +323,6 @@ p#error {
     margin-bottom: 1rem;
 }
 
-/* Item Lists */
 .ownedItemsList,
 .loanedItemsList,
 .borrowedItemsList {
@@ -332,7 +331,6 @@ p#error {
     gap: 1rem;
 }
 
-/* Individual Item Card */
 .ownedItem,
 .loanedItem,
 .borrowedItem {
@@ -351,14 +349,12 @@ p#error {
     margin-bottom: 0.5rem;
 }
 
-/* Item Info */
 .ownedItem p,
 .loanedItem p,
 .borrowedItem p {
     margin: 0.3rem 0;
 }
 
-/* Read More Button */
 #itemPageButton {
     display: inline-block;
     margin-top: 0.8rem;
@@ -374,7 +370,6 @@ p#error {
     background-color: #555;
 }
 
-/* Error Message */
 .error {
     background-color: #ff000043;
     color: red;
@@ -383,11 +378,86 @@ p#error {
     margin: 1rem 0;
 }
 
-
 .noItems {
     font-style: italic;
     color: #777;
     margin-bottom: 1rem;
+}
+
+/* Wishlist Page */
+.wishlistPageTitle {
+    font-size: 2rem;
+    color: #222;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.wishlistContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.wishedItem {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.noItems {
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    height: 60vh;            
+    font-size: 1.2rem;      
+}
+
+button.removeWishListItem {
+    display: inline-block;
+    margin: 0.1rem;
+    font-weight: bold;
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 3px solid black;
+    border-radius: 37px;
+    padding: 0.6rem 2.5rem;
+    align-self: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button.removeWishListItem:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    color: #A32638;
+}
+
+a#itemPageButton {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 3px solid black;
+    border-radius: 37px;
+    padding: 0.6rem 2.5rem;
+    transition: all 0.3s ease;
+}
+
+a#itemPageButton:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    color: #A32638;
 }
 
 /* 

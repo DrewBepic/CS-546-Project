@@ -20,6 +20,7 @@
 
 const addItemForm = document.getElementById('addItemForm');
 const myError = document.getElementById('error');
+const deleteButton = document.querySelectorAll('.deleteWishlistBtn');
 
 if (addItemForm) {
     addItemForm.addEventListener('submit', (event) => {

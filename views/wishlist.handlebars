@@ -1,0 +1,27 @@
+<div class="header">
+    <h1 class="wishlistPageTitle">{{user.name}}'s Wishlist</h1>
+</div>
+
+{{#if wishlist}}
+    <div class="wishlistContainer">
+        {{#each wishlist}}
+            <div class="wishedItem">
+                <h3>{{this.name}}</h3>
+                <p>Owner: {{this.ownerName}}</p>
+                <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+                <p>Description: {{this.description}}</p>
+                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+                <form action="/user/{{../user._id}}/wishlist/{{this._id}}/remove" method="POST">
+                    <button type="submit" class="removeWishListItem">Remove from Wishlist</button>
+                </form>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    {{#if search_error}}
+        p class="error">{{search_error}}</p>
+        <a class="pageButton" href = '/items'>Back to All Items</a>
+    {{else}}
+        <p class='noItems'>You currently do not have any items on your wishlist.</p>
+    {{/if}}
+{{/if}}

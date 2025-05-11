@@ -88,6 +88,8 @@ import requestCommands from './data/requests.js'
 //console.log(await itemCommands.getItemsBySchool('681fd2481883944e9bf1713a', 'Stevens Institute of Technology'));
 // LenderID, borrowerID, itemID, borrowerDescription,
 // console.log(await requestCommands.createRequest('681fdc542f0f7060055aa06c','6818c6b07ac358a1a86f819d','681fdc912f0f7060055aa06d', 'test desc 2'));
+//console.log(await itemCommands.addToWishlist('681fd2471883944e9bf17139', '681ff54cb0bb73be3bad44fb'))
+//console.log(await itemCommands.getWishListByUserID('681fd2471883944e9bf17139'));
 // console.log(await requestCommands.acceptRequest("6818c7829ae85f4311beeca7"));
 //console.log(await requestCommands.getRequestBorrowerId('6818c7829ae85f4311beeca7'))
 //console.log(await userCommands.getBorrowedItemsByUserID("681fd2471883944e9bf17139"));
