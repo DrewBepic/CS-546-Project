@@ -313,3 +313,11 @@ p#error {
     --medium-orange: #E7842E;
     --light-orange: #FFF2E8;
  */
+ .simple-list {
+    list-style-position: outside;
+    text-align: center;
+    margin: 0 auto;
+    padding-left: 6rem;
+    font-family: Arial, sans-serif;
+    max-width: 317px;
+  }

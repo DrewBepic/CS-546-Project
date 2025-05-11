@@ -62,9 +62,9 @@ app.listen(3000, () => {
   console.log('Your routes will be running on http://localhost:3000');
 }); 
 
-// import userCommands from './data/users.js'
-// import itemCommands from './data/items.js'
-// import requestCommands from './data/requests.js'
+import userCommands from './data/users.js'
+import itemCommands from './data/items.js'
+import requestCommands from './data/requests.js'
 //  let biana = await userCommands.registerUser('Biana Prazdnik','bprazdnik@stevens.edu','Password$321','Password$321'); //new pass is Phone$321
 //await itemCommands.addItem('6805ba13a1e02ee09cdd7790', 'finalcat','desc');
 //await userCommands.updateUserInfo('6807c00082b5bf1f57e3187a', 'Riley Stewart', 'rstewar3@stevens.edu', 'Updated Stevens');
@@ -83,7 +83,7 @@ app.listen(3000, () => {
 // console.log(await userCommands.registerUser('Aleksey Vinogradov', 'avinogra@stevens.edu', 'Stevens', 'Stevens'));
 //console.log(await itemCommands.addItem("68169626e75ec86059c3dd02",'test', 'test desc'));
 // LenderID, borrowerID, itemID, borrowerDescription,
-// console.log(await requestCommands.createRequest('68001ff842af2959b3fa1ad6','6818c6b07ac358a1a86f819d','6800214e40dc479b194e7286', 'test desc 2'));
+// console.log(await requestCommands.createRequest('681fdc542f0f7060055aa06c','6818c6b07ac358a1a86f819d','681fdc912f0f7060055aa06d', 'test desc 2'));
 // console.log(await requestCommands.acceptRequest("6818c7829ae85f4311beeca7"));
 //console.log(await requestCommands.getRequestBorrowerId('6818c7829ae85f4311beeca7'))
 //console.log(await userCommands.getBorrowedItemsByUserID("68169626e75ec86059c3dd02"));
@@ -91,7 +91,7 @@ app.listen(3000, () => {
 //console.log(await requestCommands.completeRequest("6816ae8effad4957f8522145"));
 //console.log(await itemCommands.getItemHistory('681696434fcef8a1b6f9965d'));
 
-//closeConnection()
+// closeConnection()
 
 
 
