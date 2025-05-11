@@ -64,8 +64,6 @@ app.listen(3000, () => {
   console.log('Your routes will be running on http://localhost:3000');
 }); 
 
-
-
 import userCommands from './data/users.js'
 import itemCommands from './data/items.js'
 import requestCommands from './data/requests.js'
@@ -89,15 +87,15 @@ import requestCommands from './data/requests.js'
 //console.log(await userCommands.getOwnedItemsByUserID("681fd2471883944e9bf17139"));
 //console.log(await itemCommands.getItemsBySchool('681fd2481883944e9bf1713a', 'Stevens Institute of Technology'));
 // LenderID, borrowerID, itemID, borrowerDescription,
-//console.log(await requestCommands.createRequest('681fd2471883944e9bf17139','681fd2481883944e9bf1713a','681fd2ddfd588faecfdc9d11', 'Please gimme'));
-//console.log(await requestCommands.acceptRequest("681fd40c6c715298b6992fae"));
+// console.log(await requestCommands.createRequest('681fdc542f0f7060055aa06c','6818c6b07ac358a1a86f819d','681fdc912f0f7060055aa06d', 'test desc 2'));
+// console.log(await requestCommands.acceptRequest("6818c7829ae85f4311beeca7"));
 //console.log(await requestCommands.getRequestBorrowerId('6818c7829ae85f4311beeca7'))
 //console.log(await userCommands.getBorrowedItemsByUserID("681fd2471883944e9bf17139"));
 //console.log(await userCommands.getLoanedItemsByUserID("681fd2471883944e9bf17139"));
 //console.log(await requestCommands.completeRequest("6816ae8effad4957f8522145"));
 //console.log(await itemCommands.getItemHistory('681696434fcef8a1b6f9965d'));
 
-//closeConnection()
+// closeConnection()
 
 
 

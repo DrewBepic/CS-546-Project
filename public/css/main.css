@@ -291,6 +291,15 @@ input[type="text"] {
     text-align: center;
 }
 
+input[type="password"] {
+    width: 250px;
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
 p#error {
     text-align: center;
     max-width: 400px;
@@ -392,3 +401,11 @@ p#error {
     --medium-orange: #E7842E;
     --light-orange: #FFF2E8;
  */
+ .simple-list {
+    list-style-position: outside;
+    text-align: center;
+    margin: 0 auto;
+    padding-left: 6rem;
+    font-family: Arial, sans-serif;
+    max-width: 317px;
+  }

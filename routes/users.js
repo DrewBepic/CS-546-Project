@@ -102,87 +102,9 @@ router.route('/register').get(async (req, res) => {
     }
   });
 
-router.route('/comment/:itemId').post(async (req, res) => {
-  try {
-    const comment = req.body.comment
-    const itemID = req.params.itemId;
-    const commentAdd = await itemCommands.addComment(itemID,comment)
-    if(!commentAdd){
-      throw "Could not add comment"
-    }
-    return res.redirect('/item/' + itemID.toString());
-  } catch (e) {
-    return res.redirect('/item/' + req.params.itemId.toString());
-  }
-});
 
-router.route('/items/search/:query').get(async (req,res) => {
-  try{
-    let filteredItems=await itemCommands.searchItems(req.session.user._id,req.session.user.school,req.params.query);
-    if(filteredItems.length==0){
-      return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user,search_error:"No items found!"})
-    }
-    return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user})
-  }
-  catch (e){
-    console.log(e)
-    return res.redirect('/items');
-  }
-})
 
-router.route('/request/item/:itemId').get(async (req,res) => {
-  try{
-    let item=await itemCommands.getItemByID(req.params.itemId);
-    let itemOwner=await userCommands.getUserByID(item.ownerId)
-    item.owner=itemOwner.name
-    return res.render('requestItem',{user:req.session.user,itemInfo:item})
-  }
-  catch (e){
-    console.log(e);
-    return res.redirect("/items");
-  }
-})
-.post(async (req, res) => {
-  try{
-    let item=await itemCommands.getItemByID(req.params.itemId);
-    let requestId=await requestCommands.createRequest(item.ownerId,req.session.user._id,req.params.itemId,req.body.description);
-    return res.redirect('/request/'+requestId);
-  }
-  catch (e){
-    console.log(e);
-    return res.redirect("/items");
-  }
-});
 
-router.route('/request/:requestId').get(async (req,res) => {
-  try{
-    let request=await requestCommands.getRequestByID(req.params.requestId);
-    let item=await itemCommands.getItemByID(request.ItemID);
-    let lender=await userCommands.getUserByID(request.LenderID);
-    let borrower=await userCommands.getUserByID(request.BorrowerID);
-    let isLender=false;
-    let isBorrower=false;
-    let isAccepted=false;
-    let isPending=false;
-    if(req.session.user._id==lender._id){
-      isLender=true;
-    }
-    if(req.session.user._id==borrower._id){
-      isBorrower=true;
-    }
-    if(request.Status=="Accepted"){
-      isAccepted=true;
-    }
-    if(request.Status=="Pending"){
-      isPending=true;
-    }
-    return res.render('request',{user:req.session.user,request:request,item:item,lender:lender,borrower:borrower,isLender,isBorrower,isAccepted,isPending})
-  }
-  catch (e){
-    console.log(e);
-    return res.redirect("/items");
-  }
-})
 
 router.route('/logout').get(async (req,res) => {
   if(!req.session.user){
