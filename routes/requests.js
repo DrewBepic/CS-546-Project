@@ -17,14 +17,17 @@ router.route('/request/item/:itemId').get(async (req, res) => {
   }
 })
   .post(async (req, res) => {
+    let requestId;
     try {
       let item = await itemCommands.getItemByID(req.params.itemId);
-      let requestId = await requestCommands.createRequest(item.ownerId, req.session.user._id, req.params.itemId, req.body.description);
+      requestId = await requestCommands.createRequest(item.ownerId, req.session.user._id, req.params.itemId, req.body.description);
       return res.redirect('/request/' + requestId);
     }
     catch (e) {
-      console.log(e);
-      return res.redirect("/items");
+        if(!requestId){
+            return res.render('error',{error:e,user:req.session.user})
+        }
+        return res.redirect('/request/' + requestId,{error:e,user:req.session.user});
     }
   });
 

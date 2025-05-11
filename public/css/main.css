@@ -542,6 +542,7 @@ a#itemPageButton:hover {
     border-radius: 8px;
     border-color: #1f1e1e;
     background-color: #ff000043;
+    color: red;
 }
 
 /* made for /items error handling*/

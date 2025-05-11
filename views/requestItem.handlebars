@@ -6,9 +6,11 @@
     <p>Owner: {{itemInfo.owner}}</p>
     <p>Description: {{itemInfo.description}}</p>
 
+    <p id="error-request-item" class="error-left" {{#if error}}{{else}}hidden{{/if}}>{{error}}</p>
     <h2>Fill Out Request:</h2>
-    <form action="/request/item/{{itemInfo._id}}" method="POST">
+    <form id="requestItemForm" action="/request/item/{{itemInfo._id}}" method="POST">
         <label for="description">Description:</label><br>
         <textarea id="description" name="description" rows="4"></textarea><br>
         <input class="pageButton" type="submit" value="Submit">
     </form>
+    <script src="/public/js/requestItem_validate.js"></script>

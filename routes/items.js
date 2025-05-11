@@ -39,7 +39,7 @@ router.route('/item/:itemid').get(async (req, res) => {
      if(req.session.user._id=== item.ownerId.toString()){
       owner= true;
      }
-    console.log(userName);
+
     let ownerName = userName.name;
     return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, ownerName: ownerName, user: req.session.user, owner: owner});
   } catch (e) {
