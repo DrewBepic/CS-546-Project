@@ -34,6 +34,13 @@ app.use("/register",(req, res, next) => {
   return next();
 })
 
+app.use("/",(req, res, next) => {
+  if(req.path=="/" && req.session.user){
+    return res.redirect("/items");
+  }
+  return next();
+})
+
 app.use((req, res, next) => {
   if(req.path.includes('/public')){
     return next();

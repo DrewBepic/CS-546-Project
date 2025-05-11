@@ -35,15 +35,15 @@ if (addItemForm) {
             return;
         }
 
-        if (typeof name !== 'string' || name.length === 0 || name.length < 2 || name.length > 20) {
+        if (typeof name !== 'string' || name.length === 0 || name.length < 2 || name.length > 30) {
             myError.hidden = false;
-            myError.innerHTML = 'Item name should be a valid non-empty string that is between 2 and 20 characters.';
+            myError.innerHTML = 'Item name should be a valid non-empty string that is between 2 and 30 characters.';
             return;
         }
 
-        if (typeof description !== 'string' || description.length === 0 || description.length < 2 || description.length > 50) {
+        if (typeof description !== 'string' || description.length === 0 || description.length < 2 || description.length > 250) {
             myError.hidden = false;
-            myError.innerHTML = 'Item description should be a valid non-empty string that is between 2 and 50 characters.';
+            myError.innerHTML = 'Item description should be a valid non-empty string that is between 2 and 250 characters.';
             return;
         }
 

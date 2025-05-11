@@ -97,7 +97,7 @@ router.route('/request/:requestId/complete').post(async (req, res) => {
       throw "Error: you are not allowed to complete this request!"
     }
     await requestCommands.completeRequest(req.params.requestId);
-    return res.render('submitKarma', { user: req.session.user })
+    return res.redirect('/ratingRequests')
   }
   catch (e) {
     return res.render('error', { user: req.session.user, error: e })
@@ -109,19 +109,20 @@ router.route('/leaderboard').get(async (req, res) => {
     const topUsers = await requestCommands.getLeaderboard();
     return res.render('leaderboard', { user: req.session.user, topUsers: topUsers })
   } catch (e) {
-    return res.redirect("/items");
+    return res.redirect("/ratingRequests");
   }
 })
 
 router.route('/ratingRequests').get(async (req, res) => {
   try {
-    // console.log(req.session.user._id.toString())
     const unfinished = await requestCommands.getUnfinishedRequestsWithUserID(req.session.user._id.toString())
     for (let i = 0; i < unfinished.length; i++) {
       let item = await itemCommands.getItemByID(unfinished[i].ItemID)
       unfinished[i]["itemName"] = item.name
       let user = await userCommands.getUserByID(unfinished[i].BorrowerID)
       unfinished[i]["borrower"] = user.name
+      let lender = await userCommands.getUserByID(unfinished[i].LenderID)
+      unfinished[i]["lender"] = lender.name
     }
     return res.render('karmaRequests', { user: req.session.user, unfinished: unfinished })
   } catch (e) {
@@ -146,9 +147,8 @@ router.route('/ratingRequests').get(async (req, res) => {
         throw "Must be a number from 1-10"
       }
       const requestId = req.body.requestId
-      const userGiven = req.body.BorrowerID
-      await requestCommands.updateRequestKarma(requestId, input)
-      await userCommands.updateKarma(userGiven, input)
+      let update_request_results=await requestCommands.updateRequestKarma(requestId, input, req.session.user._id)
+      await userCommands.updateKarma(update_request_results.userBeingRated, input)
       return res.redirect('ratingRequests')
 
     } catch (e) {

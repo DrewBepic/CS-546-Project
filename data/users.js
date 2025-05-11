@@ -83,6 +83,9 @@ const registerUser = async (
             break
         }
     }
+    if(!verified){
+        throw "Error: please enter a valid school email"
+    }
 
     const userCollection = await users();
     const emailExists = await userCollection.findOne({ email: email });

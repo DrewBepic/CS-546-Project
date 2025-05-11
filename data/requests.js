@@ -289,7 +289,7 @@ const getRequestBorrowerId = async (requestID) => {
 
 }
 
-const updateRequestKarma = async (requestID, givenRating) => {
+const updateRequestKarma = async (requestID, givenRating, userId) => {
     if (!requestID) {
         throw 'Error: All fields need to have valid values';
     }
@@ -314,10 +314,42 @@ const updateRequestKarma = async (requestID, givenRating) => {
     if (givenRating < 1 || givenRating > 10) {
         throw 'Error: givenRating must be a number 1-10'
     }
+    
+    if(!userId){
+        throw "Error: userId not given";
+    }
+    if(typeof userId!="string"){
+        throw "Error: userId must be string";
+    }
+    if (!ObjectId.isValid(userId)) {
+        throw 'Error: userID must be a valid ObjectId'
+    }
+
     const requestsCollection = await requests();
-    const updateRating = await requestsCollection.updateOne({ _id: new ObjectId(requestID) }, { $set: { score: givenRating } });
+    let request=await getRequestByID(requestID);
+
+    let userBeingRated;
+    let role;
+    if(userId==request.LenderID){
+        role="lender";
+        userBeingRated=request.BorrowerID;
+    }
+    else if(userId==request.BorrowerID){
+        role="borrower";
+        userBeingRated=request.LenderID
+    }
+    if(!role){
+        throw "Error: user is not involved in this transaction!";
+    }
+
+    const updateRating = await requestsCollection.updateOne({ _id: new ObjectId(requestID) }, { $set: { ['scoreSubmitted.'+userId]: givenRating } });
     if (!updateRating.acknowledged) { throw 'Error: Could not update transaction score'; }
 
+    let output={}
+    output.userBeingRated=userBeingRated
+    output.userGivingRating=userId
+    output.score=givenRating
+    return output
 
 }
 
@@ -348,7 +380,7 @@ const getUnfinishedRequestsWithUserID = async (userId) => {
 
     try {
         const requestCollection = await requests();
-        const userRequests = await requestCollection.find({ LenderID: userId, score: { $exists: false } }).toArray();
+        const userRequests = await requestCollection.find({ $and: [ { $or:[{BorrowerID:userId},{LenderID:userId}]}, {[`scoreSubmitted.${userId}`]: {$exists:false}}, {Status:"Completed"} ] }).toArray();
         return userRequests
     } catch (e) {
         console.log(e)
