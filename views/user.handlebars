@@ -1,0 +1,72 @@
+<div class="header">
+    <h1 class="userPageTitle">{{user.name}}'s Profile</h1>
+</div>
+
+<h2 class = 'karmaTitle'>Current Acquired Karma: {{karma}}</h2>
+
+<h2 class = 'ownedTitle'>Owned Items</h2>
+{{#if ownedItems}}
+    <div class="ownedItemsList">
+        {{#each ownedItems}}
+            <div class="ownedItem">
+                <h3>{{this.name}}</h3>
+                <p>Owner: {{this.ownerName}}</p>
+                <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+                <p>Description: {{this.description}}</p>
+                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    {{#if search_error}}
+        p class="error">{{search_error}}</p>
+        <a class="pageButton" href = '/items'>Back to All Items</a>
+    {{else}}
+        <p class='noItems'>You do not currently have any items listed.</p>
+    {{/if}}
+{{/if}}
+
+<h2 class = 'loanTitle'>Loaned Items</h2>
+{{#if loanedItems}}
+    <div class="loanedItemsList">
+        {{#each loanedItems}}
+            <div class="loanedItem">
+                <h3>{{this.name}}</h3>
+                <p>Owner: {{this.ownerName}}</p>
+                <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+                <p>Description: {{this.description}}</p>
+                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    {{#if search_error}}
+        p class="error">{{search_error}}</p>
+        <a class="pageButton" href = '/items'>Back to All Items</a>
+    {{else}}
+        <p class='noItems'>You are not currently loaning any items.</p>
+    {{/if}}
+{{/if}}
+
+<h2 class = 'borrowTitle'>Borrowed Items</h2>
+{{#if borrowedItems}}
+    <div class="borrowedItemsList">
+        {{#each borrowedItems}}
+            <div class="borrowedItem">
+                <h3>{{this.name}}</h3>
+                <p>Owner: {{this.ownerName}}</p>
+                <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+                <p>Description: {{this.description}}</p>
+                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    {{#if search_error}}
+        p class="error">{{search_error}}</p>
+        <a class="pageButton" href = '/items'>Back to All Items</a>
+    {{else}}
+        <p class='noItems'>You are not currently borrowing any items.</p>
+    {{/if}}
+{{/if}}
+

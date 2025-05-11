@@ -197,30 +197,30 @@ const updatePassword = async (id, oldPassword, newPassword) =>{
     let spaces= 0;
     let otherCharacters= 0;
     let i = 0; 
-      while (i < str.length) {
+    while (i < str.length) {
         if (str[i]===" "){
-          spaces++;
+            spaces++;
         }
         else if (str[i] >= '0' && str[i] <= '9') {
-          numbers++;
+            numbers++;
         }
-       else if(str[i]=== upper[i] && str[i]!==lower[i]){ 
-          uppercase++;
+        else if(str[i]=== upper[i] && str[i]!==lower[i]){ 
+            uppercase++;
         } 
         else if(str[i]=== lower[i] && str[i]!== upper[i]) { 
-          lowercase++;
+            lowercase++;
         }
         else{
-          otherCharacters++;
+            otherCharacters++;
         }
         i++;
-      }
-      if(spaces>0|| str.length<8){ 
+    }
+    if(spaces>0|| str.length<8){ 
         throw 'Password does not meet the requirements. Please enter a valid password.'
-      }
-      if(uppercase<1 || numbers< 1 || otherCharacters<1){
+    }
+    if(uppercase<1 || numbers< 1 || otherCharacters<1){
         throw 'Password needs to contain at least one uppercase character, one number, and one special character.'
-      }  
+    }  
     const saltRounds = 3;
     const hashedNewPass = await bcrypt.hash(newPassword, saltRounds);
     const updateUserInfo = await userCollection.findOneAndUpdate(
@@ -248,21 +248,54 @@ const getAllUsers = async () => {
     return allUsers;
 }
 
+const getOwnedItemsByUserID = async (id) => {
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'Invalid object ID';
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: new ObjectId(id)})
+    const allItemsNames = [];
+    const itemCollection = await items();
+    for (const item of user.ownedItems){
+        const itemInfo = await itemCollection.findOne({_id: new ObjectId(item._id)})
+        if(itemInfo){
+            const owner = await userCollection.findOne({ _id: new ObjectId(itemInfo.ownerId) });
+            if (owner){
+                itemInfo.ownerName = owner.name;
+            }
+            else{
+                itemInfo.ownerName = 'N/A';
+            }
+            allItemsNames.push(itemInfo);
+        }
+    }
+    if(allItemsNames.length === 0){
+        return [];
+    }
+    return allItemsNames;
+}
+
 const getBorrowedItemsByUserID = async (id) => {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'Invalid object ID';
     const userCollection = await users();
     const user = await userCollection.findOne({_id: new ObjectId(id)})
     const borrowedItemsNames = [];
+    const itemCollection = await items();
     for ( const item of user.borrowedItems){
-        const itemCollection = await items();
         const itemInfo = await itemCollection.findOne({_id: new ObjectId(item)})
         if(itemInfo){
-            borrowedItemsNames.push(itemInfo.name);
+            const owner = await userCollection.findOne({ _id: new ObjectId(itemInfo.ownerId) });
+            if (owner){
+                itemInfo.ownerName = owner.name;
+            }
+            else{
+                itemInfo.ownerName = 'N/A';
+            }
+            borrowedItemsNames.push(itemInfo);
         }
     }
     if(borrowedItemsNames.length === 0){
-        return "No borrowed items found";
+        return [];
     }
     return borrowedItemsNames;
 }
@@ -277,11 +310,18 @@ const getLoanedItemsByUserID = async (id) => {
         const itemCollection = await items();
         const itemInfo = await itemCollection.findOne({_id: new ObjectId(item)})
         if(itemInfo){
-            loanedItemsNames.push(itemInfo.name);
+            const owner = await userCollection.findOne({ _id: new ObjectId(itemInfo.ownerId) });
+            if (owner){
+                itemInfo.ownerName = owner.name;
+            }
+            else{
+                itemInfo.ownerName = 'N/A';
+            }
+            loanedItemsNames.push(itemInfo);
         }
     }
     if(loanedItemsNames.length === 0){
-        return "No loaned items found";
+        return [];
     }
     return loanedItemsNames;
 }
@@ -304,4 +344,4 @@ const updateKarma = async (id, transactionScore) => {
     
 }
 
-export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword,getKarmaByUserID, getLoanedItemsByUserID, getBorrowedItemsByUserID, updateKarma};
+export default { registerUser, userLogin, getUserByID, getUserSession, updateUserInfo, getAllUsers, updatePassword, getKarmaByUserID, getLoanedItemsByUserID, getBorrowedItemsByUserID, updateKarma, getOwnedItemsByUserID};

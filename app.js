@@ -1,3 +1,5 @@
+
+
 import { closeConnection } from './config/mongoConnection.js'
 import express from 'express';
 const app = express();
@@ -62,9 +64,11 @@ app.listen(3000, () => {
   console.log('Your routes will be running on http://localhost:3000');
 }); 
 
-// import userCommands from './data/users.js'
-// import itemCommands from './data/items.js'
-// import requestCommands from './data/requests.js'
+
+
+import userCommands from './data/users.js'
+import itemCommands from './data/items.js'
+import requestCommands from './data/requests.js'
 //  let biana = await userCommands.registerUser('Biana Prazdnik','bprazdnik@stevens.edu','Password$321','Password$321'); //new pass is Phone$321
 //await itemCommands.addItem('6805ba13a1e02ee09cdd7790', 'finalcat','desc');
 //await userCommands.updateUserInfo('6807c00082b5bf1f57e3187a', 'Riley Stewart', 'rstewar3@stevens.edu', 'Updated Stevens');
@@ -79,15 +83,17 @@ app.listen(3000, () => {
 // // }
 
 //DO NOT DELETE THESE TESTS 
-//console.log(await userCommands.registerUser('Andrew Baker', 'abaker2@stevens.edu', 'Stevens', 'Stevens'));
-// console.log(await userCommands.registerUser('Aleksey Vinogradov', 'avinogra@stevens.edu', 'Stevens', 'Stevens'));
-//console.log(await itemCommands.addItem("68169626e75ec86059c3dd02",'test', 'test desc'));
+//console.log(await userCommands.registerUser('Andrew Baker', 'abaker2@stevens.edu', 'Testing#1', 'Testing#1'));
+//console.log(await userCommands.registerUser('Aleksey Vinogradov', 'avinogra@stevens.edu', 'Testing#1', 'Testing#1'));
+//console.log(await itemCommands.addItem("681fd2471883944e9bf17139",'Screwdriver', 'Screws and stuff'));
+//console.log(await userCommands.getOwnedItemsByUserID("681fd2471883944e9bf17139"));
+//console.log(await itemCommands.getItemsBySchool('681fd2481883944e9bf1713a', 'Stevens Institute of Technology'));
 // LenderID, borrowerID, itemID, borrowerDescription,
-// console.log(await requestCommands.createRequest('68001ff842af2959b3fa1ad6','6818c6b07ac358a1a86f819d','6800214e40dc479b194e7286', 'test desc 2'));
-// console.log(await requestCommands.acceptRequest("6818c7829ae85f4311beeca7"));
+//console.log(await requestCommands.createRequest('681fd2471883944e9bf17139','681fd2481883944e9bf1713a','681fd2ddfd588faecfdc9d11', 'Please gimme'));
+//console.log(await requestCommands.acceptRequest("681fd40c6c715298b6992fae"));
 //console.log(await requestCommands.getRequestBorrowerId('6818c7829ae85f4311beeca7'))
-//console.log(await userCommands.getBorrowedItemsByUserID("68169626e75ec86059c3dd02"));
-//console.log(await userCommands.getLoanedItemsByUserID("68169626e75ec86059c3dd03"));
+//console.log(await userCommands.getBorrowedItemsByUserID("681fd2471883944e9bf17139"));
+//console.log(await userCommands.getLoanedItemsByUserID("681fd2471883944e9bf17139"));
 //console.log(await requestCommands.completeRequest("6816ae8effad4957f8522145"));
 //console.log(await itemCommands.getItemHistory('681696434fcef8a1b6f9965d'));
 

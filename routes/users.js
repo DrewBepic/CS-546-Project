@@ -35,6 +35,25 @@ router.route('/item').get(async (req, res) => {
     }
   });
 
+router.route('/user/:userid').get(async (req, res) => {
+  let loanedItems =await userCommands.getLoanedItemsByUserID(req.session.user._id);
+  let borrowedItems =await userCommands.getBorrowedItemsByUserID(req.session.user._id);
+  let ownedItems = await userCommands.getOwnedItemsByUserID(req.session.user._id);
+  let karma = await userCommands.getKarmaByUserID(req.session.user._id);
+
+  if(loanedItems.length==0){
+    loanedItems=null;
+  }
+  if(borrowedItems.length==0){
+    borrowedItems=null;
+  }
+  if(ownedItems.length==0){
+    ownedItems=null;
+  }
+
+  return res.render('user',{title:"User Profile", loanedItems: loanedItems, borrowedItems: borrowedItems, ownedItems: ownedItems, karma: karma, user:req.session.user})
+});
+
 router.route('/item/:itemid').get(async (req, res) => {
   try {
     const item = await itemCommands.getItemByID(req.params.itemid)

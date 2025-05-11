@@ -48,18 +48,18 @@ if (addItemForm) {
 
         for (let x of name) {
             const check = x.charCodeAt(0);
-            if (!(check >= 65 && check <= 90) && !(check >= 97 && check <= 122) && !(check >= 48 && check <= 57)) {
+            if (!(check >= 65 && check <= 90) && !(check >= 97 && check <= 122) && !(check >= 48 && check <= 57) && check !== 32) {
                 myError.hidden = false;
-                myError.innerHTML = 'Item name can only contain letters a-z, A-Z, or positive whole numbers.';
+                myError.innerHTML = 'Item name can only contain letters a-z, A-Z, spaces, or positive whole numbers.';
                 return;
             }
         }
 
         for (let x of description) {
             const check = x.charCodeAt(0);
-            if (!(check >= 65 && check <= 90) && !(check >= 97 && check <= 122) && !(check >= 48 && check <= 57)) {
+            if (!(check >= 65 && check <= 90) && !(check >= 97 && check <= 122) && !(check >= 48 && check <= 57) && check !== 32){
                 myError.hidden = false;
-                myError.innerHTML = 'Item description can only contain letters a-z, A-Z, or positive whole numbers.';
+                myError.innerHTML = 'Item description can only contain letters a-z, spaces, A-Z, or positive whole numbers.';
                 return;
             }
         }

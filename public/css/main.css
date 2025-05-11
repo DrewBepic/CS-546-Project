@@ -170,6 +170,7 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     margin: 0.25rem 0;
 }
 
+/* /items */
 .pageTitle {
     font-size: 2.5rem;
     font-weight: 800;
@@ -301,6 +302,84 @@ p#error {
     margin: 1rem auto;  
 }
 
+/*User Profile*/
+
+.karmaTitle,
+.ownedTitle,
+.loanTitle,
+.borrowTitle {
+    font-size: 1.5rem;
+    color: #222;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Item Lists */
+.ownedItemsList,
+.loanedItemsList,
+.borrowedItemsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Individual Item Card */
+.ownedItem,
+.loanedItem,
+.borrowedItem {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.ownedItem h3,
+.loanedItem h3,
+.borrowedItem h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Item Info */
+.ownedItem p,
+.loanedItem p,
+.borrowedItem p {
+    margin: 0.3rem 0;
+}
+
+/* Read More Button */
+#itemPageButton {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+#itemPageButton:hover {
+    background-color: #555;
+}
+
+/* Error Message */
+.error {
+    background-color: #ff000043;
+    color: red;
+    padding: 0.5rem;
+    border-left: 4px solid red;
+    margin: 1rem 0;
+}
+
+
+.noItems {
+    font-style: italic;
+    color: #777;
+    margin-bottom: 1rem;
+}
 
 /* 
 --stevens-red: #A32638;
