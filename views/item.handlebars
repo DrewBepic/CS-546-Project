@@ -11,7 +11,8 @@
   <p>Requests: {{itemInfo.requests}}</p>
 
   {{#if owner}}
-    <form action="/item/{{itemInfo._id}}" method="PUT">
+    <p id="edit-error" class="error-left" {{#if i}}{{else}}hidden{{/if}}> {{edit_error}}</p>
+    <form action="/item/edit/{{itemInfo._id}}" id="item_edit_form" method="POST">
   <label for="name"> Edit Name:</label><br>
   <input type="text" id="name" name="name" value="{{itemInfo.name}}">
    <label for="description"> Edit Description:</label><br>
@@ -23,7 +24,7 @@
                 </form>
 {{/if}}          
 
-<form action="/item/{{itemInfo._id}}" method="POST">
+<form action="/item/{{itemInfo._id}}" id="item_comment_form" method="POST">
   <label for="comment">Add comment:</label><br>
   <input type="text" id="comment" name="comment" placeholder="...">
   <input type="submit" value="Comment">
@@ -34,10 +35,11 @@
     <ul>
       {{#if itemInfo.comments}}
        {{#each itemInfo.comments}}
-       <li>{{this}}</li>
+       <li>{{this.userName}}: {{this.comment}}</li>
        {{/each}}
        {{else}}
         <p>No comments.</p>
         {{/if}}
         </ul>
     </div></p> 
+     <script src="/public/js/item_validate.js"></script>

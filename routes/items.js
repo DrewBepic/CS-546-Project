@@ -50,8 +50,9 @@ router.route('/item/:itemid').get(async (req, res) => {
 .post(async (req, res) => {
   try {
     const comment = req.body.comment
-    const itemID = req.params.itemId;
-    const commentAdd = await itemCommands.addComment(itemID, comment)
+    const itemID = req.params.itemid;
+     const user = await userCommands.getUserByID(req.session.user._id.toString());
+    const commentAdd = await itemCommands.addComment(user.name,itemID, comment)
     if (!commentAdd) {
       throw "Could not add comment"
     }
@@ -60,14 +61,16 @@ router.route('/item/:itemid').get(async (req, res) => {
     console.log(e);
     return res.redirect('/item/' + req.params.itemId.toString());
   }
-})
- .put(async (req, res) => {
+});
+
+router.route('/item/edit/:itemid').post(async (req, res) => {
   try {
   const item = await itemCommands.getItemByID(req.params.itemid)
-  const itemID = req.params.itemId;
+  const itemID = req.params.itemid;
   if(req.session.user._id=== item.ownerId.toString()){
     const name= req.body.name;
     const description= req.body.description;
+    console.log(itemID+ name+ description);
     const itemUpdated= await itemCommands.updateItem(itemID, name, description);
     return res.redirect('/item/'+ itemID.toString());
   }

@@ -54,16 +54,6 @@ router.route('/user/:userid').get(async (req, res) => {
   return res.render('user',{title:"User Profile", loanedItems: loanedItems, borrowedItems: borrowedItems, ownedItems: ownedItems, karma: karma, user:req.session.user})
 });
 
-router.route('/item/:itemid').get(async (req, res) => {
-  try {
-    const item = await itemCommands.getItemByID(req.params.itemid)
-    const userName = await userCommands.getUserByID(item.ownerId.toString())
-    item.owner = userName.name
-    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item });
-  } catch (e) {
-    return res.render('item', { hasErrors: true, title: "CampusExchange", error: e,user:req.session.user });
-  }
-})
 
 router.route('/login').get(async (req, res) => {
   return res.render('login', { title: "CampusExchange" });
