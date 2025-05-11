@@ -1,18 +1,40 @@
-<h1>{{itemInfo.name}}</h1>
 
+<div class="header">
+    <h1>Item Page</h1>
+</div>
 
 {{!Other Stuff <br>}}
-{{itemInfo.owner}}<br>
-{{itemInfo.description}}<br>
-{{itemInfo.history}}<br>
-{{itemInfo.requests}}<br>
+<h3> {{itemInfo.name}}</h3>
+<p>Owner: {{ownerName}}</p>
+<p>Description: {{itemInfo.description}}</p>
+ <p>History: {{itemInfo.history}}</p>
+  <p>Requests: {{itemInfo.requests}}</p>
 
-<form action="/comment/{{itemInfo._id}}" method="POST">
+  {{#if owner}}
+    <form action="/item/{{itemInfo._id}}" method="PUT">
+  <label for="name"> Edit Name:</label><br>
+  <input type="text" id="name" name="name" value="{{itemInfo.name}}">
+   <label for="description"> Edit Description:</label><br>
+  <input type="text" id="description" name="description" value="{{itemInfo.description}}">
+  <input type="submit" value="Submit" >
+</form> 
+{{/if}}          
+
+<form action="/item/{{itemInfo._id}}" method="POST">
   <label for="comment">Add comment:</label><br>
   <input type="text" id="comment" name="comment" placeholder="...">
   <input type="submit" value="Comment">
 </form>
 
-
-
-{{itemInfo.comments}}<br>
+  <p>Comments: 
+    <div>
+    <ul>
+      {{#if itemInfo.comments}}
+       {{#each itemInfo.comments}}
+       <li>{{this}}</li>
+       {{/each}}
+       {{else}}
+        <p>No comments.</p>
+        {{/if}}
+        </ul>
+    </div></p> 

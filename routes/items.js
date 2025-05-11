@@ -33,16 +33,21 @@ router.route('/item').get(async (req, res) => {
 
 router.route('/item/:itemid').get(async (req, res) => {
   try {
+    let owner= false;
     const item = await itemCommands.getItemByID(req.params.itemid)
-    const userName = await userCommands.getUserByID(item.ownerId.toString())
-    item.owner = userName.name
-    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, user: req.session.user });
+    const userName = await userCommands.getUserByID(item.ownerId.toString());
+     if(req.session.user._id=== item.ownerId.toString()){
+      owner= true;
+     }
+    console.log(userName);
+    let ownerName = userName.name;
+    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, ownerName: ownerName, user: req.session.user, owner: owner});
   } catch (e) {
+    console.log(e);
     return res.render('item', { hasErrors: true, title: "CampusExchange", error: e, user: req.session.user });
   }
 })
-
-router.route('/comment/:itemId').post(async (req, res) => {
+.post(async (req, res) => {
   try {
     const comment = req.body.comment
     const itemID = req.params.itemId;
@@ -52,9 +57,40 @@ router.route('/comment/:itemId').post(async (req, res) => {
     }
     return res.redirect('/item/' + itemID.toString());
   } catch (e) {
+    console.log(e);
     return res.redirect('/item/' + req.params.itemId.toString());
   }
-});
+})
+ .put(async (req, res) => {
+  try {
+  const item = await itemCommands.getItemByID(req.params.itemid)
+  const itemID = req.params.itemId;
+  if(req.session.user._id=== item.ownerId.toString()){
+    const name= req.body.name;
+    const description= req.body.description;
+    const itemUpdated= await itemCommands.updateItem(itemID, name, description);
+    return res.redirect('/item/'+ itemID.toString());
+  }
+} catch(e){
+  console.log(e);
+   return res.redirect('/item/' + req.params.itemId.toString());
+}
+ });
+    
+
+// router.route('/comment/:itemId').post(async (req, res) => {
+//   try {
+//     const comment = req.body.comment
+//     const itemID = req.params.itemId;
+//     const commentAdd = await itemCommands.addComment(itemID, comment)
+//     if (!commentAdd) {
+//       throw "Could not add comment"
+//     }
+//     return res.redirect('/item/' + itemID.toString());
+//   } catch (e) {
+//     return res.redirect('/item/' + req.params.itemId.toString());
+//   }
+// });
 
 router.route('/items/search/:query').get(async (req, res) => {
   try {
