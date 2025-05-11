@@ -4,10 +4,9 @@
   </header>
 
 
-    {{#if hasErrors}}
-    <p id="error" class="error">{{error}}</p>
-    {{/if}}
-    <form action="/login" method="POST">
+    <p id="error" class="error" {{#if hasErrors}}{{else}}hidden{{/if}}>{{error}}</p>
+
+    <form id="loginForm" action="/login" method="POST">
       <div class="formInput">
         <label for="email">Email:</label><br>
         <input type="text" id="email" name="email">
@@ -21,4 +20,5 @@
       </div>
     </form>
     <a class=" center" href="/register">Don't have an account? Register here!</a>
+    <script src="/public/js/login_validate.js"></script>
 
