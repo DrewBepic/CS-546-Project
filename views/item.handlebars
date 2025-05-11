@@ -1,20 +1,18 @@
-
-  <h1>{{itemInfo.name}}</h1>
-
-
-    {{!Other Stuff <br>}}
-    {{itemInfo.owner}}<br>
-    {{itemInfo.description}}<br>
-    {{itemInfo.history}}<br>
-    {{itemInfo.requests}}<br>
-
-    <form action="/comment/{{itemInfo._id}}" method="POST">
-      <label for="comment">Add comment:</label><br>
-      <input type="text" id="comment" name="comment" placeholder="...">
-      <input type="submit" value="Comment">
-    </form>
+<h1>{{itemInfo.name}}</h1>
 
 
+{{!Other Stuff <br>}}
+{{itemInfo.owner}}<br>
+{{itemInfo.description}}<br>
+{{itemInfo.history}}<br>
+{{itemInfo.requests}}<br>
 
-    {{itemInfo.comments}}<br>
+<form action="/comment/{{itemInfo._id}}" method="POST">
+  <label for="comment">Add comment:</label><br>
+  <input type="text" id="comment" name="comment" placeholder="...">
+  <input type="submit" value="Comment">
+</form>
 
+
+
+{{itemInfo.comments}}<br>

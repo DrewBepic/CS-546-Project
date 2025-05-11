@@ -19,23 +19,49 @@
     border-radius: 10px;
 }
 
-.slide1 { animation-delay: 0s; }
-.slide2 { animation-delay: 4s; }
-.slide3 { animation-delay: 8s; }
-.slide4 { animation-delay: 12s; }
+.slide1 {
+    animation-delay: 0s;
+}
+
+.slide2 {
+    animation-delay: 4s;
+}
+
+.slide3 {
+    animation-delay: 8s;
+}
+
+.slide4 {
+    animation-delay: 12s;
+}
 
 @keyframes fade {
-    0% { opacity: 0; }
-    5% { opacity: 1; }
-    25% { opacity: 1; }
-    30% { opacity: 0; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 /*General CSS*/
-html, body {
+html,
+body {
     height: 100%;
-    background-color: #E4E5E6; 
+    background-color: #E4E5E6;
     margin: 0;
     padding: 0;
     display: flex;
@@ -49,18 +75,18 @@ main {
 
 footer {
     background-color: #A32638;
-    color: white;              
+    color: white;
     padding: 1rem;
     text-align: center;
 }
 
-header{
+header {
     background-color: #A32638;
-    color: white;              
+    color: white;
     padding: 1rem;
 }
 
-p{
+p {
     font-family: 'Raleway', sans-serif;
 }
 
@@ -71,20 +97,21 @@ h1#mainTitle {
     margin: 0;
     margin-bottom: 1rem;
     color: #1f1e1e;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
-h2#strengthen{
+h2#strengthen {
     font-size: 1.8rem;
     font-weight: 600;
     text-align: center;
     margin: 0;
     color: #555;
     margin-bottom: 2rem;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
-p#home_p, p#catchphrase {
+p#home_p,
+p#catchphrase {
     font-size: 1.25rem;
     text-align: center;
     margin-top: 1.5rem;
@@ -96,21 +123,27 @@ p#home_p, p#catchphrase {
     margin-right: auto;
 }
 
-.homeRegister, .homeLogin{
+.homeRegister,
+.homeLogin {
     text-align: center;
     margin-top: 1rem;
 }
 
 
-a#registerlink:hover, a#loginlink:hover, a#userPageButton:hover, a#itemPageButton:hover, a#addItemPageButton:hover{
-    transform: translateY(-5px); 
+a#registerlink:hover,
+a#loginlink:hover,
+a#userPageButton:hover,
+a#itemPageButton:hover,
+a#addItemPageButton:hover {
+    transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: white;
     color: #A32638;
 }
 
 
-a#registerlink, a#loginlink{
+a#registerlink,
+a#loginlink {
     display: inline-block;
     margin: 1rem;
     font-weight: bold;
@@ -123,7 +156,9 @@ a#registerlink, a#loginlink{
     padding: 0.75rem 2rem;
 }
 
-a#userPageButton, a#itemPageButton, a#addItemPageButton{
+a#userPageButton,
+a#itemPageButton,
+a#addItemPageButton {
     display: inline-block;
     margin: 0.1rem;
     font-weight: bold;
@@ -136,7 +171,7 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     padding: -0.25rem 2rem;
 }
 
-.pageButton{
+.pageButton {
     display: inline-block;
     margin: 0.1rem;
     font-weight: bold;
@@ -149,17 +184,18 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     padding: -0.25rem 2rem;
 }
 
-.pageButton:hover{
-    transform: translateY(-5px); 
+.pageButton:hover {
+    transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: white;
     color: #A32638;
 }
+
 .item {
     background: white;
     border-radius: 8px;
     padding: 1rem;
-    margin:1rem;
+    margin: 1rem;
 }
 
 .item h3 {
@@ -177,70 +213,70 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     margin: 0;
     margin-bottom: 1rem;
     color: #1f1e1e;
-    font-family:'Raleway', sans-serif;
-    padding:2rem
+    font-family: 'Raleway', sans-serif;
+    padding: 2rem
 }
 
 .formInput {
     text-align: center;
 }
 
-.center{
+.center {
     text-align: center;
     display: inline-block;
     width: 100%;
 }
 
-.error{
+.error {
     background-color: #ff000043;
 }
 
-.header_text{
-    color: white;              
+.header_text {
+    color: white;
     padding: 1rem;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-weight: bold;
     text-decoration: none;
 }
 
-.header_text:hover{
-    color:#97999b;
+.header_text:hover {
+    color: #97999b;
     font-weight: bolder;
 }
 
-.header_text_main{
-    color: white;              
+.header_text_main {
+    color: white;
     padding: 1rem;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-weight: bold;
     text-decoration: none;
     font-size: large
 }
 
-.logged-out-header{
+.logged-out-header {
     background-color: #A32638;
-    color: white;              
+    color: white;
     padding: 1rem;
     text-align: center;
 }
 
-.flex{
-    display:flex
+.flex {
+    display: flex
 }
 
 /*Add Item Page*/
 
-h1#addItem{
+h1#addItem {
     font-size: 2.5rem;
     font-weight: 800;
     text-align: center;
     margin: 0;
     margin-bottom: 1rem;
     color: #1f1e1e;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
-form#addItemForm{
+form#addItemForm {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -261,7 +297,7 @@ label {
     font-weight: bold;
 }
 
-input#addItemButton{
+input#addItemButton {
     display: inline-block;
     margin: 0.1rem;
     font-weight: bold;
@@ -275,8 +311,8 @@ input#addItemButton{
     align-self: center;
 }
 
-input#addItemButton:hover{
-    transform: translateY(-5px); 
+input#addItemButton:hover {
+    transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: white;
     color: #A32638;
@@ -308,7 +344,7 @@ p#error {
     border: 2px solid;
     border-radius: 8px;
     border-color: #1f1e1e;
-    margin: 1rem auto;  
+    margin: 1rem auto;
 }
 
 /*User Profile*/
@@ -401,11 +437,19 @@ p#error {
     --medium-orange: #E7842E;
     --light-orange: #FFF2E8;
  */
- .simple-list {
+.simple-list {
     list-style-position: outside;
     text-align: center;
     margin: 0 auto;
     padding-left: 6rem;
     font-family: Arial, sans-serif;
     max-width: 317px;
-  }
+}
+
+.simple-list-2 {
+    list-style-position: outside;
+    text-align: center;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    list-style-type: none;
+}

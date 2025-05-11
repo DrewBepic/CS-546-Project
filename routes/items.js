@@ -5,16 +5,16 @@ import itemCommands from '../data/items.js'
 import requestCommands from '../data/requests.js'
 
 router.route('/items').get(async (req, res) => {
-  let items=await itemCommands.getItemsBySchool(req.session.user._id,req.session.user.school);
-  if(items.length==0){
-    items=null;
+  let items = await itemCommands.getItemsBySchool(req.session.user._id, req.session.user.school);
+  if (items.length == 0) {
+    items = null;
   }
-  return res.render('items',{title:"School Items",items: items,user:req.session.user})
+  return res.render('items', { user: req.session.user, title: "School Items", items: items })
 });
 
 
 router.route('/item').get(async (req, res) => {
-  return res.render('addItem', { hasErrors: false, title: "CampusExchange", user:req.session.user });
+  return res.render('addItem', { hasErrors: false, title: "CampusExchange", user: req.session.user });
 })
 
   .post(async (req, res) => {
@@ -36,9 +36,9 @@ router.route('/item/:itemid').get(async (req, res) => {
     const item = await itemCommands.getItemByID(req.params.itemid)
     const userName = await userCommands.getUserByID(item.ownerId.toString())
     item.owner = userName.name
-    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item ,user:req.session.user});
+    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, user: req.session.user });
   } catch (e) {
-    return res.render('item', { hasErrors: true, title: "CampusExchange", error: e,user:req.session.user ,user:req.session.user});
+    return res.render('item', { hasErrors: true, title: "CampusExchange", error: e, user: req.session.user });
   }
 })
 
@@ -46,8 +46,8 @@ router.route('/comment/:itemId').post(async (req, res) => {
   try {
     const comment = req.body.comment
     const itemID = req.params.itemId;
-    const commentAdd = await itemCommands.addComment(itemID,comment)
-    if(!commentAdd){
+    const commentAdd = await itemCommands.addComment(itemID, comment)
+    if (!commentAdd) {
       throw "Could not add comment"
     }
     return res.redirect('/item/' + itemID.toString());
@@ -56,15 +56,15 @@ router.route('/comment/:itemId').post(async (req, res) => {
   }
 });
 
-router.route('/items/search/:query').get(async (req,res) => {
-  try{
-    let filteredItems=await itemCommands.searchItems(req.session.user._id,req.session.user.school,req.params.query);
-    if(filteredItems.length==0){
-      return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user,search_error:"No items found!"})
+router.route('/items/search/:query').get(async (req, res) => {
+  try {
+    let filteredItems = await itemCommands.searchItems(req.session.user._id, req.session.user.school, req.params.query);
+    if (filteredItems.length == 0) {
+      return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user, search_error: "No items found!" })
     }
-    return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user})
+    return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user })
   }
-  catch (e){
+  catch (e) {
     console.log(e)
     return res.redirect('/items');
   }

@@ -315,8 +315,7 @@ const updateRequestKarma = async (requestID, givenRating) => {
         throw 'Error: givenRating must be a number 1-10'
     }
     const requestsCollection = await requests();
-    let request = await getRequestByID(requestID);
-    const updateRating = await requestsCollection.updateOne({ _id: new ObjectId(requestID) }, { $push: { TransactionScores: { UserID: request.BorrowerID, GivenRating: givenRating } } });
+    const updateRating = await requestsCollection.updateOne({ _id: new ObjectId(requestID) }, { $set: { score: givenRating } });
     if (!updateRating.acknowledged) { throw 'Error: Could not update transaction score'; }
 
 
@@ -331,9 +330,31 @@ const getAllRequests = async () => {
 
 const getLeaderboard = async () => {
     const userCollection = await users();
-    const topUsers = userCollection.find().sort({ karma: -1 }).limit(10).toArray();
+    const topUsers = await userCollection.find().sort({ karma: -1 }).limit(10).toArray();
     return topUsers;
 }
 
+const getUnfinishedRequestsWithUserID = async (userId) => {
+    if (!userId) {
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof userId != "string") {
+        throw 'Error: userId must be a string'
+    }
+    userId = userId.trim();
+    if (!ObjectId.isValid(userId)) {
+        throw 'Error: userId must be a valid ObjectId'
+    }
+    
+    try {
+        const requestCollection = await requests();
+        const userRequests = await requestCollection.find({ LenderID: userId, score: { $exists: false } }).toArray();
+        return userRequests
+    }catch (e){
+        console.log(e)
+        throw e.toString()
+    }
+}
 
-export default {getLeaderboard, createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests };
+
+export default { getUnfinishedRequestsWithUserID, getLeaderboard, createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests };
