@@ -1,0 +1,11 @@
+
+
+ <p id="edit-error" class="error-left" {{#if i}}{{else}}hidden{{/if}}> {{edit_error}}</p>
+  <form action="/item/edit/{{itemInfo._id}}" method="POST">
+  <label for="name"> Edit Name:</label><br>
+  <input type="text" id="name" name="name" value="{{itemInfo.name}}">
+   <label for="description"> Edit Description:</label><br>
+  <input type="text" id="description" name="description" value="{{itemInfo.description}}">
+  <input type="submit" value="Submit" >
+</form> 
+  <script src="/public/js/item_validate.js"></script>

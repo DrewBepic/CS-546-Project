@@ -1,37 +1,42 @@
 
-<div class="header">
-    <h1>Item Page</h1>
+<div class="currentItemHeader">
+    <h1>{{itemInfo.name}}</h1>
 </div>
-
 {{!Other Stuff <br>}}
-<h3> {{itemInfo.name}}</h3>
+<div class="currentItemContainer">
+<div class="currentItem">
 <p>Owner: {{ownerName}}</p>
 <p>Description: {{itemInfo.description}}</p>
  <p>History: {{itemInfo.history}}</p>
   <p>Requests: {{itemInfo.requests}}</p>
 
   {{#if owner}}
-    <p id="edit-error" class="error-left" {{#if i}}{{else}}hidden{{/if}}> {{edit_error}}</p>
-    <form action="/item/edit/{{itemInfo._id}}" id="item_edit_form" method="POST">
-  <label for="name"> Edit Name:</label><br>
-  <input type="text" id="name" name="name" value="{{itemInfo.name}}">
-   <label for="description"> Edit Description:</label><br>
-  <input type="text" id="description" name="description" value="{{itemInfo.description}}">
-  <input type="submit" value="Submit" >
-</form> 
-<form action="/item/{{itemInfo._id}}/remove" method="POST">
-                    <button type="submit" class="removeItem">Delete Item</button>
+    <form action="/item/edit/{{itemInfo._id}}" method="GET">
+         <button type="
+         submit" class="currentItemButtons">Edit Item</button>
                 </form>
-{{/if}}          
+                <br>
+<form action="/item/{{itemInfo._id}}/remove" method="POST">
+                    <button type="submit" class="currentItemButtons">Delete Item</button>
+                </form>
+        <br>
+{{else}}
+    {{#if inWL}}
+      <p>This item is on your wishlist!</p>
+    {{else}}
+    <form action="/item/wishlist/{{itemInfo._id}}" method="POST">
+      <button type="submit" class="currentItemButtons">Add to Wishlist</button>
+    </form>
+    {{/if}}
+{{/if}}  
 
 <form action="/item/{{itemInfo._id}}" id="item_comment_form" method="POST">
-  <label for="comment">Add comment:</label><br>
   <input type="text" id="comment" name="comment" placeholder="...">
-  <input type="submit" value="Comment">
+  <input type="submit" class="currentItemButtons" value="Comment">
 </form>
 
   <p>Comments: 
-    <div>
+    <div class="comments">
     <ul>
       {{#if itemInfo.comments}}
        {{#each itemInfo.comments}}
@@ -43,3 +48,6 @@
         </ul>
     </div></p> 
      <script src="/public/js/item_validate.js"></script>
+
+</div>
+</div>

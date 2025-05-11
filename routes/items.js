@@ -39,9 +39,16 @@ router.route('/item/:itemid').get(async (req, res) => {
      if(req.session.user._id=== item.ownerId.toString()){
       owner= true;
      }
-    console.log(userName);
+     const wishlist= await itemCommands.getWishListByUserID(req.session.user._id);
+     let inWL= false;
+     for(let i=0; i<wishlist.length; i++){
+      if(wishlist[i]._id.toString() === item._id.toString()){
+        inWL= true;
+        break;
+      }
+     }
     let ownerName = userName.name;
-    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, ownerName: ownerName, user: req.session.user, owner: owner});
+    return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, ownerName: ownerName, user: req.session.user, owner: owner, inWL: inWL});
   } catch (e) {
     console.log(e);
     return res.render('item', { hasErrors: true, title: "CampusExchange", error: e, user: req.session.user });
@@ -63,7 +70,33 @@ router.route('/item/:itemid').get(async (req, res) => {
   }
 });
 
-router.route('/item/edit/:itemid').post(async (req, res) => {
+
+ router.route('/item/wishlist/:itemid').post(async (req, res) => {
+  try {
+  const wishlistAdd= await itemCommands.addToWishlist(req.session.user._id.toString(), req.params.itemid)
+  return res.redirect('/item/' + req.params.itemid.toString());
+} catch(e){
+  console.log(e);
+   return res.redirect('/item/' + req.params.itemid.toString());
+}
+ });
+
+ router.route('/item/:itemid/remove').post(async (req, res) => {
+   const itemId = req.params.itemid;
+   try {
+     const removed = await itemCommands.removeItem(itemId.toString());
+     if (!removed) throw 'Item could not be deleted';
+     return res.redirect('/items');
+   } catch (e) {
+     return res.status(404).json({ error: e });
+   }
+ });
+
+router.route('/item/edit/:itemid').get(async (req, res) => {
+    const item = await itemCommands.getItemByID(req.params.itemid)
+     return res.render('editItem', {title: "CampusExchange", itemInfo: item});
+});
+ router.route('/item/edit/:itemid').post(async (req, res) => {
   try {
   const item = await itemCommands.getItemByID(req.params.itemid)
   const itemID = req.params.itemid;
@@ -76,37 +109,11 @@ router.route('/item/edit/:itemid').post(async (req, res) => {
   }
 } catch(e){
   console.log(e);
-   return res.redirect('/item/' + req.params.itemId.toString());
+   return res.redirect('/item/' + req.params.itemid.toString());
 }
  });
 
- router.route('/item/:itemid/remove').post(async (req, res) => {
-   const itemId = req.params.itemid;
-   try {
-     const removed = await itemCommands.removeItem(itemId);
-     if (!removed) throw 'Item could not be deleted';
-     return res.redirect('/items');
-   } catch (e) {
-     return res.status(404).json({ error: e });
-   }
- });
 
-
-    
-
-// router.route('/comment/:itemId').post(async (req, res) => {
-//   try {
-//     const comment = req.body.comment
-//     const itemID = req.params.itemId;
-//     const commentAdd = await itemCommands.addComment(itemID, comment)
-//     if (!commentAdd) {
-//       throw "Could not add comment"
-//     }
-//     return res.redirect('/item/' + itemID.toString());
-//   } catch (e) {
-//     return res.redirect('/item/' + req.params.itemId.toString());
-//   }
-// });
 
 router.route('/items/search/:query').get(async (req, res) => {
   try {
