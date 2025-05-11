@@ -16,7 +16,7 @@ router.route('/items').get(async (req, res) => {
   return res.render('items',{title:"School Items",items: items,user:req.session.user})
 });
 
-
+/*
 router.route('/item').get(async (req, res) => {
   return res.render('addItem', { hasErrors: false, title: "CampusExchange", user:req.session.user });
 })
@@ -29,11 +29,11 @@ router.route('/item').get(async (req, res) => {
       }
       const newItem = await itemCommands.addItem(req.session.user._id, body.name, body.description)
       const newItemID = newItem._id
-      return res.redirect('/item/' + newItemID);
+      return res.redirect('/item/' + newItem);
     } catch (e) {
       return res.status(400).render('addItem', { hasErrors: true, title: 'CampusExchange', error: e.toString() });
     }
-  });
+  }); */
 
 router.route('/user/:userid').get(async (req, res) => {
   let loanedItems =await userCommands.getLoanedItemsByUserID(req.session.user._id);

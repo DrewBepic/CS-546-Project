@@ -25,7 +25,7 @@ router.route('/item').get(async (req, res) => {
       }
       const newItem = await itemCommands.addItem(req.session.user._id, body.name, body.description)
       const newItemID = newItem._id
-      return res.redirect('/item/' + newItemID);
+      return res.redirect('/item/' + newItem);
     } catch (e) {
       return res.status(400).render('addItem', { hasErrors: true, title: 'CampusExchange', error: e.toString() });
     }
