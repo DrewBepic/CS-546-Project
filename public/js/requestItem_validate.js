@@ -16,7 +16,7 @@
                 }
                 description=description.trim();
                 if(description.length==0){
-                    throw "Error: description can not be left empty or empty spaces";
+                    throw "Error: description can not be left empty or be just empty spaces";
                 }
                 if(description.length>500){
                     throw "Error: description must be under 500 characters";
