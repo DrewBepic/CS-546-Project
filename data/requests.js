@@ -345,12 +345,12 @@ const getUnfinishedRequestsWithUserID = async (userId) => {
     if (!ObjectId.isValid(userId)) {
         throw 'Error: userId must be a valid ObjectId'
     }
-    
+
     try {
         const requestCollection = await requests();
         const userRequests = await requestCollection.find({ LenderID: userId, score: { $exists: false } }).toArray();
         return userRequests
-    }catch (e){
+    } catch (e) {
         console.log(e)
         throw e.toString()
     }

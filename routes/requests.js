@@ -114,47 +114,47 @@ router.route('/leaderboard').get(async (req, res) => {
 })
 
 router.route('/ratingRequests').get(async (req, res) => {
-  try{
+  try {
     // console.log(req.session.user._id.toString())
     const unfinished = await requestCommands.getUnfinishedRequestsWithUserID(req.session.user._id.toString())
-    for (let i = 0; i < unfinished.length; i++){
+    for (let i = 0; i < unfinished.length; i++) {
       let item = await itemCommands.getItemByID(unfinished[i].ItemID)
       unfinished[i]["itemName"] = item.name
       let user = await userCommands.getUserByID(unfinished[i].BorrowerID)
       unfinished[i]["borrower"] = user.name
     }
     return res.render('karmaRequests', { user: req.session.user, unfinished: unfinished })
-  }catch (e){
+  } catch (e) {
     return res.redirect("/items");
   }
 })
-.post(async (req, res) => {
-  try{
-    if(!req.body.rating){
-      throw "Invalid input"
-    }
-    let input = Number(req.body.rating);
+  .post(async (req, res) => {
+    try {
+      if (!req.body.rating) {
+        throw "Invalid input"
+      }
+      let input = Number(req.body.rating);
 
-    // Check if it's a valid number
-    if (typeof input !== 'number' || isNaN(input)) {
-      throw "Not a number";
-    }
-    if(!Number.isInteger(input)){
-      throw "Not a whole number"
-    }
-    if(input > 10 || input < 1){
-      throw "Must be a number from 1-10"
-    }
-    const requestId = req.body.requestId
-    const userGiven = req.body.BorrowerID
-    await requestCommands.updateRequestKarma(requestId, input)
-    await userCommands.updateKarma(userGiven,input)
-    return res.redirect('ratingRequests')
+      // Check if it's a valid number
+      if (typeof input !== 'number' || isNaN(input)) {
+        throw "Not a number";
+      }
+      if (!Number.isInteger(input)) {
+        throw "Not a whole number"
+      }
+      if (input > 10 || input < 1) {
+        throw "Must be a number from 1-10"
+      }
+      const requestId = req.body.requestId
+      const userGiven = req.body.BorrowerID
+      await requestCommands.updateRequestKarma(requestId, input)
+      await userCommands.updateKarma(userGiven, input)
+      return res.redirect('ratingRequests')
 
-  }catch (e){
-    console.log(e)
-    return res.status(404).redirect('ratingRequests')
-  }
-});
+    } catch (e) {
+      console.log(e)
+      return res.status(404).redirect('ratingRequests')
+    }
+  });
 
 export default router;
