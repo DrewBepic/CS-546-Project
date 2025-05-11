@@ -134,7 +134,7 @@ const getItemByID = async (id) => {
     return item
 }
 
-const addComment = async (id, comment) => {
+const addComment = async (userName,id, comment) => {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'Invalid ObjectId';
     const itemCollection = await items();
@@ -142,9 +142,10 @@ const addComment = async (id, comment) => {
     if (!item) {
         throw "No item with specified id";
     }
+    const newComment= {userName: userName.trim(), comment:comment.trim()}
     const updateResult = await itemCollection.updateOne(
         { _id: new ObjectId(id) },
-        { $push: { comments: comment.trim() } }
+        { $push: { comments: newComment } }
     );
     if (updateResult.modifiedCount === 0) {
         throw "Failed to add comment";
