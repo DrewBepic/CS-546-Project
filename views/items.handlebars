@@ -4,11 +4,11 @@
     <h1 class="pageTitle">All Items Available at {{user.school}}:</h1>
   </div>
 
-  <form action="/items/search" method="POST">
+  <p id="items-error" class="error-left" {{#if search_error}}{{else}}hidden{{/if}}> {{search_error}}</p>
+  <form id="items_search_form" action="/items/search" method="POST">
     <label for="item_search">Search for Items: </label>
     <input type="text" placeholder="Search items" name="item_search" id="item_search" />
-  </div>
-
+  </form>
 
   {{#if items}}
     <div class="item_list">
@@ -25,10 +25,10 @@
     </div>
   {{else}}
     {{#if search_error}}
-      <p class="error">{{search_error}}</p>
       <a class="pageButton" href = '/items'>Back to All Items</a>
     {{else}}
       <p>No items found at your school :(</p>
     {{/if}}
   {{/if}}
+  <script src="/public/js/items_validate.js"></script>
 

@@ -64,6 +64,14 @@ p{
     font-family: 'Raleway', sans-serif;
 }
 
+h1{
+    font-family:'Raleway', sans-serif;
+}
+
+h2{
+    font-family:'Raleway', sans-serif;
+}
+
 h1#mainTitle {
     font-size: 3.5rem;
     font-weight: 800;
@@ -194,6 +202,10 @@ a#userPageButton, a#itemPageButton, a#addItemPageButton{
     background-color: #ff000043;
 }
 
+p#search_error{
+    background-color: #ff000043;
+}
+
 .header_text{
     color: white;              
     padding: 1rem;
@@ -310,6 +322,16 @@ p#error {
     margin: 1rem auto;  
 }
 
+/* made for /items error handling, same as p#error but aligned left */
+.error-left { 
+    max-width: 400px;
+    font-weight: bold;
+    padding: 1rem;
+    border: 2px solid;
+    border-radius: 8px;
+    border-color: #1f1e1e;
+    background-color: #ff000043; 
+}
 
 /* 
 --stevens-red: #A32638;

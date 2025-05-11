@@ -65,7 +65,6 @@ router.route('/items/search/:query').get(async (req,res) => {
     return res.render('items',{title:"School Items",items: filteredItems,user:req.session.user})
   }
   catch (e){
-    console.log(e)
     return res.redirect('/items');
   }
 })
