@@ -13,11 +13,28 @@
         <br>
     {{/if}}
 {{/if}}
-<p>Status: {{request.Status}}</p>
-<p>Lender: {{lender.name}}</p>
-<p>Borrower: {{borrower.name}}</p>
-<p>Requested On: {{request.Date}}</p>
-<p>Borrower Description: {{request.BorrowerDescription}}</p>
+<table>
+    <tr>
+        <th>Status</th>
+        <td>{{request.Status}}</td>
+    </tr>
+    <tr>
+        <th>Lender</th>
+        <td>{{lender.name}}</td>
+    </tr>
+    <tr>
+        <th>Borrower</th>
+        <td>{{borrower.name}}</td>
+    </tr>
+    <tr>
+        <th>Requested On</th>
+        <td>{{request.Date}}</td>
+    </tr>
+    <tr>
+        <th>Borrower Description</th>
+        <td>{{request.BorrowerDescription}}</td>
+    </tr>
+</table>
 <div>
     {{#if isLender}}
         {{#if isPending}}
@@ -29,7 +46,6 @@
                 <button type="submit" class="pageButton">Reject ✖</button>
             </form>
             </div>
-            <br>
         {{/if}}
         {{#if isAccepted}}
             <div class="flex">
@@ -37,8 +53,8 @@
                 <button type="submit" class="pageButton">Mark as Completed</button>
             </form>
             </div>
-            <br>
         {{/if}}
     {{/if}}
+    <br>
     <a href="/item/{{item._id}}" class="pageButton">Go to Item Page</a>
 </div>

@@ -17,7 +17,6 @@
                     throw 'Error: One of the properties is of incorrect type and must be a string';
                 }
                 email = email.trim().toLowerCase()
-                password=password.trim();
                 if (email.length === 0 || password.length === 0){
                     throw 'Error: At least one of the properties is invalid and cannot be an empty string or just spaces';
                 }

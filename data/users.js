@@ -113,6 +113,16 @@ const registerUser = async (
 };
 
 const userLogin = async (email, password) => {
+    if(!email || !password){
+        throw "Error: please provide both email and password"
+    }
+    if(typeof email!="string"){
+        throw "Error: email must be of type string"
+    }
+    if(typeof password!="string"){
+        throw "Error: password must be of type string"
+    }
+    email=email.trim();
     const userCollection = await users();
     const user = await userCollection.findOne({ email: email.toLowerCase() })
     if (!user) {

@@ -1,7 +1,9 @@
-<h1 class="center"> Unfinished Requests</h1>
+
 
 <ul class="simple-list-2">
+    <h1 class="center"> Unfinished Requests</h1>
     {{#each unfinished}}
+    <div class="karma-item">
     <li>
         <p>Item: {{this.itemName}}</p>
         <p>Lender: {{this.lender}}</p>
@@ -14,8 +16,9 @@
             <input type="hidden" name="requestId" value="{{this._id}}">
             <input type="hidden" name="BorrowerID" value="{{this.BorrowerID}}">
             <input type="number" id="rating" name="rating" min="1" max="10" required>
-            <input type="submit" value="Rate">
+            <input type="submit" class="pageButton" value="Rate">
         </div>
     </form>
+    </div>
     {{/each}}
 </ul>
