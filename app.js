@@ -54,15 +54,15 @@ app.use((req, res, next) => {
   return next();
 })
 
-app.use("/items/search",(req, res, next) => {
-  if(req.method!='POST'){
-    return next();
-  }
-  if(!req.body.item_search){
-    return res.redirect("/items");
-  }
-  return res.redirect("/items/search/"+req.body.item_search);
-})
+// app.use("/items/search",(req, res, next) => {
+//   if(req.method!='POST'){
+//     return next();
+//   }
+//   if(!req.body.item_search){
+//     return res.redirect("/items");
+//   }
+//   return res.redirect("/items/search/"+req.body.item_search);
+// })
 
 configRoutes(app);
 

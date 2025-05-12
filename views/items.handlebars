@@ -4,25 +4,26 @@
     <h1 class="pageTitle">All Items Available at {{user.school}}:</h1>
   </div>
 
+  {{#if itemsToStart}}
   <p id="items-error" class="error-left" {{#if search_error}}{{else}}hidden{{/if}}> {{search_error}}</p>
   <form id="items_search_form" action="/items/search" method="POST">
     <label for="item_search">Search for Items: </label>
     <input type="text" placeholder="Search items" name="item_search" id="item_search">
   </form>
-
-
+  {{/if}}
+  
+  <div id="item_list" class="item_list">
   {{#if items}}
-    <div class="item_list">
       {{#each items}}
         <div class="item">
           <h3>{{this.name}}</h3>
           <p>Owner: {{this.ownerName}}</p>
-          <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+          <p>Available: {{#if this.CurrentRequest}}No{{else}}Yes{{/if}}</p>
           <p>Description: {{this.description}}</p>
           <a class = 'pageButton' href = '/item/{{this._id}}'>Read More</a>
         </div>
       {{/each}}
-    </div>
+    
   {{else}}
     {{#if search_error}}
       <a class="pageButton" href = '/items'>Back to All Items</a>
@@ -30,4 +31,5 @@
       <p class="noItems">No items owned by other students were found at your school :(</p>
     {{/if}}
   {{/if}}
-  <script src="/public/js/items_validate.js"></script>
+  </div>
+  <script src="/public/js/search_items_ajax.js"></script>

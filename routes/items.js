@@ -7,10 +7,12 @@ import xss from 'xss';
 
 router.route('/items').get(async (req, res) => {
   let items = await itemCommands.getItemsBySchool(req.session.user._id, req.session.user.school);
+  let itemsToStart=true;
   if (items.length == 0) {
     items = null;
+    itemsToStart=false
   }
-  return res.render('items', { user: req.session.user, title: "School Items", items: items })
+  return res.render('items', { user: req.session.user, title: "School Items", items: items,itemsToStart:itemsToStart })
 });
 
 
@@ -136,20 +138,30 @@ router.route('/item/edit/:itemid').get(async (req, res) => {
 
 
 
-router.route('/items/search/:query').get(async (req, res) => {
-  try {
-    const query = req.params.query;
-    const safeQuery = xss(query);
-    let filteredItems = await itemCommands.searchItems(req.session.user._id, req.session.user.school, safeQuery);
-    if (filteredItems.length == 0) {
-      return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user, search_error: "No items found!" })
-    }
-    return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user })
-  }
-  catch (e) {
-    console.log(e)
-    return res.redirect('/items');
-  }
-})
+// router.route('/items/search/:query').get(async (req, res) => {
+//   try {
+//     const query = req.params.query;
+//     const safeQuery = xss(query);
+//     let filteredItems = await itemCommands.searchItems(req.session.user._id, req.session.user.school, safeQuery);
+//     if (filteredItems.length == 0) {
+//       return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user, search_error: "No items found!" })
+//     }
+//     return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user })
+//   }
+//   catch (e) {
+//     return res.redirect('/items');
+//   }
+// })
 
+router.route('/items/search').post(async (req, res) => {
+    try{
+        req.body.item_search=xss(req.body.item_search)
+        let filteredItems = await itemCommands.searchItems(req.session.user._id, req.session.user.school, req.body.item_search);
+        res.json(filteredItems)
+    }
+    catch(e){
+        console.log(e);
+        return res.render('items', { title: "School Items", user: req.session.user, search_error: "Server Error Encountered" })
+    }
+})
 export default router;
