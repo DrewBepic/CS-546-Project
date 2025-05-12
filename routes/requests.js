@@ -167,20 +167,34 @@ router.route('/ratingRequests').get(async (req, res) => {
 
   router.route('/requests/incomingRequests').get(async (req, res) => {
   try {
-    let incomingRequests =await requestCommands.getIncomingRequests(req.session.user._id.toString());
-    let allInfoIncoming= [];
-    for(let i=0; i<incomingRequests.length; i++){
-       let lender = await userCommands.getUserByID(incomingRequests[i].LenderID);
-      let borrower = await userCommands.getUserByID(incomingRequests[i].BorrowerID);
-      let item= await itemCommands.getItemByID(incomingRequests[i].ItemID);
-      allInfoIncoming.push({_id: incomingRequests[i]._id.toString(), Status: incomingRequests[i].Status, LenderID: incomingRequests[i].LenderID,
-        BorrowerID: incomingRequests[i].BorrowerID, Date:incomingRequests[i].Date, ItemID: incomingRequests[i].ItemID, BorrowerDescription:incomingRequests[i].BorrowerDescription,
+    let incomingPendingRequests =await requestCommands.getIncomingPendingRequests(req.session.user._id.toString());
+    let incomingAcceptedRequests = await requestCommands.getIncomingAcceptedRequests(req.session.user._id.toString());
+    let allPendingInfoIncoming= [];
+    let allAcceptedInfoIncoming = [];
+
+    for(let i=0; i<incomingPendingRequests.length; i++){
+      let lender = await userCommands.getUserByID(incomingPendingRequests[i].LenderID);
+      let borrower = await userCommands.getUserByID(incomingPendingRequests[i].BorrowerID);
+      let item= await itemCommands.getItemByID(incomingPendingRequests[i].ItemID);
+      allPendingInfoIncoming.push({_id: incomingPendingRequests[i]._id.toString(), Status: incomingPendingRequests[i].Status, LenderID: incomingPendingRequests[i].LenderID,
+        BorrowerID: incomingPendingRequests[i].BorrowerID, Date:incomingPendingRequests[i].Date, ItemID: incomingPendingRequests[i].ItemID, BorrowerDescription:incomingPendingRequests[i].BorrowerDescription,
         LenderName: lender.name, BorrowerName: borrower.name, itemName: item.name
       });
-      console.log(allInfoIncoming[i]);
+      //console.log(allPendingInfoIncoming[i]);
     }
 
-    return res.render('incomingRequests', {user: req.session.user, incomingRequests: allInfoIncoming})
+    for(let i=0; i<incomingAcceptedRequests.length; i++){
+      let lender = await userCommands.getUserByID(incomingAcceptedRequests[i].LenderID);
+      let borrower = await userCommands.getUserByID(incomingAcceptedRequests[i].BorrowerID);
+      let item= await itemCommands.getItemByID(incomingAcceptedRequests[i].ItemID);
+      allAcceptedInfoIncoming.push({_id: incomingAcceptedRequests[i]._id.toString(), Status: incomingAcceptedRequests[i].Status, LenderID: incomingAcceptedRequests[i].LenderID,
+        BorrowerID: incomingAcceptedRequests[i].BorrowerID, Date:incomingAcceptedRequests[i].Date, ItemID: incomingAcceptedRequests[i].ItemID, BorrowerDescription:incomingAcceptedRequests[i].BorrowerDescription,
+        LenderName: lender.name, BorrowerName: borrower.name, itemName: item.name
+      });
+      //console.log(allPendingInfoIncoming[i]);
+    }
+
+    return res.render('incomingRequests', {user: req.session.user, incomingPendingRequests: allPendingInfoIncoming, incomingAcceptedRequests: allAcceptedInfoIncoming})
   } catch (e) {
     console.log(e);
     return res.redirect("/items");
@@ -189,20 +203,33 @@ router.route('/ratingRequests').get(async (req, res) => {
 
   router.route('/requests/outgoingRequests').get(async (req, res) => {
   try {
-    let outgoingRequests =await requestCommands.getOutgoingRequests(req.session.user._id.toString());
-    let allInfoOutgoing= [];
-    for(let i=0; i<outgoingRequests.length; i++){
-       let lender = await userCommands.getUserByID(outgoingRequests[i].LenderID);
-      let borrower = await userCommands.getUserByID(outgoingRequests[i].BorrowerID);
-      let item= await itemCommands.getItemByID(outgoingRequests[i].ItemID);
-      allInfoOutgoing.push({_id: outgoingRequests[i]._id.toString(), Status: outgoingRequests[i].Status, LenderID: outgoingRequests[i].LenderID,
-        BorrowerID: outgoingRequests[i].BorrowerID, Date:outgoingRequests[i].Date, ItemID: outgoingRequests[i].ItemID, BorrowerDescription:outgoingRequests[i].BorrowerDescription,
+    let outgoingPendingRequests =await requestCommands.getOutgoingPendingRequests(req.session.user._id.toString());
+    let outgoingAcceptedRequests =await requestCommands.getOutgoingAcceptedRequests(req.session.user._id.toString());
+    let allPendingInfoOutgoing= [];
+    let allAcceptedInfoOutgoing= [];
+    for(let i=0; i<outgoingPendingRequests.length; i++){
+      let lender = await userCommands.getUserByID(outgoingPendingRequests[i].LenderID);
+      let borrower = await userCommands.getUserByID(outgoingPendingRequests[i].BorrowerID);
+      let item= await itemCommands.getItemByID(outgoingPendingRequests[i].ItemID);
+      allPendingInfoOutgoing.push({_id: outgoingPendingRequests[i]._id.toString(), Status: outgoingPendingRequests[i].Status, LenderID: outgoingPendingRequests[i].LenderID,
+        BorrowerID: outgoingPendingRequests[i].BorrowerID, Date:outgoingPendingRequests[i].Date, ItemID: outgoingPendingRequests[i].ItemID, BorrowerDescription:outgoingPendingRequests[i].BorrowerDescription,
         LenderName: lender.name, BorrowerName: borrower.name, itemName: item.name
       });
-      console.log(allInfoOutgoing[i]);
+      //console.log(allInfoOutgoing[i]);
     }
 
-    return res.render('outgoingRequests', {user: req.session.user, outgoingRequests: allInfoOutgoing})
+    for(let i=0; i<outgoingAcceptedRequests.length; i++){
+      let lender = await userCommands.getUserByID(outgoingAcceptedRequests[i].LenderID);
+      let borrower = await userCommands.getUserByID(outgoingAcceptedRequests[i].BorrowerID);
+      let item= await itemCommands.getItemByID(outgoingAcceptedRequests[i].ItemID);
+      allAcceptedInfoOutgoing.push({_id: outgoingAcceptedRequests[i]._id.toString(), Status: outgoingAcceptedRequests[i].Status, LenderID: outgoingAcceptedRequests[i].LenderID,
+        BorrowerID: outgoingAcceptedRequests[i].BorrowerID, Date:outgoingAcceptedRequests[i].Date, ItemID: outgoingAcceptedRequests[i].ItemID, BorrowerDescription:outgoingAcceptedRequests[i].BorrowerDescription,
+        LenderName: lender.name, BorrowerName: borrower.name, itemName: item.name
+      });
+      //console.log(allInfoOutgoing[i]);
+    }
+
+    return res.render('outgoingRequests', {user: req.session.user, outgoingPendingRequests: allPendingInfoOutgoing, outgoingAcceptedRequests: allAcceptedInfoOutgoing})
   } catch (e) {
     console.log(e);
     return res.redirect("/items");

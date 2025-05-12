@@ -388,7 +388,7 @@ const getUnfinishedRequestsWithUserID = async (userId) => {
     }
 }
 
-const getIncomingRequests= async (userId) => {
+const getIncomingPendingRequests= async (userId) => {
     if (!userId) {
         throw 'Error: All fields need to have valid values';
     }
@@ -405,7 +405,7 @@ const getIncomingRequests= async (userId) => {
 
 }
 
-const getOutgoingRequests= async (userId) => {
+const getOutgoingPendingRequests= async (userId) => {
     if (!userId) {
         throw 'Error: All fields need to have valid values';
     }
@@ -422,6 +422,40 @@ const getOutgoingRequests= async (userId) => {
 
 }
 
+const getIncomingAcceptedRequests= async (userId) => {
+    if (!userId) {
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof userId != "string") {
+        throw 'Error: userId must be a string'
+    }
+    userId = userId.trim();
+    if (!ObjectId.isValid(userId)) {
+        throw 'Error: userId must be a valid ObjectId'
+    }
+    const requestCollection = await requests();
+    const incomingRequests = await requestCollection.find({LenderID:userId, Status: "Accepted"}).toArray();
+    return incomingRequests;
+
+}
+
+const getOutgoingAcceptedRequests= async (userId) => {
+    if (!userId) {
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof userId != "string") {
+        throw 'Error: userId must be a string'
+    }
+    userId = userId.trim();
+    if (!ObjectId.isValid(userId)) {
+        throw 'Error: userId must be a valid ObjectId'
+    }
+    const requestCollection = await requests();
+    const outgoingRequests = await requestCollection.find({BorrowerID:userId, Status: "Accepted"}).toArray();
+    return outgoingRequests;
+
+}
 
 
-export default { getUnfinishedRequestsWithUserID, getLeaderboard, createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests, getIncomingRequests, getOutgoingRequests };
+
+export default { getUnfinishedRequestsWithUserID, getLeaderboard, createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests, getIncomingPendingRequests, getOutgoingPendingRequests, getIncomingAcceptedRequests, getOutgoingAcceptedRequests };
