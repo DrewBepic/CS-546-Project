@@ -56,7 +56,8 @@ router.route('/item/:itemid').get(async (req, res) => {
 })
 .post(async (req, res) => {
   try {
-    const comment = req.body.comment
+    console.log("post route here");
+    const comment = req.body.comment;
     const itemID = req.params.itemid;
      const user = await userCommands.getUserByID(req.session.user._id.toString());
     const commentAdd = await itemCommands.addComment(user.name,itemID, comment)
@@ -66,9 +67,10 @@ router.route('/item/:itemid').get(async (req, res) => {
     return res.redirect('/item/' + itemID.toString());
   } catch (e) {
     console.log(e);
-    return res.redirect('/item/' + req.params.itemId.toString());
+    return res.redirect('/item/' + req.params.itemid.toString());
   }
 });
+
 
 
  router.route('/item/wishlist/:itemid').post(async (req, res) => {

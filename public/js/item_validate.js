@@ -3,13 +3,23 @@
      const comment_form= document.getElementById('item_comment_form')
       if(comment_form){
         const comment_item =document.getElementById('comment');
-        const error_tag = document.getElementById('edit-error');
+        const error_tag = document.getElementById('comment-error');
         comment_form.addEventListener('submit', (event) => {
             event.preventDefault();
+            let comment= "";
+            let colon= 0;
             error_tag.hidden = true;
-            let comment= comment_item.value;
+            for(let i=0; i<comment_item.value.length; i++){
+                if(comment_item.value[i]===":"){
+                    colon=i;
+                    break;
+                }
+            }
+            for(let x=colon+1; x<comment_item.value.length; x++){
+                comment= comment+ comment_item.value[x];
+            }
+
             try{
-             let comment = comment_item.value;
             if (typeof comment !== 'string' || comment.length === 0 || comment.length < 2 || comment.length > 50) {
                 throw 'A comment should be a valid non-empty string that is between 2 and 50 characters.';
             }

@@ -268,6 +268,7 @@ const getOwnedItemsByUserID = async (id) => {
     const user = await userCollection.findOne({ _id: new ObjectId(id) })
     const allItemsNames = [];
     const itemCollection = await items();
+    console.log(user.ownedItems);
     for (const item of user.ownedItems) {
         const itemInfo = await itemCollection.findOne({ _id: new ObjectId(item._id) })
         if (itemInfo) {

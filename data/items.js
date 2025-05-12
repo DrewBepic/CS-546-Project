@@ -104,11 +104,19 @@ const updateItem = async (itemId, name, description) => {
     }
     const userCollection = await users();
     const ownerId = updateInfo.ownerId;
-    const updateUserInfo = await userCollection.findOneAndUpdate(
-        { _id: new ObjectId(ownerId) },
-        { $set: {ownedItems: updateItem} },
-        { returnDocument: 'after' });
-
+    const user = await userCollection.findOne(
+        { _id: new ObjectId(ownerId) });
+    for(let i=0; i<user.ownedItems.length; i++){
+        if(user.ownedItems[i]._id.toString() === itemId.toString()){
+            user.ownedItems[i].name= name;
+            user.ownedItems[i].description= description;
+            break;
+        }
+    }
+    const updateUserInfo= await userCollection.updateOne(
+           { _id: new ObjectId(ownerId) },
+        {$set:{ownedItems: user.ownedItems}});
+        
     if (!updateUserInfo) {
         throw 'Could not update User item successfully';
     }

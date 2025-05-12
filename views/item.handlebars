@@ -35,7 +35,9 @@
   <input type="submit" class="currentItemButtons" value="Comment">
 </form>
 
-  <p>Comments: 
+
+ <p id="comment-error" class="error-left" {{#if i}}{{else}}hidden{{/if}}> {{comment_error}}</p>
+  <p>Comments: </p>
     <div class="comments">
     <ul>
       {{#if itemInfo.comments}}
@@ -43,10 +45,10 @@
        <li>{{this.userName}}: {{this.comment}}</li>
        {{/each}}
        {{else}}
-        <p>No comments.</p>
+        <li>No comments.</li>
         {{/if}}
         </ul>
-    </div></p> 
+    </div> 
      <script src="/public/js/item_validate.js"></script>
 
 </div>
