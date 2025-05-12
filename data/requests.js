@@ -157,6 +157,7 @@ const acceptRequest = async (requestID) => {
 
     const itemInfo = await itemsCollection.updateOne({ _id: new ObjectId(request.ItemID) }, { $set: { CurrentRequest: requestID } });
     if (!itemInfo.acknowledged) { throw 'Error: Could not update item'; }
+    return requestID
 };
 
 const completeRequest = async (requestID) => {
@@ -344,6 +345,8 @@ const updateRequestKarma = async (requestID, givenRating, userId) => {
 
     const updateRating = await requestsCollection.updateOne({ _id: new ObjectId(requestID) }, { $set: { ['scoreSubmitted.'+userId]: givenRating } });
     if (!updateRating.acknowledged) { throw 'Error: Could not update transaction score'; }
+
+    const updateKarma = await userFunctions.updateKarma(userId,givenRating)
 
     let output={}
     output.userBeingRated=userBeingRated

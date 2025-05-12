@@ -110,6 +110,7 @@ const registerUser = async (
 
     const insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) { throw 'Error: Could not add User'; }
+    return insertInfo
 };
 
 const userLogin = async (email, password) => {
