@@ -9,6 +9,7 @@
         error_tag.hidden = true;
         let search=item_search_bar.value
         try{
+            if(search.length>0 && search.trim().length==0) throw "Error: you can not input just empty spaces"
             search=search.trim();
             if(search.length>256) throw "Error: search query is too long!"
             error_tag.hidden = true;
