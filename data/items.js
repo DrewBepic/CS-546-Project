@@ -114,7 +114,7 @@ const updateItem = async (itemId, name, description) => {
         }
     }
     const updateUserInfo= await userCollection.updateOne(
-           { _id: new ObjectId(ownerId) },
+        { _id: new ObjectId(ownerId) },
         {$set:{ownedItems: user.ownedItems}});
         
     if (!updateUserInfo) {

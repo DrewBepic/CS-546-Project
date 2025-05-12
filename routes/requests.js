@@ -3,6 +3,7 @@ const router = express.Router();
 import userCommands from '../data/users.js'
 import itemCommands from '../data/items.js'
 import requestCommands from '../data/requests.js'
+import xss from 'xss';
 
 router.route('/request/item/:itemId').get(async (req, res) => {
   try {
@@ -20,7 +21,8 @@ router.route('/request/item/:itemId').get(async (req, res) => {
     let requestId;
     try {
       let item = await itemCommands.getItemByID(req.params.itemId);
-      requestId = await requestCommands.createRequest(item.ownerId, req.session.user._id, req.params.itemId, req.body.description);
+      const safeDescription = xss(req.body.description);
+      requestId = await requestCommands.createRequest(item.ownerId, req.session.user._id, req.params.itemId, safeDescription);
       return res.redirect('/request/' + requestId);
     }
     catch (e) {
@@ -134,10 +136,13 @@ router.route('/ratingRequests').get(async (req, res) => {
 })
   .post(async (req, res) => {
     try {
-      if (!req.body.rating) {
+
+      const safeRating = xss(req.body.rating);
+
+      if (!safeRating) {
         throw "Invalid input"
       }
-      let input = Number(req.body.rating);
+      let input = Number(safeRating);
 
       // Check if it's a valid number
       if (typeof input !== 'number' || isNaN(input)) {

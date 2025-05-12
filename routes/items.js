@@ -3,6 +3,7 @@ const router = express.Router();
 import userCommands from '../data/users.js'
 import itemCommands from '../data/items.js'
 import requestCommands from '../data/requests.js'
+import xss from 'xss';
 
 router.route('/items').get(async (req, res) => {
   let items = await itemCommands.getItemsBySchool(req.session.user._id, req.session.user.school);
@@ -23,7 +24,15 @@ router.route('/item').get(async (req, res) => {
       if (!req.session.user) {
         throw "Login before adding an item"
       }
-      const newItem = await itemCommands.addItem(req.session.user._id, body.name, body.description)
+
+      const safeName = xss(body.name);
+      const safeDescription = xss(body.description);
+
+      if (!safeName|| !safeDescription){
+        throw 'Please fill out all fields.'
+      }
+
+      const newItem = await itemCommands.addItem(req.session.user._id, safeName, safeDescription)
       const newItemID = newItem._id
       return res.redirect('/item/' + newItem);
     } catch (e) {
@@ -36,7 +45,7 @@ router.route('/item/:itemid').get(async (req, res) => {
     let owner= false;
     const item = await itemCommands.getItemByID(req.params.itemid)
     const userName = await userCommands.getUserByID(item.ownerId.toString());
-     if(req.session.user._id=== item.ownerId.toString()){
+    if(req.session.user._id=== item.ownerId.toString()){
       owner= true;
      }
      const wishlist= await itemCommands.getWishListByUserID(req.session.user._id);
@@ -57,10 +66,15 @@ router.route('/item/:itemid').get(async (req, res) => {
 .post(async (req, res) => {
   try {
     console.log("post route here");
-    const comment = req.body.comment;
+    const safeComment = xss(req.body.comment);
     const itemID = req.params.itemid;
-     const user = await userCommands.getUserByID(req.session.user._id.toString());
-    const commentAdd = await itemCommands.addComment(user.name,itemID, comment)
+
+    if (!safeComment){
+        throw 'Please fill out all fields.'
+      }
+
+    const user = await userCommands.getUserByID(req.session.user._id.toString());
+    const commentAdd = await itemCommands.addComment(user.name,itemID, safeComment)
     if (!commentAdd) {
       throw "Could not add comment"
     }
@@ -103,10 +117,15 @@ router.route('/item/edit/:itemid').get(async (req, res) => {
   const item = await itemCommands.getItemByID(req.params.itemid)
   const itemID = req.params.itemid;
   if(req.session.user._id=== item.ownerId.toString()){
-    const name= req.body.name;
-    const description= req.body.description;
+    const safeName= xss(req.body.name);
+    const safeDescription= xss(req.body.description);
+
+    if (!safeName || !safeDescription){
+      throw 'Please fill out all fields.'
+    }
+
     console.log(itemID+ name+ description);
-    const itemUpdated= await itemCommands.updateItem(itemID, name, description);
+    const itemUpdated= await itemCommands.updateItem(itemID, safeName, safeDescription);
     return res.redirect('/item/'+ itemID.toString());
   }
 } catch(e){
@@ -119,7 +138,9 @@ router.route('/item/edit/:itemid').get(async (req, res) => {
 
 router.route('/items/search/:query').get(async (req, res) => {
   try {
-    let filteredItems = await itemCommands.searchItems(req.session.user._id, req.session.user.school, req.params.query);
+    const query = req.params.query;
+    const safeQuery = xss(query);
+    let filteredItems = await itemCommands.searchItems(req.session.user._id, req.session.user.school, safeQuery);
     if (filteredItems.length == 0) {
       return res.render('items', { title: "School Items", items: filteredItems, user: req.session.user, search_error: "No items found!" })
     }
