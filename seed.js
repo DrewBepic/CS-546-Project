@@ -1,7 +1,10 @@
 import userCommands from './data/users.js'
 import itemCommands from './data/items.js'
 import requestCommands from './data/requests.js'
-import { closeConnection } from './config/mongoConnection.js'
+import { dbConnection,closeConnection } from './config/mongoConnection.js'
+const db = await dbConnection();
+await db.dropDatabase();
+
 const user1Id = (await userCommands.registerUser('Henry Poppins', 'hpop@stevens.edu', 'Password123!', 'Password123!')).insertedId.toString()
 const user2Id = (await userCommands.registerUser('Sponge Bob', 'sbob@stevens.edu', 'Password123!', 'Password123!')).insertedId.toString()
 const user3Id = (await userCommands.registerUser('Jack Cooper', 'jcoop@stevens.edu', 'Password123!', 'Password123!')).insertedId.toString()

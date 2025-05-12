@@ -346,7 +346,7 @@ const updateRequestKarma = async (requestID, givenRating, userId) => {
     const updateRating = await requestsCollection.updateOne({ _id: new ObjectId(requestID) }, { $set: { ['scoreSubmitted.'+userId]: givenRating } });
     if (!updateRating.acknowledged) { throw 'Error: Could not update transaction score'; }
 
-    const updateKarma = await userFunctions.updateKarma(userId,givenRating)
+    await userFunctions.updateKarma(userBeingRated, givenRating);
 
     let output={}
     output.userBeingRated=userBeingRated

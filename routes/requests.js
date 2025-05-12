@@ -156,7 +156,6 @@ router.route('/ratingRequests').get(async (req, res) => {
       }
       const requestId = req.body.requestId
       let update_request_results=await requestCommands.updateRequestKarma(requestId, input, req.session.user._id)
-      await userCommands.updateKarma(update_request_results.userBeingRated, input)
       return res.redirect('ratingRequests')
 
     } catch (e) {
