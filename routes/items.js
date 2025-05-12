@@ -124,7 +124,7 @@ router.route('/item/edit/:itemid').get(async (req, res) => {
       throw 'Please fill out all fields.'
     }
 
-    console.log(itemID+ name+ description);
+
     const itemUpdated= await itemCommands.updateItem(itemID, safeName, safeDescription);
     return res.redirect('/item/'+ itemID.toString());
   }

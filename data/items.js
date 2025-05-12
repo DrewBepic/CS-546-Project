@@ -77,6 +77,14 @@ const removeItem = async (id) => {
         { returnDocument: 'after' }
     ); 
 
+    try{
+        let requestsCollection=await requests();
+        await requestsCollection.deleteMany({ItemID:id});
+    }
+    catch (e){
+        throw "Error: database error"
+    }
+
     if (!removeItem) {
         throw 'Could not remove item successfully';
     }
