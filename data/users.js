@@ -19,7 +19,7 @@ const registerUser = async (
     if (!name || !email || !password || !passConfirm)
         throw 'Error: All fields need to have valid values';
 
-    if (typeof name !== 'string' && typeof email !== 'string' && typeof password !== 'string' && typeof passConfirm !== 'string') {
+    if (typeof name !== 'string' || typeof email !== 'string' || typeof password !== 'string' || typeof passConfirm !== 'string') {
         throw 'Error: One of the properties is of incorrect type and must be a string';
     }
     name = name.trim()
