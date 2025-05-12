@@ -3,11 +3,10 @@
     <h1>Register</h1>
   </header>
 
-
-    {{#if hasErrors}}
-    <p id="error" class="error">{{error}}</p>
-    {{/if}}
-    <form action="/register" method="POST">
+  <p id="register-error" class="error" {{#if i}}{{else}}hidden{{/if}}> {{register_error}}</p>
+<div class="registerContainer">
+  <div class="register">
+    <form action="/register" id="register_form" method="POST">
     <div>
         <label for="name">Full Name:</label><br>
         <input type="text" id="name" name="name">
@@ -25,6 +24,10 @@
         <input type="password" id="confirmPassword" name="confirmPassword">
       </div>
       <div>
-        <input type="submit" value="Register">
+        <input type="submit" class="registerButton" value="Register">
       </div>
     </form>
+    </div>
+
+     <script src="/public/js/register_validate.js"></script>
+     </div> 

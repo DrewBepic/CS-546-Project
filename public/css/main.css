@@ -621,6 +621,7 @@ p#search_error {
 
 }
 
+
 /* primarily used for the table in the requests page */
 table {
     border: 1px solid black;
@@ -656,4 +657,76 @@ td {
     padding: 1rem;
     margin: 1rem;
 
+}
+.acceptButton {
+    display: inline-block;
+    margin: 0.5rem;
+    margin-right: 0.5rem;
+    font-weight: bold;
+    font-size: .8rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 0.4rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.rejectButton {
+   display: inline-block;
+    margin: 0.5rem;
+    font-weight: bold;
+    font-size: .8rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 0.4rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.buttons{
+    display: flex;
+    margin: 0;
+    align-items: center;
+    padding:0;
+    width:100%;
+}
+
+/*Register */
+
+.registerButton {
+    display: inline-block;
+    margin: 0.1rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 3px solid black;
+    border-radius: 37px;
+    padding: 0.6rem 2rem;
+    align-self: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.registerContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.register{
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    align-self: center;
+  
 }
