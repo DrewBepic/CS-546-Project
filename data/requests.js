@@ -388,5 +388,40 @@ const getUnfinishedRequestsWithUserID = async (userId) => {
     }
 }
 
+const getIncomingRequests= async (userId) => {
+    if (!userId) {
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof userId != "string") {
+        throw 'Error: userId must be a string'
+    }
+    userId = userId.trim();
+    if (!ObjectId.isValid(userId)) {
+        throw 'Error: userId must be a valid ObjectId'
+    }
+    const requestCollection = await requests();
+    const incomingRequests = await requestCollection.find({LenderID:userId, Status: "Pending"}).toArray();
+    return incomingRequests;
 
-export default { getUnfinishedRequestsWithUserID, getLeaderboard, createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests };
+}
+
+const getOutgoingRequests= async (userId) => {
+    if (!userId) {
+        throw 'Error: All fields need to have valid values';
+    }
+    if (typeof userId != "string") {
+        throw 'Error: userId must be a string'
+    }
+    userId = userId.trim();
+    if (!ObjectId.isValid(userId)) {
+        throw 'Error: userId must be a valid ObjectId'
+    }
+    const requestCollection = await requests();
+    const outgoingRequests = await requestCollection.find({BorrowerID:userId, Status: "Pending"}).toArray();
+    return outgoingRequests;
+
+}
+
+
+
+export default { getUnfinishedRequestsWithUserID, getLeaderboard, createRequest, getRequestByID, acceptRequest, completeRequest, rejectRequest, getRequestLenderId, getRequestBorrowerId, updateRequestKarma, getAllRequests, getIncomingRequests, getOutgoingRequests };

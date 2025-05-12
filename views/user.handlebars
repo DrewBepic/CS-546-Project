@@ -4,6 +4,16 @@
 
 <h2 class = 'karmaTitle'>Current Acquired Karma: {{karma}}</h2>
 
+ <form action="/requests/incomingRequests" method="GET">
+         <button type="
+         submit" class="currentItemButtons">Incoming Requests</button>
+                </form>
+                <br>
+ <form action="/requests/outgoingRequests" method="GET">
+         <button type="
+         submit" class="currentItemButtons">Outgoing Requests</button>
+                </form>
+                <br>
 <h2 class = 'ownedTitle'>Owned Items</h2>
 {{#if ownedItems}}
     <div class="ownedItemsList">
