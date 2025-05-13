@@ -44,7 +44,7 @@
                  <h3>{{item.name}}</h3>
                 <p>Owner: {{item.ownerName}}</p>
                 <p>Description: {{item.description}}</p>
-                <a id = 'loanedPageButton' href = '/request/{{requestID}}'>Complete Request</a>
+                <a class= 'loanedPageButton' href = '/request/{{requestID}}'>Complete Request</a>
             </div>
         {{/each}}
     </div>
@@ -65,13 +65,13 @@
                 <h3>{{this.name}}</h3>
                 <p>Owner: {{this.ownerName}}</p>
                 <p>Description: {{this.description}}</p>
-                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+                <a class='borrowedPageButton' href = '/item/{{this._id}}'>Read More</a>
             </div>
         {{/each}}
     </div>
 {{else}}
     {{#if search_error}}
-        p class="error">{{search_error}}</p>
+        <p class="error">{{search_error}}</p>
         <a class="pageButton" href = '/items'>Back to All Items</a>
     {{else}}
         <p class='noItems'>You are not currently borrowing any items.</p>
