@@ -13,7 +13,7 @@
                 if(typeof search!="string") throw "Error: search query must be of type string"
                 search=search.trim();
                 if(search.length==0) throw "Error: search query can not be empty or just spaces"
-                if(search.length>256) throw "Error: search query is too long!"
+                if(search.length>100) throw "Error: search query is too long!"
                 error_tag.hidden = true;
             }
             catch (e){

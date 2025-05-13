@@ -143,8 +143,7 @@ router.route('/item/edit/:itemid').get(async (req, res) => {
     return res.redirect('/item/'+ itemID.toString());
   }
 } catch(e){
-  console.log(e);
-   return res.redirect('/item/' + req.params.itemid.toString());
+    return res.render('error', {title: "Error", error:e});
 }
  });
 

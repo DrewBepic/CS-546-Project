@@ -20,7 +20,9 @@
                 if (email.length === 0 || password.length === 0){
                     throw 'Error: At least one of the properties is invalid and cannot be an empty string or just spaces';
                 }
+                if(email.length<5) throw 'Error: email length too short'
                 if(email.length>320) throw 'Error: email length too long';
+                if(!email.includes('@') || !email.includes('.')) throw 'Error: invalid email format'
                 let str = password.trim();
                 let lower = str.toLocaleLowerCase();
                 let upper = str.toLocaleUpperCase();

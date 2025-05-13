@@ -24,6 +24,12 @@
             if (name.length === 0 || email.length === 0 || password.length === 0 || passConfirm.length === 0) {
                 throw 'Error: One of the properties is invalid and cannot be an empty string or just spaces';
             }
+            name_array=name.split(" ")
+            if(name_array.length!=2) throw "Error: please provide exactly your first and last name"
+            if(name_array[0][0]!=name_array[0][0].toLocaleUpperCase() || name_array[1][0]!=name_array[1][0].toLocaleUpperCase()) throw "Error: Make sure your first and last name is capitalized"
+            if(email.length<5) throw 'Email length too short'
+            if(email.length>320) throw 'Email length too long';
+            if(!email.includes('@') || !email.includes('.')) throw 'Invalid email format'
             if (passConfirm !== password) {
                 throw "Error: Passwords do not match"
             }
