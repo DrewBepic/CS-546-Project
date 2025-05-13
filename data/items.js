@@ -3,12 +3,14 @@ import { ObjectId } from 'mongodb';
 
 //TEST
 
-const addItem = async (userId, name, description) => {
+const addItem = async (userId, name, description, availability) => {
     if (!ObjectId.isValid(userId)) throw 'Invalid ObjectId';
     const itemCollection = await items();
     if (!name || !description) throw 'Error: Name and Description must be filled out';
     if (typeof name !== 'string' || typeof description !== 'string') throw 'Error: Name and Description must be strings';
     if (name.trim().length === 0 || description.trim().length === 0) throw 'Error: Name and Description cannot be empty strings';
+    if (typeof availability !== 'boolean') throw 'Error: Availability must be a boolean';
+
     name = name.trim();
     description = description.trim();
     let history = [];
@@ -31,7 +33,8 @@ const addItem = async (userId, name, description) => {
         history: history,
         requests: requests,
         comments: comments,
-        school: lender.school
+        school: lender.school,
+        availability: availability
     };
 
     
@@ -45,7 +48,8 @@ const addItem = async (userId, name, description) => {
         { $push: { ownedItems:{
             _id: insertInfo.insertedId,
             name: name,
-            description: description
+            description: description,
+            availability: availability
             }      
         } 
         }
@@ -266,7 +270,7 @@ const getItemsBySchool = async (userId,school) => {
     school=school.trim();
     const itemCollection = await items();
     const userCollection = await users();
-    const allItems = await itemCollection.find({school:school}).toArray();
+    const allItems = await itemCollection.find({school:school, availability: true}).toArray();
     let schoolItems=[];
     for(let item in allItems){
         allItems[item]._id=allItems[item]._id.toString();

@@ -29,12 +29,13 @@ router.route('/item').get(async (req, res) => {
 
       const safeName = xss(body.name);
       const safeDescription = xss(body.description);
+      const availability = body.availability === 'on';
 
       if (!safeName|| !safeDescription){
         throw 'Please fill out all fields.'
       }
 
-      const newItem = await itemCommands.addItem(req.session.user._id, safeName, safeDescription)
+      const newItem = await itemCommands.addItem(req.session.user._id, safeName, safeDescription, availability)
       const newItemID = newItem._id
       return res.redirect('/item/' + newItem);
     } catch (e) {
