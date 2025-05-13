@@ -73,8 +73,15 @@ const createRequest = async (
         ItemID: ItemID,
         Status: "Pending"
     }).toArray();
+    let accepted_duplicate_requests= await requestsCollection.find({
+        LenderID: LenderID,
+        BorrowerID: BorrowerID,
+        ItemID: ItemID,
+        Status: "Accepted"
+    }).toArray();
+    duplicate_requests=duplicate_requests.concat(accepted_duplicate_requests)
     if (duplicate_requests.length != 0) {
-        throw "Error: a pending request has already been made for this item"
+        throw "Error: you already made a request for this item!"
     }
     const newRequest = {
         LenderID: LenderID,
