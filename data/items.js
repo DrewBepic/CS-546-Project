@@ -68,6 +68,7 @@ const removeItem = async (id) => {
     const itemCollection = await items();
     const itemToDelete = await itemCollection.findOne({ _id: new ObjectId(id) });
     if (!itemToDelete) throw 'Item not found';
+    if(itemToDelete.CurrentRequest) throw "Can't delete an item that's currently in a request!"
     const deletedItem = await itemCollection.findOneAndDelete({ _id: new ObjectId(id) });
     if (!deletedItem) throw `Could not delete item with provided Id`;
     const userCollection = await users();
