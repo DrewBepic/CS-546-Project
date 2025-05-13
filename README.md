@@ -1,7 +1,11 @@
 # CS-546-Project
 CS-546 Project
 
-Authors: Andrew Baker, Elijah Joseph, Riley Stewart, Aleksey Vinogradov
+Authors:
+- Andrew Baker (DrewBepic)
+- Elijah Joseph (Elijahjoseph23, ejoseph11)
+- Riley Stewart (rileyastewart)
+- Aleksey Vinogradov (alekseyvinogradovPM)
 
 Google Doc: https://docs.google.com/document/d/1vMipfN2svlTh9WD0XxHTStYlvAltfi0Nt3Q2NLHpaoE/edit?tab=t.0
 
