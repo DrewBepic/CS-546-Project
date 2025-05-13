@@ -193,7 +193,7 @@ router.route('/ratingRequests').get(async (req, res) => {
       //console.log(allPendingInfoIncoming[i]);
     }
 
-    return res.render('incomingRequests', {user: req.session.user, incomingPendingRequests: allPendingInfoIncoming, incomingAcceptedRequests: allAcceptedInfoIncoming})
+    return res.render('incomingRequests', { title: "Incoming Requests",user: req.session.user, incomingPendingRequests: allPendingInfoIncoming, incomingAcceptedRequests: allAcceptedInfoIncoming})
   } catch (e) {
     console.log(e);
     return res.redirect("/items");
@@ -228,7 +228,7 @@ router.route('/ratingRequests').get(async (req, res) => {
       //console.log(allInfoOutgoing[i]);
     }
 
-    return res.render('outgoingRequests', {user: req.session.user, outgoingPendingRequests: allPendingInfoOutgoing, outgoingAcceptedRequests: allAcceptedInfoOutgoing})
+    return res.render('outgoingRequests', { title: "Outgoing Requests",user: req.session.user, outgoingPendingRequests: allPendingInfoOutgoing, outgoingAcceptedRequests: allAcceptedInfoOutgoing})
   } catch (e) {
     console.log(e);
     return res.redirect("/items");
