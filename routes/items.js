@@ -59,6 +59,18 @@ router.route('/item/:itemid').get(async (req, res) => {
       }
      }
     let ownerName = userName.name;
+
+    let request_history=[];
+    if(item.history){
+        for(let requestID in item.history){
+            let request_obj=await requestCommands.getRequestByID(item.history[requestID])
+            let borrower=await userCommands.getUserByID(request_obj.BorrowerID)
+            request_obj.Date=request_obj.Date.split(",")[0]
+            request_obj.borrowerName=borrower.name
+            request_history.push(request_obj);
+        }
+        item.history=request_history
+    }
     return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, ownerName: ownerName, user: req.session.user, owner: owner, inWL: inWL});
   } catch (e) {
     console.log(e);
