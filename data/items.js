@@ -304,6 +304,15 @@ const getItemsBySchool = async (userId,school) => {
 }
 
 const searchItems = async (userId, school, query) => {
+    if(!school || !userId){
+        throw "Error: please provide all fields"
+    }
+    if(typeof school!="string" || typeof userId!="string" || typeof query!="string"){
+        throw "Error: all fields must be a string";
+    }
+    school=school.trim();
+    userId=userId.trim();
+    if(school.length==0 || userId.length==0) throw "Error: all fields must not be empty or just empty spaces";
     let allItems=await getItemsBySchool(userId,school);
     let filteredItems=[];
     for(let item in allItems){

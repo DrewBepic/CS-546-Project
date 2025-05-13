@@ -20,7 +20,18 @@ router.route('/request/item/:itemId').get(async (req, res) => {
     let requestId;
     try {
       let item = await itemCommands.getItemByID(req.params.itemId);
-      const safeDescription = xss(req.body.description);
+      if(!req.body.description) throw "Error: description not provided"
+      let safeDescription = xss(req.body.description);
+    if(typeof safeDescription !="string"){
+        throw "Error: description must be a string";
+    }
+    safeDescription=safeDescription.trim();
+    if(safeDescription.length==0){
+        throw "Error: description can not be left empty or be just empty spaces";
+    }
+    if(safeDescription.length>99){
+        throw "Error: description must be under 100 characters";
+    }
       requestId = await requestCommands.createRequest(item.ownerId, req.session.user._id, req.params.itemId, safeDescription);
       return res.redirect('/request/' + requestId);
     }

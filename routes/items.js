@@ -169,7 +169,7 @@ router.route('/items/search').post(async (req, res) => {
         res.json(filteredItems)
     }
     catch(e){
-        return res.render('items', { title: "School Items", user: req.session.user, search_error: "Server Error Encountered" })
+        return res.status(500).json({search_error: "Server Error Encountered" })
     }
 })
 export default router;

@@ -40,9 +40,9 @@
             item_list.innerHTML=''
             if(items && items.length>0){
                 for(let item in items){
-                    let available="No"
-                    if(!items[item].CurrentRequest) available="Yes"
-                    let html = `<div class="item"><h3>${items[item].name}</h3><p>Owner: ${items[item].ownerName}</p><p>Available: ${available}</p><p>Description: ${items[item].description}</p><a class = 'pageButton' href = '/item/${items[item]._id}'>Read More</a></div>`
+                    let available="Currently Being Borrowed"
+                    if(!items[item].CurrentRequest) available="Available"
+                    let html = `<div class="item"><h3>${items[item].name}</h3><p>Owner: ${items[item].ownerName}</p><p>Status: ${available}</p><p>Description: ${items[item].description}</p><a class = 'pageButton' href = '/item/${items[item]._id}'>Read More</a></div>`
                     item_list.insertAdjacentHTML('beforeend',html)
                 }
             }
