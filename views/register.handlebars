@@ -4,6 +4,11 @@
   </header>
 
   <p id="register-error" class="error" {{#if i}}{{else}}hidden{{/if}}> {{register_error}}</p>
+
+  {{#if hasErrors}}
+    <p id="error" class="error">{{error}}</p>
+    {{/if}}
+    
 <div class="registerContainer">
   <div class="register">
     <form action="/register" id="register_form" method="POST">
