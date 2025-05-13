@@ -319,11 +319,17 @@ const getLoanedItemsByUserID = async (id) => {
     if (!ObjectId.isValid(id)) throw 'Invalid object ID';
     const userCollection = await users();
     const user = await userCollection.findOne({ _id: new ObjectId(id) })
+    const requestCollection = await requests();
     const loanedItemsNames = [];
     for (const item of user.loanedItems) {
         const itemCollection = await items();
         const itemInfo = await itemCollection.findOne({ _id: new ObjectId(item) })
         if (itemInfo) {
+            const request= await requestCollection.findOne({ItemID: itemInfo._id.toString(),
+                Status:'Accepted',
+            });
+            let requestID= request._id;
+            if(request&& request.Status!=='Completed'){
             const owner = await userCollection.findOne({ _id: new ObjectId(itemInfo.ownerId) });
             if (owner) {
                 itemInfo.ownerName = owner.name;
@@ -331,7 +337,9 @@ const getLoanedItemsByUserID = async (id) => {
             else {
                 itemInfo.ownerName = 'N/A';
             }
-            loanedItemsNames.push(itemInfo);
+            console.log(requestID);
+            loanedItemsNames.push({item:itemInfo, requestID: requestID});
+        }
         }
     }
     if (loanedItemsNames.length === 0) {

@@ -28,13 +28,13 @@
 {{else}}
     {{#if search_error}}
         <p class="error">{{search_error}}</p>
-        <a class="pageButton" href = '/items'>Back to All Items</a>
+        <a c href = '/items'>Back to All Items</a>
     {{else}}
         <p class='noItems'>You currently do not have any items listed.</p>
     {{/if}}
 {{/if}}
 
-<h2 class = 'loanTitle'>Loaned Items</h2>
+<h2 class = 'loanTitle'>Currently Loaned Items</h2>
 {{#if loanedItems}}
     <div class="loanedItemsList">
         {{#each loanedItems}}
@@ -49,7 +49,7 @@
     </div>
 {{else}}
     {{#if search_error}}
-        p class="error">{{search_error}}</p>
+       <p class="error">{{search_error}}</p>
         <a class="pageButton" href = '/items'>Back to All Items</a>
     {{else}}
         <p class='noItems'>You are not currently loaning any items.</p>
@@ -65,7 +65,7 @@
                 <p>Owner: {{this.ownerName}}</p>
                 <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
                 <p>Description: {{this.description}}</p>
-                <a id = 'BitemPageButton' href = '/item/{{this._id}}'>Read More</a>
+                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
             </div>
         {{/each}}
     </div>
