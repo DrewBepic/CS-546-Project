@@ -41,11 +41,11 @@
     <div class="loanedItemsList">
         {{#each loanedItems}}
             <div class="loanedItem">
-                <h3>{{this.name}}</h3>
-                <p>Owner: {{this.ownerName}}</p>
-                <p>Available: {{#if this.CurrentRequest}}No{{else}}Yes{{/if}}</p>
-                <p>Description: {{this.description}}</p>
-                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+                 <h3>{{item.name}}</h3>
+                <p>Owner: {{item.ownerName}}</p>
+                <p>Available: {{#if item.currentRequest}}No{{else}}Yes{{/if}}</p>
+                <p>Description: {{item.description}}</p>
+                <a id = 'loanedPageButton' href = '/request/{{requestID}}'>Complete Request</a>
             </div>
         {{/each}}
     </div>
