@@ -1,15 +1,13 @@
 
-
+<h1 class="center"> Unfinished Requests</h1>
 <ul class="simple-list-2">
-    <h1 class="center"> Unfinished Requests</h1>
     {{#each unfinished}}
-    <div class="karma-item">
     <li>
+        <div class="karma-item">
         <p>Item: {{this.itemName}}</p>
         <p>Lender: {{this.lender}}</p>
         <p>Borrower: {{this.borrower}}</p>
         <p>Date Requested: {{this.Date}}</p>
-    </li>
     <form action="/ratingRequests" method="POST">
         <div>
             <label for="rating">Rating from 1-10:</label>
@@ -20,5 +18,6 @@
         </div>
     </form>
     </div>
+     </li>
     {{/each}}
 </ul>

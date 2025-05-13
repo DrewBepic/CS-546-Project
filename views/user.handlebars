@@ -23,7 +23,7 @@
                 <p>Owner: {{this.ownerName}}</p>
                 <p>Available: {{#if this.availability}}Yes{{else}}No{{/if}}</p>
                 <p>Description: {{this.description}}</p>
-                <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
+                <a class='ownedPageButton' href = '/item/{{this._id}}'>Read More</a>
             </div>
         {{/each}}
     </div>
