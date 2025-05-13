@@ -13,7 +13,6 @@ router.route('/request/item/:itemId').get(async (req, res) => {
     return res.render('requestItem', { user: req.session.user, itemInfo: item, title: "Request Item" })
   }
   catch (e) {
-    console.log(e);
     return res.redirect("/items");
   }
 })
@@ -62,7 +61,6 @@ router.route('/request/:requestId').get(async (req, res) => {
     return res.render('request', { user: req.session.user, request: request, item: item, lender: lender, borrower: borrower, isLender, isBorrower, isAccepted, isPending, isRejected,title:"Request" })
   }
   catch (e) {
-    console.log(e);
     return res.redirect("/items");
   }
 })
@@ -159,7 +157,6 @@ router.route('/ratingRequests').get(async (req, res) => {
       return res.redirect('ratingRequests')
 
     } catch (e) {
-      console.log(e)
       return res.status(404).redirect('ratingRequests')
     }
   });
@@ -195,7 +192,6 @@ router.route('/ratingRequests').get(async (req, res) => {
 
     return res.render('incomingRequests', { title: "Incoming Requests",user: req.session.user, incomingPendingRequests: allPendingInfoIncoming, incomingAcceptedRequests: allAcceptedInfoIncoming})
   } catch (e) {
-    console.log(e);
     return res.redirect("/items");
   }
 });
@@ -230,7 +226,6 @@ router.route('/ratingRequests').get(async (req, res) => {
 
     return res.render('outgoingRequests', { title: "Outgoing Requests",user: req.session.user, outgoingPendingRequests: allPendingInfoOutgoing, outgoingAcceptedRequests: allAcceptedInfoOutgoing})
   } catch (e) {
-    console.log(e);
     return res.redirect("/items");
   }
 });

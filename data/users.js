@@ -337,7 +337,6 @@ const getLoanedItemsByUserID = async (id) => {
             else {
                 itemInfo.ownerName = 'N/A';
             }
-            console.log(requestID);
             loanedItemsNames.push({item:itemInfo, requestID: requestID});
         }
         }

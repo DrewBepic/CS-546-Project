@@ -9,12 +9,12 @@ const user1Id = (await userCommands.registerUser('Henry Poppins', 'hpop@stevens.
 const user2Id = (await userCommands.registerUser('Sponge Bob', 'sbob@stevens.edu', 'Password123!', 'Password123!')).insertedId.toString()
 const user3Id = (await userCommands.registerUser('Jack Cooper', 'jcoop@stevens.edu', 'Password123!', 'Password123!')).insertedId.toString()
 
-const item1Id = (await itemCommands.addItem(user1Id,'Screwdriver', 'Screws and stuff')).toString()
-const item2Id = (await itemCommands.addItem(user1Id,'Drill', 'Drills stuff')).toString()
-const item3Id = (await itemCommands.addItem(user2Id,'Pickaxe', 'Rock and Stone')).toString()
-const item4Id = (await itemCommands.addItem(user2Id,'Shovel', "Let's get this dirt out of the way")).toString()
-const item5Id = (await itemCommands.addItem(user3Id,'3D Printer', "Print in plastic")).toString()
-const item6Id = (await itemCommands.addItem(user3Id,'Mongo Database', "An entire mongo database because why not")).toString()
+const item1Id = (await itemCommands.addItem(user1Id,'Screwdriver', 'Screws and stuff',true)).toString()
+const item2Id = (await itemCommands.addItem(user1Id,'Drill', 'Drills stuff',true)).toString()
+const item3Id = (await itemCommands.addItem(user2Id,'Pickaxe', 'Rock and Stone',true)).toString()
+const item4Id = (await itemCommands.addItem(user2Id,'Shovel', "Let's get this dirt out of the way",true)).toString()
+const item5Id = (await itemCommands.addItem(user3Id,'3D Printer', "Print in plastic",true)).toString()
+const item6Id = (await itemCommands.addItem(user3Id,'Mongo Database', "An entire mongo database because why not",true)).toString()
 
 const request1Id = (await requestCommands.createRequest(user2Id,user3Id,item3Id, 'Please I need to go mining in my backyard. I found gold and I need a pickaxe!')).toString()
 const request2Id = (await requestCommands.createRequest(user3Id,user1Id,item6Id, "I'm starting this really cool project and I need to borrow a Mongo Database")).toString()

@@ -11,14 +11,14 @@
     <input type="text" placeholder="Search items" name="item_search" id="item_search">
   </form>
   {{/if}}
-  
+
   <div id="item_list" class="item_list">
   {{#if items}}
       {{#each items}}
         <div class="item">
           <h3>{{this.name}}</h3>
           <p>Owner: {{this.ownerName}}</p>
-          <p>Available: {{#if this.CurrentRequest}}No{{else}}Yes{{/if}}</p>
+          <p>Status: {{#if this.CurrentRequest}}Currently Being Borrowed{{else}}Available{{/if}}</p>
           <p>Description: {{this.description}}</p>
           <a class = 'pageButton' href = '/item/{{this._id}}'>Read More</a>
         </div>

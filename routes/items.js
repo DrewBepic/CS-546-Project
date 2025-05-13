@@ -74,13 +74,11 @@ router.route('/item/:itemid').get(async (req, res) => {
     }
     return res.render('item', { hasErrors: false, title: "CampusExchange", itemInfo: item, ownerName: ownerName, user: req.session.user, owner: owner, inWL: inWL});
   } catch (e) {
-    console.log(e);
     return res.render('item', { hasErrors: true, title: "CampusExchange", error: e, user: req.session.user });
   }
 })
 .post(async (req, res) => {
   try {
-    console.log("post route here");
     const safeComment = xss(req.body.comment);
     const itemID = req.params.itemid;
 
@@ -95,7 +93,6 @@ router.route('/item/:itemid').get(async (req, res) => {
     }
     return res.redirect('/item/' + itemID.toString());
   } catch (e) {
-    console.log(e);
     return res.redirect('/item/' + req.params.itemid.toString());
   }
 });
@@ -107,7 +104,6 @@ router.route('/item/:itemid').get(async (req, res) => {
   const wishlistAdd= await itemCommands.addToWishlist(req.session.user._id.toString(), req.params.itemid)
   return res.redirect('/item/' + req.params.itemid.toString());
 } catch(e){
-  console.log(e);
    return res.redirect('/item/' + req.params.itemid.toString());
 }
  });
@@ -172,7 +168,6 @@ router.route('/items/search').post(async (req, res) => {
         res.json(filteredItems)
     }
     catch(e){
-        console.log(e);
         return res.render('items', { title: "School Items", user: req.session.user, search_error: "Server Error Encountered" })
     }
 })

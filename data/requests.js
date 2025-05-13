@@ -393,7 +393,6 @@ const getUnfinishedRequestsWithUserID = async (userId) => {
         const userRequests = await requestCollection.find({ $and: [ { $or:[{BorrowerID:userId},{LenderID:userId}]}, {[`scoreSubmitted.${userId}`]: {$exists:false}}, {Status:"Completed"} ] }).toArray();
         return userRequests
     } catch (e) {
-        console.log(e)
         throw e.toString()
     }
 }
