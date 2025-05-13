@@ -1,6 +1,7 @@
 (function () {
     const requestItemForm = document.getElementById("requestItemForm")
     if(requestItemForm){
+        const name_input=document.getElementById("name")
         const description_input=document.getElementById('description');
         const error_tag = document.getElementById('error-request-item');
         requestItemForm.addEventListener('submit', (event) => {
@@ -18,8 +19,8 @@
                 if(description.length==0){
                     throw "Error: description can not be left empty or be just empty spaces";
                 }
-                if(description.length>500){
-                    throw "Error: description must be under 500 characters";
+                if(description.length>99){
+                    throw "Error: description must be under 100 characters";
                 }
             }
             catch (e){

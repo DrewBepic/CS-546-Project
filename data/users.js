@@ -127,11 +127,11 @@ const userLogin = async (email, password) => {
     const userCollection = await users();
     const user = await userCollection.findOne({ email: email.toLowerCase() })
     if (!user) {
-        throw "Invalid Username or Password"
+        throw "Invalid Email or Password"
     }
     const passwordCrypt = await bcrypt.compare(password, user.password);
     if (!passwordCrypt) {
-        throw "Invalid Username or Password"
+        throw "Invalid Email or Password"
     } else {
         let output = await getUserSession(user._id.toString())
         return output;

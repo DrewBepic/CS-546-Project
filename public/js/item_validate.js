@@ -6,6 +6,14 @@
         const error_tag = document.getElementById('comment-error');
         comment_form.addEventListener('submit', (event) => {
             event.preventDefault();
+            try{
+            if(typeof comment_item.value!="string"){
+                throw "Comments must be a string!"
+            }
+            comment_item.value=comment_item.value.trim();
+            if(comment_item.value.length==0){
+                throw "Comments can non be empty or just spaces!"
+            }
             let comment= "";
             let colon= 0;
             error_tag.hidden = true;
@@ -19,7 +27,7 @@
                 comment= comment+ comment_item.value[x];
             }
 
-            try{
+            
             if (typeof comment !== 'string' || comment.length === 0 || comment.length < 2 || comment.length > 50) {
                 throw 'A comment should be a valid non-empty string that is between 2 and 50 characters.';
             }
@@ -52,10 +60,18 @@
             let name= name_item.value;
             let description= description_item.value;
             try{
-            if (typeof name !== 'string' || name.length === 0 || name.length < 2 || name.length > 20) {
+            if (typeof name !== 'string'){
                 throw  'Item name should be a valid non-empty string that is between 2 and 20 characters.';
             }
-            if (typeof description !== 'string' || description.length === 0 || description.length < 2 || description.length > 50) {
+            name=name.trim();
+            if (name.length === 0 || name.length < 2 || name.length > 20) {
+                throw  'Item name should be a valid non-empty string that is between 2 and 20 characters.';
+            }
+            if(typeof description !== 'string'){
+                throw 'Item description should be a valid non-empty string that is between 2 and 50 characters.';
+            }
+            description=description.trim()
+            if ( description.length === 0 || description.length < 2 || description.length > 50) {
                 throw 'Item description should be a valid non-empty string that is between 2 and 50 characters.';
             }
             for (let x of name) {

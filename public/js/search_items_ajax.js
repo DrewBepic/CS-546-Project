@@ -11,8 +11,16 @@
         try{
             if(search.length>0 && search.trim().length==0) throw "Error: you can not input just empty spaces"
             search=search.trim();
-            if(search.length>256) throw "Error: search query is too long!"
+            if(search.length>100) throw "Error: search query is too long!"
             error_tag.hidden = true;
+            for (let x of search) {
+                const check = x.charCodeAt(0);
+                if (!(check >= 65 && check <= 90) && !(check >= 97 && check <= 122) && !(check >= 48 && check <= 57) && check !== 32){
+                    error_tag.hidden = false;
+                    error_tag.innerHTML = 'Item search can only contain letters a-z, spaces, A-Z, or positive whole numbers.';
+                    return;
+                }
+            }
         }
         catch (e){
             const message = typeof e === 'string' ? e : e.message;

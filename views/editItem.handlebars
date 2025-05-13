@@ -1,7 +1,7 @@
 
 
- <p id="edit-error" class="error-left" {{#if i}}{{else}}hidden{{/if}}> {{edit_error}}</p>
-  <form action="/item/edit/{{itemInfo._id}}" method="POST">
+ <p id="edit-error" class="error-left" {{#if edit_error}}{{else}}hidden{{/if}}> {{edit_error}}</p>
+  <form id="item_edit_form" action="/item/edit/{{itemInfo._id}}" method="POST">
   <label for="name"> Edit Name:</label><br>
   <input type="text" id="name" name="name" value="{{itemInfo.name}}">
    <label for="description"> Edit Description:</label><br>
