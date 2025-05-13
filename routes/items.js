@@ -118,7 +118,7 @@ router.route('/item/:itemid').get(async (req, res) => {
      if (!removed) throw 'Item could not be deleted';
      return res.redirect('/items');
    } catch (e) {
-     return res.status(404).json({ error: e });
+     return res.render('error',{title:"Error",user:req.session.user,error:e});
    }
  });
 
