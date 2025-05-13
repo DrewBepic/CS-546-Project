@@ -29,7 +29,7 @@ router.route('/item').get(async (req, res) => {
 
       const safeName = xss(body.name);
       const safeDescription = xss(body.description);
-      const availability = body.availability === 'on';
+      const availability = xss(body.availability) === 'on';
 
       if (!safeName|| !safeDescription){
         throw 'Please fill out all fields.'
@@ -121,7 +121,7 @@ router.route('/item/:itemid').get(async (req, res) => {
 
 router.route('/item/edit/:itemid').get(async (req, res) => {
     const item = await itemCommands.getItemByID(req.params.itemid)
-     return res.render('editItem', {title: "CampusExchange", itemInfo: item});
+     return res.render('editItem', {title: "CampusExchange", itemInfo: item,user:req.session.user});
 });
  router.route('/item/edit/:itemid').post(async (req, res) => {
   try {
@@ -130,17 +130,18 @@ router.route('/item/edit/:itemid').get(async (req, res) => {
   if(req.session.user._id=== item.ownerId.toString()){
     const safeName= xss(req.body.name);
     const safeDescription= xss(req.body.description);
+    const availability = xss(req.body.availability) === 'on';
 
     if (!safeName || !safeDescription){
       throw 'Please fill out all fields.'
     }
 
 
-    const itemUpdated= await itemCommands.updateItem(itemID, safeName, safeDescription);
+    const itemUpdated= await itemCommands.updateItem(itemID, safeName, safeDescription,availability);
     return res.redirect('/item/'+ itemID.toString());
   }
 } catch(e){
-    return res.render('error', {title: "Error", error:e});
+    return res.render('error', {title: "Error", error:e,user:req.session.user});
 }
  });
 

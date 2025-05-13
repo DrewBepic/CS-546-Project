@@ -50,7 +50,7 @@ const createRequest = async (
         throw 'Error: ItemID must be a valid ObjectId'
     }
     try {
-        await itemFunctions.getItemByID(ItemID);
+        let item=await itemFunctions.getItemByID(ItemID);
     }
     catch (e) {
         throw 'Error: ItemID not found in database'
@@ -61,6 +61,10 @@ const createRequest = async (
         throw 'Error: item owner id and lender id do not match'
     }
 
+    if(!item.availability){
+        throw 'Error: item not available currently'
+    }
+    
     if (typeof BorrowerDescription != "string") {
         throw 'Error: Borrower description must be of type string';
     }

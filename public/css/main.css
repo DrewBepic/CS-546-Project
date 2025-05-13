@@ -294,6 +294,14 @@ form#addItemForm {
     gap: 1.5rem;
 }
 
+form#item_edit_form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 12px;
+    gap: 1.5rem;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -322,6 +330,27 @@ input#addItemButton {
 }
 
 input#addItemButton:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    color: #A32638;
+}
+
+input#editItemButton {
+    display: inline-block;
+    margin: 0.1rem;
+    font-weight: bold;
+    font-size: 1.0rem;
+    text-decoration: none;
+    color: white;
+    background-color: #A32638;
+    border: 3px solid black;
+    border-radius: 37px;
+    padding: 0.6rem 2.5rem;
+    align-self: center;
+}
+
+input#editItemButton:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: white;

@@ -1,11 +1,16 @@
+ <h1 id = 'addItem'>Edit Item</h1>
 
-
- <p id="edit-error" class="error-left" {{#if edit_error}}{{else}}hidden{{/if}}> {{edit_error}}</p>
+ <p id="edit-error" class="error" {{#if edit_error}}{{else}}hidden{{/if}}> {{edit_error}}</p>
   <form id="item_edit_form" action="/item/edit/{{itemInfo._id}}" method="POST">
+  <div class="form-group">
   <label for="name"> Edit Name:</label><br>
   <input type="text" id="name" name="name" value="{{itemInfo.name}}">
    <label for="description"> Edit Description:</label><br>
   <input type="text" id="description" name="description" value="{{itemInfo.description}}">
-  <input type="submit" value="Submit" >
+  <label for="availabilityToggle">Available:</label>
+  <input type="checkbox" id="availability" name="availability" {{#if itemInfo.availability}}checked{{/if}}>
+  <p>Please note that if you mark an item as unavailable, no one will be able to see it. However, you will still be able to see it in your User Profile.</p>
+  </div>
+  <input id="editItemButton" type="submit" value="Submit" >
 </form> 
   <script src="/public/js/item_validate.js"></script>

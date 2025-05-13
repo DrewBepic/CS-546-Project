@@ -7,7 +7,6 @@
 <div class="currentItem">
 <p>Owner: {{ownerName}}</p>
 <p>Description: {{itemInfo.description}}</p>
-  <p>Requests: {{itemInfo.requests}}</p>
 
   {{#if owner}}
     <form action="/item/edit/{{itemInfo._id}}" method="GET">

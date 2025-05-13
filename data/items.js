@@ -96,17 +96,29 @@ const removeItem = async (id) => {
     return true;
 };
 
-const updateItem = async (itemId, name, description) => {
+const updateItem = async (itemId, name, description,availability) => {
     if (!ObjectId.isValid(itemId)) throw 'Invalid ObjectId';
     const itemCollection = await items();
     if (!name || !description) throw 'Error: Name and Description must be filled out';
     if (typeof name !== 'string' || typeof description !== 'string') throw 'Error: Name and Description must be strings';
     if (name.trim().length === 0 || description.trim().length === 0) throw 'Error: Name and Description cannot be empty strings';
     name = name.trim();
+
+    if(typeof availability!="boolean") throw "Error: availability must be of type boolean"
+    if(!availability){
+        let item=await itemCollection.findOne({_id: new ObjectId(itemId)});
+        if(item.CurrentRequest){
+            throw "Error: can not make an item unavailable when it is currently in a request!"
+        }
+        let requestCollection=await requests();
+        await requestCollection.updateMany({ItemID:itemId,Status:"Pending"},{$set:{Status:"Rejected"}})
+    }
+
     description = description.trim();
     let updateItem = {
         name: name,
         description: description,
+        availability: availability
     };
     const updateInfo = await itemCollection.findOneAndUpdate(
         { _id: new ObjectId(itemId) },
