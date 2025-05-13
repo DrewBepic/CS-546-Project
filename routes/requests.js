@@ -187,7 +187,7 @@ router.route('/ratingRequests').get(async (req, res) => {
         BorrowerID: incomingAcceptedRequests[i].BorrowerID, Date:incomingAcceptedRequests[i].Date, ItemID: incomingAcceptedRequests[i].ItemID, BorrowerDescription:incomingAcceptedRequests[i].BorrowerDescription,
         LenderName: lender.name, BorrowerName: borrower.name, itemName: item.name
       });
-      //console.log(allPendingInfoIncoming[i]);
+      //console.log(allAcceptedInfoIncoming[i]);
     }
 
     return res.render('incomingRequests', { title: "Incoming Requests",user: req.session.user, incomingPendingRequests: allPendingInfoIncoming, incomingAcceptedRequests: allAcceptedInfoIncoming})

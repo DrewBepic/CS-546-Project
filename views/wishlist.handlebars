@@ -8,7 +8,7 @@
             <div class="wishedItem">
                 <h3>{{this.name}}</h3>
                 <p>Owner: {{this.ownerName}}</p>
-                <p>Available: {{#if this.currentRequest}}No{{else}}Yes{{/if}}</p>
+                <p>Available: {{#if this.currentRequest}}No{{else}}  {{#if this.availability}}Yes{{else}}No{{/if}}  {{/if}}</p>
                 <p>Description: {{this.description}}</p>
                 <a id = 'itemPageButton' href = '/item/{{this._id}}'>Read More</a>
                 <form action="/user/{{../user._id}}/wishlist/{{this._id}}/remove" method="POST">
